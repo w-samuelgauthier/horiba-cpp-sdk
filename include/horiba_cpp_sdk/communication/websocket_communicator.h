@@ -21,6 +21,7 @@ class WebSocketCommunicator : public Communicator {
 
   void open() override;
   void close() override;
+  bool is_open() override;
 
   Response request_with_response(Command command) override;
 
@@ -30,7 +31,6 @@ class WebSocketCommunicator : public Communicator {
   boost::asio::io_context context;
   boost::beast::websocket::stream<boost::asio::ip::tcp::socket> websocket{
       context};
-  bool websocket_open;
 };
 } /* namespace horiba::communication */
 

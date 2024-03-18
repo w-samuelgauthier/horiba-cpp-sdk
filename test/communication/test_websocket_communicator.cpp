@@ -1,85 +1,134 @@
-/* #include <horiba_cpp_sdk/communication/command.h> */
-/* #include <horiba_cpp_sdk/communication/communicator.h> */
+#include <horiba_cpp_sdk/communication/command.h>
+#include <horiba_cpp_sdk/communication/response.h>
 #include <horiba_cpp_sdk/communication/websocket_communicator.h>
 
-#include <boost/asio.hpp>
-#include <boost/beast.hpp>
+#include <catch2/catch_message.hpp>
 #include <catch2/catch_test_macros.hpp>
-#include <thread>
+#include <nlohmann/json.hpp>
 
-/* namespace horiba::test { */
+#include "../fake_icl_server.h"
 
-const int FAKE_ICL_PORT = 8765;
+namespace horiba::test {
 
-// Define a test fixture for WebSocket server
-class FakeICLServer {
- public:
-  FakeICLServer() {
-    // Initialize the I/O context and acceptor
-    m_ioContext = std::make_shared<boost::asio::io_context>();
-    m_acceptor = std::make_shared<boost::asio::ip::tcp::acceptor>(*m_ioContext);
+using json = nlohmann::json;
 
-    // Set up the WebSocket server
-    m_webSocketServer = std::make_shared<
-        boost::beast::websocket::stream<boost::asio::ip::tcp::socket>>(
-        *m_ioContext);
-    m_acceptor->open(boost::asio::ip::tcp::v4());
-    m_acceptor->bind({boost::asio::ip::address_v4::loopback(), FAKE_ICL_PORT});
-    m_acceptor->listen();
-    m_acceptor->async_accept(
-        m_webSocketServer->next_layer(),
-        [&](const boost::system::error_code& ec) {
-          if (!ec) {
-            m_webSocketServer->async_accept(
-                [this](const boost::system::error_code& ec) {
-                  if (!ec) {
-                    this->handleWebSocket();
-                  }
-                });
-          }
-        });
+TEST_CASE_METHOD(FakeICLServer, "WebSocket communicator test with fake ICL",
+                 "[websocket_communicator]") {
+  // arrange
+  horiba::communication::WebSocketCommunicator websocket_communicator(
+      FakeICLServer::FAKE_ICL_ADDRESS,
+      std::to_string(FakeICLServer::FAKE_ICL_PORT));
 
-    // Run the I/O context asynchronously in a separate thread
-    m_ioThread = std::thread([this]() { m_ioContext->run(); });
+  SECTION("WebSocketCommunicator can be opened") {
+    // act
+    websocket_communicator.open();
+    auto websocket_open = websocket_communicator.is_open();
+
+    // assert
+    REQUIRE(websocket_open == true);
   }
 
-  ~FakeICLServer() {
-    // Stop the I/O context and join the thread
-    m_ioContext->stop();
-    m_ioThread.join();
+  SECTION("WebSocketCommunicator can be closed") {
+    // act
+    websocket_communicator.open();
+    auto websocket_open = websocket_communicator.is_open();
+    websocket_communicator.close();
+
+    // assert
+    REQUIRE(websocket_open == true);
+    REQUIRE(websocket_communicator.is_open() == false);
   }
 
-  void handleWebSocket() {
-    // Handle WebSocket messages
-    boost::beast::websocket::stream<boost::asio::ip::tcp::socket>& ws =
-        *m_webSocketServer;
-    ws.async_read(m_buffer, [&](const boost::system::error_code& ec,
-                                size_t bytes_transferred) {
-      if (!ec) {
-        ws.text(ws.got_text());
-        ws.async_write(m_buffer.data(), [&](const boost::system::error_code& ec,
-                                            size_t bytes_transferred) {
-          if (!ec) {
-            handleWebSocket();  // Continue reading WebSocket messages
-          }
-        });
-      }
+  SECTION("WebSocketCommunicator can send message") {
+    // arrange
+    websocket_communicator.open();
+    const horiba::communication::Command command("test_command", {});
+
+    // act
+    // assert
+    REQUIRE_NOTHROW([&]() {
+      auto _response = websocket_communicator.request_with_response(command);
     });
   }
 
- private:
-  std::shared_ptr<boost::asio::io_context> m_ioContext;
-  std::shared_ptr<boost::asio::ip::tcp::acceptor> m_acceptor;
-  std::shared_ptr<boost::beast::websocket::stream<boost::asio::ip::tcp::socket>>
-      m_webSocketServer;
-  std::thread m_ioThread;
-  boost::beast::multi_buffer m_buffer;
-};
+  SECTION("WebSocketCommunicator can receive response") {
+    // arrange
+    websocket_communicator.open();
+    const std::string command_name = "test_command";
+    const horiba::communication::Command command(command_name, {});
 
-TEST_CASE_METHOD(FakeICLServer, "WebSocket communicator test",
-                 "[websocket_communicator]") {
-  horiba::communication::WebSocketCommunicator websocket_communicator(
-      "localhost", "8765");
-  /* horiba::communication::Command c("test_command", {}); */
+    // act
+    const auto response = websocket_communicator.request_with_response(command);
+    websocket_communicator.close();
+
+    // assert
+    REQUIRE(response.json_results().empty());
+  }
+
+  SECTION("WebSocketCommunicator can send and recieve multiple times") {
+    // arrange
+    websocket_communicator.open();
+    const std::string command_name = "test_command";
+    const horiba::communication::Command command(command_name, {});
+
+    // act
+    const size_t amount_requests = 10;
+    std::vector<communication::Response> responses;
+    for (size_t i = 0; i < amount_requests; i++) {
+      responses.push_back(
+          websocket_communicator.request_with_response(command));
+    }
+    websocket_communicator.close();
+
+    // assert
+    for (size_t i = 0; i < amount_requests; i++) {
+      REQUIRE(responses[i].json_results().empty());
+    }
+  }
+
+  SECTION("Already opened WebSocketCommunicator cannot be opened again") {
+    // act
+    websocket_communicator.open();
+
+    // assert
+    REQUIRE(websocket_communicator.is_open() == true);
+    REQUIRE_THROWS(websocket_communicator.open());
+    REQUIRE(websocket_communicator.is_open() == true);
+  }
+
+  SECTION("Already closed WebSocketCommunicator cannot be closed again") {
+    // arrange
+    websocket_communicator.open();
+
+    // act
+    websocket_communicator.close();
+
+    // assert
+    REQUIRE(websocket_communicator.is_open() == false);
+    REQUIRE_THROWS(websocket_communicator.close());
+    REQUIRE(websocket_communicator.is_open() == false);
+  }
+
+  if (websocket_communicator.is_open()) {
+    websocket_communicator.close();
+  }
 }
-/* }  // namespace horiba::test */
+
+TEST_CASE("WebSocket communicator test without fake ICL",
+          "[websocket_communicator]") {
+  horiba::communication::WebSocketCommunicator websocket_communicator(
+      "127.0.0.1", "1111");
+
+  REQUIRE_THROWS(websocket_communicator.open());
+
+  REQUIRE_THROWS(websocket_communicator.close());
+}
+
+TEST_CASE("WebSocket communicator test with real ICL",
+          "[websocket_communicator]") {
+  if (std::getenv("HAS_HARDWARE") != nullptr) {
+    SUCCEED("Skipped: HAS_HARDWARE is not set");
+  }
+  // TODO: implement
+}
+}  // namespace horiba::test

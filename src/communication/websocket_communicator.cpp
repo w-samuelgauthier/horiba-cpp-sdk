@@ -14,17 +14,21 @@
 namespace horiba::communication {
 
 WebSocketCommunicator::WebSocketCommunicator(std::string host, std::string port)
-    : host{std::move(host)}, port{std::move(port)}, websocket_open{false} {}
+    : host{std::move(host)}, port{std::move(port)} {}
 
 WebSocketCommunicator::~WebSocketCommunicator() {}
 
 void WebSocketCommunicator::open() {
+  if (this->is_open()) {
+    spdlog::error("Failed to open WebSocket: already opened");
+    throw new std::runtime_error("websocket is already open");
+  }
+
   spdlog::debug("Opening WebSocket on {}:{}", this->host, this->port);
   boost::asio::ip::tcp::resolver resolver{this->context};
 
   auto const results = resolver.resolve(this->host, this->port);
-  boost::asio::connect(this->websocket.next_layer(), results.begin(),
-                       results.end());
+  auto endpoint = boost::asio::connect(this->websocket.next_layer(), results);
 
   this->websocket.set_option(boost::beast::websocket::stream_base::decorator(
       [](boost::beast::websocket::request_type &req) {
@@ -33,25 +37,25 @@ void WebSocketCommunicator::open() {
             std::string(BOOST_BEAST_VERSION_STRING) + " websocket-client-coro");
       }));
 
-  this->websocket.handshake(host, "/");
+  this->websocket.handshake(host + ':' + std::to_string(endpoint.port()), "/");
 
   spdlog::debug("WebSocket opened");
-  this->websocket_open = true;
 }
 
 void WebSocketCommunicator::close() {
-  if (!this->websocket_open) {
+  if (!this->is_open()) {
     spdlog::error("Failed to close WebSocket: not opened");
     throw new std::runtime_error("websocket is not open");
   }
 
   this->websocket.close(boost::beast::websocket::close_code::normal);
-  this->websocket_open = false;
   spdlog::debug("WebSocket closed");
 }
 
+bool WebSocketCommunicator::is_open() { return this->websocket.is_open(); }
+
 Response WebSocketCommunicator::request_with_response(Command command) {
-  std::string json_command = command.json();
+  std::string json_command = command.json().dump();
   spdlog::debug("Sending request: {}", json_command);
   this->websocket.write(boost::asio::buffer(json_command));
 
@@ -60,13 +64,9 @@ Response WebSocketCommunicator::request_with_response(Command command) {
 
   nlohmann::json json_response =
       nlohmann::json::parse(boost::beast::buffers_to_string(buffer.data()));
-  spdlog::debug("Received response: {}", json_response);
-  /* unsigned long long int id = json_response["id"]; */
-  /* std::string command_string = json_response["command"]; */
-  /* nlohmann::json results = json_response["reslts"]; */
-  /* std::vector<std::string> errors = json_response["errors"]; */
+  spdlog::debug("Received response: {}", json_response.dump());
 
   return Response{json_response["id"], json_response["command"],
-                  json_response["reslts"], json_response["errors"]};
+                  json_response["results"], json_response["errors"]};
 }
 } /* namespace horiba::communication */

@@ -8,10 +8,11 @@ class Response;
 
 class Communicator {
  public:
-  virtual ~Communicator() = 0;
+  virtual ~Communicator() = default;
 
   virtual void open() = 0;
   virtual void close() = 0;
+  virtual bool is_open() = 0;
   virtual Response request_with_response(Command command) = 0;
 };
 
