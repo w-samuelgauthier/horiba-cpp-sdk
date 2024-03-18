@@ -7,10 +7,25 @@
 #include <string>
 
 namespace horiba::communication {
+/**
+ * @brief Represents a command sent to the ICL
+ */
 class Command {
  public:
+  /**
+   * @brief Builds a command based on the command string and json parameters.
+   *
+   * @param command The ICL command
+   * @param parameters The parameters necessary for the command
+   */
   Command(std::string command, nlohmann::json parameters);
-  ~Command();
+  ~Command() = default;
+
+  /**
+   * @brief JSON representation of the command.
+   *
+   * @return JSON construct of the command
+   */
   nlohmann::json json();
 
  private:

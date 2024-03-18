@@ -9,8 +9,6 @@ Command::Command(std::string command, nlohmann::json parameters)
       command{std::move(command)},
       parameters{std::move(parameters)} {}
 
-Command::~Command() {}
-
 nlohmann::json Command::json() {
   return {{"id", this->id},
           {"command", this->command},
