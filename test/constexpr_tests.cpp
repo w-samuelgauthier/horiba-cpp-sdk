@@ -1,9 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 
-#include <horiba_cpp_sdk/sample_library.hpp>
-
-TEST_CASE("Factorials are computed with constexpr", "[factorial]")
-{
+TEST_CASE("Constexpr tests", "[constexpr]") {
+  STATIC_REQUIRE(1 == 1);
   /* STATIC_REQUIRE(factorial_constexpr(0) == 1); */
   /* STATIC_REQUIRE(factorial_constexpr(1) == 1); */
   /* STATIC_REQUIRE(factorial_constexpr(2) == 2); */

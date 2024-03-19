@@ -1,5 +1,7 @@
 #include "horiba_cpp_sdk/communication/command.h"
 
+#include <utility>
+
 namespace horiba::communication {
 
 std::atomic<unsigned long long int> Command::next_id{0};

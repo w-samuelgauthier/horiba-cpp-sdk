@@ -37,7 +37,6 @@ target_link_libraries(
   tests
   PRIVATE horiba_cpp_sdk::horiba_cpp_sdk_warnings
           horiba_cpp_sdk::horiba_cpp_sdk_options
-          horiba_cpp_sdk::sample_library
           horiba_cpp_sdk::horiba_cpp_sdk
           Catch2::Catch2WithMain
           Boost::beast

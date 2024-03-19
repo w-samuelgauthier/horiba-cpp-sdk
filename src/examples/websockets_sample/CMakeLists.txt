@@ -14,9 +14,6 @@ target_link_system_libraries(
           fmt::fmt
           spdlog::spdlog
           lefticus::tools
-          ftxui::screen
-          ftxui::dom
-          ftxui::component
           )
 
 message("${CMAKE_BINARY_DIR}")
