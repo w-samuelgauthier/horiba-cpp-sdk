@@ -22,8 +22,8 @@ Please check [the setup-cpp documentation](https://github.com/aminya/setup-cpp) 
 For example, on Windows, you can run the following to install llvm, cmake, ninja, ccache, and cppcheck.
 ```ps1
 # windows example (open shell as admin)
-curl -LJO "https://github.com/aminya/setup-cpp/releases/download/v0.5.7/setup_cpp_windows.exe"
-./setup_cpp_windows --compiler llvm --cmake true --ninja true --ccache true --cppcheck true
+Invoke-WebRequest -Uri "https://github.com/aminya/setup-cpp/releases/download/v0.37.0/setup-cpp-x64-windows.exe" -OutFile "setup-cpp-x64-windows.exe"
+./setup-cpp-x64-windows --compiler llvm --cmake true --ninja true --ccache true --cppcheck true
 
 RefreshEnv.cmd # reload the environment
 ```
@@ -82,9 +82,9 @@ The following compilers should work:
 
 	On Windows, you need to install Visual Studio 2019 because of the SDK and libraries that ship with it.
 
-  	Visual Studio IDE - 2019 Community (installs Clang too):
+  	Visual Studio IDE - 2022 Community (installs Clang too):
 
-  	  	choco install -y visualstudio2019community --package-parameters "add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --includeOptional --passive --locale en-US"
+  	  	choco install -y visualstudio2022community --package-parameters "add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --includeOptional --passive --locale en-US"
 
 	Put MSVC compiler, Clang compiler, and vcvarsall.bat on the path:
 

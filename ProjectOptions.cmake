@@ -46,7 +46,7 @@ macro(horiba_cpp_sdk_setup_options)
     option(horiba_cpp_sdk_ENABLE_CACHE "Enable ccache" OFF)
   else()
     option(horiba_cpp_sdk_ENABLE_IPO "Enable IPO/LTO" ON)
-    option(horiba_cpp_sdk_WARNINGS_AS_ERRORS "Treat Warnings As Errors" ON)
+    option(horiba_cpp_sdk_WARNINGS_AS_ERRORS "Treat Warnings As Errors" OFF)
     option(horiba_cpp_sdk_ENABLE_USER_LINKER "Enable user-selected linker" OFF)
     option(horiba_cpp_sdk_ENABLE_SANITIZER_ADDRESS "Enable address sanitizer" ${SUPPORTS_ASAN})
     option(horiba_cpp_sdk_ENABLE_SANITIZER_LEAK "Enable leak sanitizer" OFF)
@@ -99,7 +99,7 @@ macro(horiba_cpp_sdk_global_options)
 
   if(horiba_cpp_sdk_ENABLE_HARDENING AND horiba_cpp_sdk_ENABLE_GLOBAL_HARDENING)
     include(cmake/Hardening.cmake)
-    if(NOT SUPPORTS_UBSAN 
+    if(NOT SUPPORTS_UBSAN
        OR horiba_cpp_sdk_ENABLE_SANITIZER_UNDEFINED
        OR horiba_cpp_sdk_ENABLE_SANITIZER_ADDRESS
        OR horiba_cpp_sdk_ENABLE_SANITIZER_THREAD
@@ -185,7 +185,7 @@ macro(horiba_cpp_sdk_local_options)
 
   if(horiba_cpp_sdk_ENABLE_HARDENING AND NOT horiba_cpp_sdk_ENABLE_GLOBAL_HARDENING)
     include(cmake/Hardening.cmake)
-    if(NOT SUPPORTS_UBSAN 
+    if(NOT SUPPORTS_UBSAN
        OR horiba_cpp_sdk_ENABLE_SANITIZER_UNDEFINED
        OR horiba_cpp_sdk_ENABLE_SANITIZER_ADDRESS
        OR horiba_cpp_sdk_ENABLE_SANITIZER_THREAD
