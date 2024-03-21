@@ -37,7 +37,7 @@ class Communicator {
    *
    * @return The response from the ICL
    */
-  virtual Response request_with_response(Command command) = 0;
+  virtual Response request_with_response(const Command& command) = 0;
 };
 
 }  // namespace horiba::communication

@@ -6,6 +6,7 @@ set(HORIBA_CPP_LIB_SOURCES
   communication/websocket_communicator.cpp
   devices/device_manager.cpp
   devices/single_devices/ccd.cpp
+  devices/single_devices/device.cpp
   )
 
 add_library(horiba_cpp_sdk ${HORIBA_CPP_LIB_SOURCES})

@@ -11,9 +11,9 @@ Command::Command(std::string command, nlohmann::json parameters)
       command{std::move(command)},
       parameters{std::move(parameters)} {}
 
-nlohmann::json Command::json() {
+nlohmann::json Command::json() const {
   return {{"id", this->id},
           {"command", this->command},
-          {"parameters", {this->parameters}}};
+          {"parameters", this->parameters}};
 }
 } /* namespace horiba::communication */

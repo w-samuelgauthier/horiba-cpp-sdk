@@ -53,7 +53,7 @@ class WebSocketCommunicator : public Communicator {
    *
    * @return The response from the ICL
    */
-  Response request_with_response(Command command) override;
+  Response request_with_response(const Command& command) override;
 
  private:
   std::string host;

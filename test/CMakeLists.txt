@@ -31,7 +31,10 @@ include(${Catch2_SOURCE_DIR}/extras/Catch.cmake)
 
 add_executable(tests
   tests.cpp
+  communication/test_command.cpp
+  # communication/test_response.cpp
   communication/test_websocket_communicator.cpp
+  devices/single_devices/test_ccd.cpp
   )
 target_link_libraries(
   tests

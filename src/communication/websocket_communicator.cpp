@@ -31,7 +31,7 @@ void WebSocketCommunicator::open() {
   auto endpoint = boost::asio::connect(this->websocket.next_layer(), results);
 
   this->websocket.set_option(boost::beast::websocket::stream_base::decorator(
-      [](boost::beast::websocket::request_type &req) {
+      [](boost::beast::websocket::request_type& req) {
         req.set(
             boost::beast::http::field::user_agent,
             std::string(BOOST_BEAST_VERSION_STRING) + " websocket-client-coro");
@@ -54,7 +54,7 @@ void WebSocketCommunicator::close() {
 
 bool WebSocketCommunicator::is_open() { return this->websocket.is_open(); }
 
-Response WebSocketCommunicator::request_with_response(Command command) {
+Response WebSocketCommunicator::request_with_response(const Command& command) {
   std::string json_command = command.json().dump();
   spdlog::debug("Sending request: {}", json_command);
   this->websocket.write(boost::asio::buffer(json_command));
