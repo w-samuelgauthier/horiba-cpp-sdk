@@ -4,7 +4,8 @@ set(HORIBA_CPP_LIB_SOURCES
   communication/command.cpp
   communication/response.cpp
   communication/websocket_communicator.cpp
-  devices/device_manager.cpp
+  devices/icl_device_manager.cpp
+  devices/ccds_discovery.cpp
   devices/single_devices/ccd.cpp
   devices/single_devices/device.cpp
   )

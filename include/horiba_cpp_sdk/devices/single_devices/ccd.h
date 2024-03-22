@@ -1,6 +1,7 @@
 #ifndef CCD_H
 #define CCD_H
 
+#include <horiba_cpp_sdk/communication/communicator.h>
 #include <horiba_cpp_sdk/devices/single_devices/device.h>
 
 #include <any>
@@ -9,8 +10,6 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-
-#include "horiba_cpp_sdk/communication/communicator.h"
 
 namespace horiba::devices::single_devices {
 /**
