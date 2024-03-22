@@ -13,11 +13,14 @@ ChargeCoupledDevice::ChargeCoupledDevice(
 
 void ChargeCoupledDevice::open() {
   Device::open();
-  Device::execute_command(
+  auto _ignored_response = Device::execute_command(
       communication::Command("ccd_open", {{"index", Device::device_id()}}));
 }
 
-void ChargeCoupledDevice::close() { Device::close(); }
+void ChargeCoupledDevice::close() {
+  auto _ignored_response = Device::execute_command(
+      communication::Command("ccd_close", {{"index", Device::device_id()}}));
+}
 
 bool ChargeCoupledDevice::is_open() {
   auto response = Device::execute_command(
@@ -26,7 +29,10 @@ bool ChargeCoupledDevice::is_open() {
   return json_results.at("open").get<bool>();
 }
 
-void ChargeCoupledDevice::restart() {}
+void ChargeCoupledDevice::restart() {
+  auto _ignored_response = Device::execute_command(
+      communication::Command("ccd_restart", {{"index", Device::device_id()}}));
+}
 
 std::unordered_map<std::string, std::any>
 ChargeCoupledDevice::get_configuration() {
@@ -73,9 +79,9 @@ void ChargeCoupledDevice::set_gain(ChargeCoupledDevice::Gain gain) {
 
 ChargeCoupledDevice::Speed ChargeCoupledDevice::get_speed() {
   auto response = Device::execute_command(
-      communication::Command("ccd_getSeed", {{"index", Device::device_id()}}));
+      communication::Command("ccd_getSpeed", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
-  auto speed = json_results.at("info").get<int>();
+  auto speed = json_results.at("token").get<int>();
 
   return static_cast<ChargeCoupledDevice::Speed>(speed);
 }
@@ -88,7 +94,7 @@ void ChargeCoupledDevice::set_speed(ChargeCoupledDevice::Speed speed) {
 
 std::string ChargeCoupledDevice::get_fit_params() {
   auto response = Device::execute_command(communication::Command(
-      "ccd_setFitParams", {{"index", Device::device_id()}}));
+      "ccd_getFitParams", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
   auto fit_params = json_results.at("params").get<std::string>();
   return fit_params;
@@ -157,13 +163,13 @@ void ChargeCoupledDevice::set_acquisition_count(int count) {
 
 std::string ChargeCoupledDevice::get_clean_count() {
   auto response = Device::execute_command(communication::Command(
-      "ccd_getAcqCount", {{"index", Device::device_id()}}));
+      "ccd_getCleanCount", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
   auto acquisition_count = json_results.at("count").get<int>();
   auto acquisition_mode = json_results.at("mode").get<int>();
 
   std::stringstream stream;
-  stream << "count: " << acquisition_count << " mode:" << acquisition_mode;
+  stream << "count: " << acquisition_count << " mode: " << acquisition_mode;
 
   return stream.str();
 }
@@ -221,7 +227,7 @@ bool ChargeCoupledDevice::get_acquisition_ready() {
   auto response = Device::execute_command(communication::Command(
       "ccd_getAcquisitionReady", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
-  auto ready = json_results.at("time").get<bool>();
+  auto ready = json_results.at("ready").get<bool>();
 
   return ready;
 }
@@ -247,21 +253,17 @@ void ChargeCoupledDevice::set_region_of_interest(int roi_index, int x_origin,
                                             {"yBin", y_bin}}));
 }
 
-std::vector<std::vector<int>> ChargeCoupledDevice::get_acquisition_data() {
+std::vector<int> ChargeCoupledDevice::get_acquisition_data() {
   auto response = Device::execute_command(communication::Command(
       "ccd_getAcquisitionData", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
 
-  std::vector<std::vector<int>> xy_data;
-  for (const auto& elem : json_results["data"]["xyData"]) {
-    std::vector<int> line;
-    for (const auto& value : elem) {
-      line.push_back(value);
-    }
-    xy_data.push_back(line);
-  }
+  std::vector<int> data;
+  std::transform(json_results["data"]["xyData"].begin(),
+                 json_results["data"]["xyData"].end(), std::back_inserter(data),
+                 [](const auto& cell) { return cell[1]; });
 
-  return xy_data;
+  return data;
 }
 
 bool ChargeCoupledDevice::get_acquisition_busy() {

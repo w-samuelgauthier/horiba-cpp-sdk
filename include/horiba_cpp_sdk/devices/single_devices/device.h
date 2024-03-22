@@ -1,3 +1,6 @@
+#ifndef DEVICE_H
+#define DEVICE_H
+
 #include <horiba_cpp_sdk/communication/communicator.h>
 #include <horiba_cpp_sdk/communication/response.h>
 
@@ -18,7 +21,7 @@ class Device {
   /**
    * @brief Closes the device.
    */
-  virtual void close();
+  virtual void close() = 0;
 
  protected:
   communication::Response execute_command(
@@ -33,3 +36,4 @@ class Device {
   void handle_errors(const std::vector<std::string>& errors);
 };
 } /* namespace horiba::devices::single_devices */
+#endif /* ifndef DEVICE_H */

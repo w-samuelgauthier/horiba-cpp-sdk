@@ -1,3 +1,6 @@
+#ifndef CCD_H
+#define CCD_H
+
 #include <horiba_cpp_sdk/devices/single_devices/device.h>
 
 #include <any>
@@ -275,7 +278,7 @@ class ChargeCoupledDevice final : public Device {
   /**
    * @brief Returns the size of the data from the CCD.
    *
-   * @return int Size of the data.
+   * @return int Size of the data. TODO: In which unit?
    *
    * @throws std::exception When an error occurs on the device side.
    */
@@ -294,6 +297,7 @@ class ChargeCoupledDevice final : public Device {
    * @brief Gets the chip resolution of the CCD.
    *
    * @return std::pair<int, int> Chip resolution (width, height).
+   *
    * @throws std::exception When an error occurs on the device side.
    */
   std::pair<int, int> get_chip_size() noexcept(false);
@@ -355,12 +359,15 @@ class ChargeCoupledDevice final : public Device {
   /**
    * @brief Returns the acquisition data of the CCD.
    *
-   * @return std::vector<std::vector<int>> 2D array containing acquisition
+   * The data comes as a 1D array, where the the index represents the x axis and
+   * the value the binned y sum.
+   *
+   * @return std::vector<int> array containing acquisition data
    * data.
    *
    * @throws std::exception When an error occurs on the device side.
    */
-  std::vector<std::vector<int>> get_acquisition_data() noexcept(false);
+  std::vector<int> get_acquisition_data() noexcept(false);
 
   /**
    * @brief Returns true if the CCD is busy with the acquisition.
@@ -381,3 +388,4 @@ class ChargeCoupledDevice final : public Device {
  private:
 };
 } /* namespace horiba::devices::single_devices */
+#endif /* ifndef CCD_H */

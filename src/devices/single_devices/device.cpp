@@ -18,14 +18,6 @@ void Device::open() {
   }
 }
 
-void Device::close() {
-  if (this->communicator->is_open()) {
-    spdlog::debug("[Device] communicator is open, closing it.");
-    this->communicator->close();
-    spdlog::debug("[Device] done.");
-  }
-}
-
 communication::Response Device::execute_command(
     const communication::Command& command) {
   if (!this->communicator->is_open()) {
