@@ -10,6 +10,10 @@
 
 namespace horiba::test {
 
+/**
+ * @brief Test fixture that will start and stop the icl.exe located at:
+ * C:\Program Files\HORIBA Scientific\SDK\icl.exe
+ */
 class ICLExe {
  public:
   ICLExe() : icl_process{nullptr} {

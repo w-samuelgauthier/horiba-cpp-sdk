@@ -22,8 +22,10 @@ void WindowsProcess::start() {
   if (this->running()) {
     spdlog::info("[WindowsProcess] '{}' is running, not starting it.",
                  this->process_path);
+    return;
   }
-  auto converted_path = const_cast<LPSTR>(this->process_path.c_str());
+  auto full_path = this->process_path + this->process_name;
+  auto converted_path = const_cast<LPSTR>(full_path.c_str());
 
   STARTUPINFO startup_info;
   PROCESS_INFORMATION process_info;
@@ -45,8 +47,7 @@ void WindowsProcess::start() {
                      )) {
     spdlog::error("[WindowsProcess] Failed to start process. Error code: {}",
                   GetLastError());
-    throw std::runtime_error("failed to start '" + this->process_path +
-                             "' process");
+    throw std::runtime_error("failed to start '" + full_path + "' process");
   }
 
   CloseHandle(process_info.hProcess);
@@ -55,16 +56,20 @@ void WindowsProcess::start() {
 bool WindowsProcess::running() {
   HANDLE help_snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
   if (help_snapshot == INVALID_HANDLE_VALUE) {
-    spdlog::error("[WindowsProcess] Failed to create snapshot");
+    spdlog::error("[WindowsProcess] Failed to create snapshot: {}",
+                  GetLastError());
     throw std::runtime_error("failed to create snapshot");
   }
 
   PROCESSENTRY32W process_entry;
   process_entry.dwSize = sizeof(PROCESSENTRY32W);
 
-  if (Process32FirstW(help_snapshot, &process_entry) != 0) {
+  auto result = Process32FirstW(help_snapshot, &process_entry);
+  if (result != 1) {
     CloseHandle(help_snapshot);
-    spdlog::error("[WindowsProcess] Failed to retrieve process information.");
+    spdlog::error(
+        "[WindowsProcess] Failed to retrieve process information: {}, {}",
+        GetLastError(), result);
     throw std::runtime_error("failed to retrieve process information");
   }
 
@@ -78,7 +83,7 @@ bool WindowsProcess::running() {
       process_found = true;
       break;
     }
-  } while (Process32NextW(help_snapshot, &process_entry) != 0);
+  } while (Process32NextW(help_snapshot, &process_entry) == 1);
 
   CloseHandle(help_snapshot);
 
@@ -95,9 +100,12 @@ void WindowsProcess::stop() {
   PROCESSENTRY32W process_entry;
   process_entry.dwSize = sizeof(PROCESSENTRY32W);
 
-  if (Process32FirstW(help_snapshot, &process_entry) != 0) {
+  auto result = Process32FirstW(help_snapshot, &process_entry);
+  if (result != 1) {
     CloseHandle(help_snapshot);
-    spdlog::error("[WindowsProcess] Failed to retrieve process information.");
+    spdlog::error(
+        "[WindowsProcess] Failed to retrieve process information: {}, {}",
+        GetLastError(), result);
     throw std::runtime_error("failed to retrieve process information");
   }
 
@@ -113,7 +121,7 @@ void WindowsProcess::stop() {
       process_id = process_entry.th32ProcessID;
       break;
     }
-  } while (Process32NextW(help_snapshot, &process_entry) != 0);
+  } while (Process32NextW(help_snapshot, &process_entry) == 1);
 
   CloseHandle(help_snapshot);
 

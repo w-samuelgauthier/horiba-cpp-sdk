@@ -15,6 +15,16 @@
 
 namespace horiba::test {
 
+/**
+ * @brief Fake ICL server fixture for tests.
+ *
+ * It will start a websocket server on port 8765 and localhost that returns fake
+ * responses from json files. Those fake responses can be found under:
+ * /test/fake_icl_responses/
+ *
+ * If the sent command is not found in the fake responses it will just return it
+ * without errors.
+ */
 class FakeICLServer {
  public:
   static const int FAKE_ICL_PORT = 8765;
@@ -128,9 +138,11 @@ class FakeICLServer {
         } else if (command.compare(0, 4, "mono_") == 0) {
           response = this->mono_data[command].dump();
         } else {
-          nlohmann::json generic_response = GENERIC_RESPONSE;
+          nlohmann::json generic_response;
           generic_response["command"] = json_command_request["command"];
           generic_response["id"] = json_command_request["id"];
+          generic_response["results"] = nlohmann::json::object();
+          generic_response["errors"] = nlohmann::json::array();
           response = generic_response.dump();
         }
 
@@ -149,8 +161,6 @@ class FakeICLServer {
     }
   }
 
-  const nlohmann::json GENERIC_RESPONSE =
-      R"({"command": "icl_info","errors": [],"id": 1234, "results":{}})"_json;
   const int SERVER_SLEEP_TIME_MS = 100;
   std::thread server_thread;
   std::atomic<bool> run_server{true};
