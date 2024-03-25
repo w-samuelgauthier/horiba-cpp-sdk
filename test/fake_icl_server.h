@@ -1,3 +1,6 @@
+#ifndef FAKE_ICL_SERVER_H
+#define FAKE_ICL_SERVER_H
+
 #include <spdlog/spdlog.h>
 
 #include <boost/asio.hpp>
@@ -12,8 +15,16 @@
 
 namespace horiba::test {
 
-using json = nlohmann::json;
-
+/**
+ * @brief Fake ICL server fixture for tests.
+ *
+ * It will start a websocket server on port 8765 and localhost that returns fake
+ * responses from json files. Those fake responses can be found under:
+ * /test/fake_icl_responses/
+ *
+ * If the sent command is not found in the fake responses it will just return it
+ * without errors.
+ */
 class FakeICLServer {
  public:
   static const int FAKE_ICL_PORT = 8765;
@@ -21,6 +32,9 @@ class FakeICLServer {
 
   FakeICLServer() {
     spdlog::debug("FakeICLServer");
+
+    spdlog::debug("load fake responses");
+    this->load_fake_responses();
 
     server_thread = std::thread([this] {
       try {
@@ -67,7 +81,7 @@ class FakeICLServer {
     }
     spdlog::debug("ICL json file path: {}", icl_json_file_path);
     std::ifstream icl_json_file(icl_json_file_path);
-    this->icl_data = json::parse(icl_json_file);
+    this->icl_data = nlohmann::json::parse(icl_json_file);
 
     std::string ccd_json_file_path{
         std::filesystem::absolute("./test/fake_icl_responses/ccd.json")
@@ -77,7 +91,7 @@ class FakeICLServer {
     }
     spdlog::debug("CCD json file path: {}", ccd_json_file_path);
     std::ifstream ccd_json_file(ccd_json_file_path);
-    this->ccd_data = json::parse(ccd_json_file);
+    this->ccd_data = nlohmann::json::parse(ccd_json_file);
 
     std::string mono_json_file_path{
         std::filesystem::absolute(
@@ -88,7 +102,7 @@ class FakeICLServer {
     }
     spdlog::debug("Monochromator json file path: {}", mono_json_file_path);
     std::ifstream mono_json_file(mono_json_file_path);
-    this->mono_data = json::parse(mono_json_file);
+    this->mono_data = nlohmann::json::parse(mono_json_file);
   }
 
   void do_session(boost::asio::ip::tcp::socket socket) {
@@ -124,9 +138,11 @@ class FakeICLServer {
         } else if (command.compare(0, 4, "mono_") == 0) {
           response = this->mono_data[command].dump();
         } else {
-          json generic_response = GENERIC_RESPONSE;
+          nlohmann::json generic_response;
           generic_response["command"] = json_command_request["command"];
           generic_response["id"] = json_command_request["id"];
+          generic_response["results"] = nlohmann::json::object();
+          generic_response["errors"] = nlohmann::json::array();
           response = generic_response.dump();
         }
 
@@ -145,16 +161,15 @@ class FakeICLServer {
     }
   }
 
-  const json GENERIC_RESPONSE =
-      R"({"command": "icl_info","errors": [],"id": 1234, "results":{}})"_json;
   const int SERVER_SLEEP_TIME_MS = 100;
   std::thread server_thread;
   std::atomic<bool> run_server{true};
-  json icl_data;
-  json ccd_data;
-  json mono_data;
+  nlohmann::json icl_data;
+  nlohmann::json ccd_data;
+  nlohmann::json mono_data;
 };
 
-const std::string FakeICLServer::FAKE_ICL_ADDRESS = "127.0.0.1";
+inline const std::string FakeICLServer::FAKE_ICL_ADDRESS = "127.0.0.1";
 
 }  // namespace horiba::test
+#endif /* ifndef FAKE_ICL_SERVER_H */

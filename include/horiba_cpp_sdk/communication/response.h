@@ -2,9 +2,8 @@
 #define RESPONSE_H
 
 #include <any>
-#include <iostream>
 #include <nlohmann/json.hpp>
-#include <unordered_map>
+#include <string>
 #include <vector>
 
 namespace horiba::communication {
@@ -32,11 +31,18 @@ class Response {
    */
   nlohmann::json json_results() const;
 
+  /**
+   * @brief Errors, if any, from the ICL.
+   *
+   * @return Errors happened during the call to the ICL
+   */
+  std::vector<std::string> errors() const;
+
  private:
   unsigned long long int id;
   std::string command;
   nlohmann::json results;
-  std::vector<std::string> errors;
+  std::vector<std::string> icl_errors;
 };
 } /* namespace horiba::communication */
 #endif /* ifndef RESPONSE_H */

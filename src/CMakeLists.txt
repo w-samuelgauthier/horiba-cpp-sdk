@@ -4,7 +4,18 @@ set(HORIBA_CPP_LIB_SOURCES
   communication/command.cpp
   communication/response.cpp
   communication/websocket_communicator.cpp
+  devices/ccds_discovery.cpp
+  devices/icl_device_manager.cpp
+  devices/single_devices/ccd.cpp
+  devices/single_devices/device.cpp
   )
+
+# Platform specific code
+if(WIN32)
+    list(APPEND HORIBA_CPP_LIB_SOURCES
+      os/windows_process.cpp
+      )
+endif()
 
 add_library(horiba_cpp_sdk ${HORIBA_CPP_LIB_SOURCES})
 

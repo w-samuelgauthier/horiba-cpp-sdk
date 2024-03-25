@@ -18,15 +18,14 @@ class Command {
    * @param command The ICL command
    * @param parameters The parameters necessary for the command
    */
-  Command(std::string command, nlohmann::json parameters);
-  ~Command() = default;
+  explicit Command(std::string command, nlohmann::json parameters = {});
 
   /**
    * @brief JSON representation of the command.
    *
    * @return JSON construct of the command
    */
-  nlohmann::json json();
+  [[nodiscard]] nlohmann::json json() const;
 
  private:
   static std::atomic<unsigned long long int> next_id;
