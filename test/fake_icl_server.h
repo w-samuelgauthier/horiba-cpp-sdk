@@ -25,7 +25,7 @@ namespace horiba::test {
  * If the sent command is not found in the fake responses it will just return it
  * without errors.
  */
-class FakeICLServer {
+class FakeICLServer final {
  public:
   static const int FAKE_ICL_PORT = 8765;
   static const std::string FAKE_ICL_ADDRESS;

@@ -15,7 +15,7 @@ namespace horiba::devices {
  * @brief Device Manager using the ICL to communicate with connected Horiba
  * devices
  */
-class ICLDeviceManager : public DeviceManager {
+class ICLDeviceManager final : public DeviceManager {
  public:
   /**
    * @brief Creates a device manager that uses the ICL to communicate with the
