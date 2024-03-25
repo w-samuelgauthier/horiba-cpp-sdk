@@ -20,6 +20,8 @@
 #include <stringapiset.h>
 #include <tlhelp32.h>
 
+#include <cwchar>
+
 #endif
 
 namespace horiba::devices {
@@ -140,14 +142,14 @@ void ICLDeviceManager::start_process(const std::string& path) {
   startup_info.cb = sizeof(startup_info);
   ZeroMemory(&process_info, sizeof(process_info));
 
-  if (!CreateProcess(NULL,  // No module name (use command line)
+  if (!CreateProcess(nullptr,  // No module name (use command line)
                      converted_path.c_str(),  // Command line
-                     NULL,                    // Process handle not inheritable
-                     NULL,                    // Thread handle not inheritable
+                     nullptr,                 // Process handle not inheritable
+                     nullptr,                 // Thread handle not inheritable
                      TRUE,                    // Set handle inheritance to TRUE
                      0,                       // No creation flags
-                     NULL,                    // Use parent's environment block
-                     NULL,                    // Use parent's starting directory
+                     nullptr,                 // Use parent's environment block
+                     nullptr,                 // Use parent's starting directory
                      &startup_info,  // Pointer to STARTUPINFO structure
                      &process_info   // Pointer to PROCESS_INFORMATION structure
                      )) {
@@ -181,14 +183,14 @@ bool ICLDeviceManager::is_process_running(const std::string& process_name) {
     return false;
   }
 
-  std::wstring converted_path = this->convert_string_to_wstring(process_name);
+  std::wstring converted_path = this->convert_to_wstring(process_name);
   bool process_found = false;
   do {
-    if (std::wcscmp(converted_path, process_entry.szExeFile) == 0) {
+    if (std::wcscmp(converted_path.data(), process_entry.szExeFile) == 0) {
       process_found = true;
       break;
     }
-  } while (Process32NextW(help_snapshot, &process_entry));
+  } while (Process32NextW(help_snapshot, &process_entry) != 0);
 
   CloseHandle(help_snapshot);
 
@@ -201,8 +203,8 @@ bool ICLDeviceManager::is_process_running(const std::string& process_name) {
 
 std::wstring ICLDeviceManager::convert_to_wstring(const std::string& s) {
 #ifdef _WIN32
-  int size_needed = MultiByteToWideChar(CP_UTF8, 0, s.c_str(),
-                                        static_cast<int>(s.length()), NULL, 0);
+  const int size_needed = MultiByteToWideChar(
+      CP_UTF8, 0, s.c_str(), static_cast<int>(s.length()), nullptr, 0);
   if (size_needed == 0) {
     spdlog::error(
         "[ICLDeviceManager] Failed to get needed size for string conversion."
@@ -213,7 +215,7 @@ std::wstring ICLDeviceManager::convert_to_wstring(const std::string& s) {
   }
 
   std::wstring converted_string(size_needed, 0);
-  int chars_written =
+  const int chars_written =
       MultiByteToWideChar(CP_UTF8, 0, s.c_str(), static_cast<int>(s.length()),
                           &converted_string[0], size_needed);
   if (chars_written == 0) {
