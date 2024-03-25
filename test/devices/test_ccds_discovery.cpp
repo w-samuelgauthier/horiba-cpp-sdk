@@ -5,6 +5,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "../fake_icl_server.h"
+#include "../icl_exe.h"
 
 namespace horiba::test {
 
@@ -35,7 +36,7 @@ TEST_CASE_METHOD(FakeICLServer, "CCDs Discovery with fake ICL",
   }
 }
 
-TEST_CASE("CCDs Discovery with ICL", "[ccd_discovery_hw]") {
+TEST_CASE_METHOD(ICLExe, "CCDs Discovery with ICL", "[ccd_discovery_hw]") {
   if (std::getenv("HAS_HARDWARE") == nullptr) {
     SUCCEED("Skipped: HAS_HARDWARE is not set");
     return;

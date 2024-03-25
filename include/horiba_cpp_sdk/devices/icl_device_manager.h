@@ -3,6 +3,7 @@
 
 #include <horiba_cpp_sdk/communication/communicator.h>
 #include <horiba_cpp_sdk/devices/device_manager.h>
+#include <horiba_cpp_sdk/os/process.h>
 
 namespace horiba::communication {
 class Communicator;
@@ -11,9 +12,10 @@ class Communicator;
 namespace horiba::devices {
 class ICLDeviceManager : public DeviceManager {
  public:
-  explicit ICLDeviceManager(std::string websocket_ip = "127.0.0.1",
+  explicit ICLDeviceManager(std::shared_ptr<horiba::os::Process> icl_process,
+                            std::string websocket_ip = "127.0.0.1",
                             std::string websocket_port = "25010",
-                            bool start_icl = true,
+                            bool manage_icl_lifetime = true,
                             bool enable_binary_messages = true);
 
   void start() override;
@@ -28,9 +30,10 @@ class ICLDeviceManager : public DeviceManager {
   charge_coupled_devices() const override;
 
  private:
+  std::shared_ptr<horiba::os::Process> icl_process;
   std::string websocket_ip;
   std::string websocket_port;
-  bool start_icl;
+  bool manage_icl_lifetime;
   bool enable_binary_messages;
   std::shared_ptr<horiba::communication::Communicator> communicator;
   /* std::vector<std::shared_ptr<horiba::devices::single_devices::Monochromator>>
@@ -40,11 +43,7 @@ class ICLDeviceManager : public DeviceManager {
       std::shared_ptr<horiba::devices::single_devices::ChargeCoupledDevice>>
       ccds;
 
-  void start_icl_process();
   void enable_binary_messages_on_icl();
-  void start_process(const std::string& path);
-  bool is_process_running(const std::string& process_name);
-  std::wstring convert_to_wstring(const std::string& s);
 };
 } /* namespace horiba::devices */
 

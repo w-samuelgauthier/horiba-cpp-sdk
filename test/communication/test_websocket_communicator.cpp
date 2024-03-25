@@ -7,6 +7,7 @@
 #include <nlohmann/json.hpp>
 
 #include "../fake_icl_server.h"
+#include "../icl_exe.h"
 
 namespace horiba::test {
 
@@ -124,8 +125,8 @@ TEST_CASE("WebSocket communicator test without fake ICL",
   REQUIRE_THROWS(websocket_communicator.close());
 }
 
-TEST_CASE("WebSocket communicator test with real ICL",
-          "[websocket_communicator]") {
+TEST_CASE_METHOD(ICLExe, "WebSocket communicator test with real ICL",
+                 "[websocket_communicator]") {
   if (std::getenv("HAS_HARDWARE") == nullptr) {
     SUCCEED("Skipped: HAS_HARDWARE is not set");
     return;
