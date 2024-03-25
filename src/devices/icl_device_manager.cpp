@@ -13,16 +13,13 @@
 #include <vector>
 
 #ifdef _WIN32
+#include <Windows.h>
 #include <errhandlingapi.h>
 #include <handleapi.h>
 #include <processthreadsapi.h>
 #include <stringapiset.h>
 #include <tlhelp32.h>
-#include <winbase.h>
-#include <windows.h>
-#include <wtypesbase.h>
 
-#include <codecvt>
 #endif
 
 namespace horiba::devices {
@@ -134,25 +131,7 @@ void ICLDeviceManager::enable_binary_messages_on_icl() {
 
 void ICLDeviceManager::start_process(const std::string& path) {
 #ifdef _WIN32
-  int size_needed = MultiByteToWideChar(
-      CP_UTF8, 0, path.c_str(), static_cast<int>(path.length()), NULL, 0);
-  if (size_needed == 0) {
-    spdlog::error(
-        "[ICLDeviceManager] Failed to get needed size for path conversion. "
-        "Error code: {}",
-        GetLastError());
-    throw std::runtime_error("failed to get needed size for path conversion.");
-  }
-
-  std::wstring converted_path(size_needed, 0);
-  int chars_written = MultiByteToWideChar(CP_UTF8, 0, path.c_str(),
-                                          static_cast<int>(path.length()),
-                                          &converted_path[0], size_needed);
-  if (chars_written == 0) {
-    spdlog::error("[ICLDeviceManager] Failed to convert path. Error code: {}",
-                  GetLastError());
-    throw std::runtime_error("failed to convert path.");
-  }
+  std::wstring converted_path = this->convert_to_wstring(path);
 
   STARTUPINFO startup_info;
   PROCESS_INFORMATION process_info;
@@ -181,7 +160,7 @@ void ICLDeviceManager::start_process(const std::string& path) {
   CloseHandle(process_info.hThread);
 #else
   throw std::runtime_error("start_process (" + path +
-                           ") unimplemented function under UNIX systems");
+                           ") function unimplemented under UNIX systems");
 #endif
 }
 
@@ -202,9 +181,10 @@ bool ICLDeviceManager::is_process_running(const std::string& process_name) {
     return false;
   }
 
+  std::wstring converted_path = this->convert_string_to_wstring(process_name);
   bool process_found = false;
   do {
-    if (process_name == process_entry.szExeFile) {
+    if (std::wcscmp(converted_path, process_entry.szExeFile) == 0) {
       process_found = true;
       break;
     }
@@ -215,8 +195,36 @@ bool ICLDeviceManager::is_process_running(const std::string& process_name) {
   return process_found;
 #else
   throw std::runtime_error("is_process_running( " + process_name +
-                           " ) unimplemented function under UNIX systems");
-  return false;
+                           " ) function unimplemented under UNIX systems");
+#endif
+}
+
+std::wstring ICLDeviceManager::convert_to_wstring(const std::string& s) {
+#ifdef _WIN32
+  int size_needed = MultiByteToWideChar(CP_UTF8, 0, s.c_str(),
+                                        static_cast<int>(s.length()), NULL, 0);
+  if (size_needed == 0) {
+    spdlog::error(
+        "[ICLDeviceManager] Failed to get needed size for string conversion."
+        "Error code: {}",
+        GetLastError());
+    throw std::runtime_error(
+        "failed to get needed size for string conversion.");
+  }
+
+  std::wstring converted_string(size_needed, 0);
+  int chars_written =
+      MultiByteToWideChar(CP_UTF8, 0, s.c_str(), static_cast<int>(s.length()),
+                          &converted_string[0], size_needed);
+  if (chars_written == 0) {
+    spdlog::error("[ICLDeviceManager] Failed to convert string. Error code: {}",
+                  GetLastError());
+    throw std::runtime_error("failed to convert path.");
+  }
+  return converted_string;
+#else
+  throw std::runtime_error("convert_to_string( " + s +
+                           " ) function unimplemented under UNIX systems");
 #endif
 }
 

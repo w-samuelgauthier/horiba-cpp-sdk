@@ -44,6 +44,7 @@ class ICLDeviceManager : public DeviceManager {
   void enable_binary_messages_on_icl();
   void start_process(const std::string& path);
   bool is_process_running(const std::string& process_name);
+  std::wstring convert_to_wstring(const std::string& s);
 };
 } /* namespace horiba::devices */
 
