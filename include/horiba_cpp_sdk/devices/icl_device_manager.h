@@ -20,8 +20,9 @@ class ICLDeviceManager : public DeviceManager {
   void stop() override;
 
   void discover_devices(bool error_on_no_device = false) override;
-  std::vector<std::shared_ptr<horiba::devices::single_devices::Monochromator>>
-  monochromators() const override;
+  /* std::vector<std::shared_ptr<horiba::devices::single_devices::Monochromator>>
+   */
+  /* monochromators() const override; */
   std::vector<
       std::shared_ptr<horiba::devices::single_devices::ChargeCoupledDevice>>
   charge_coupled_devices() const override;
@@ -32,8 +33,9 @@ class ICLDeviceManager : public DeviceManager {
   bool start_icl;
   bool enable_binary_messages;
   std::shared_ptr<horiba::communication::Communicator> communicator;
-  std::vector<std::shared_ptr<horiba::devices::single_devices::Monochromator>>
-      monos;
+  /* std::vector<std::shared_ptr<horiba::devices::single_devices::Monochromator>>
+   */
+  /*     monos; */
   std::vector<
       std::shared_ptr<horiba::devices::single_devices::ChargeCoupledDevice>>
       ccds;

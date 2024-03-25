@@ -3,12 +3,26 @@
 #include <horiba_cpp_sdk/communication/websocket_communicator.h>
 #include <horiba_cpp_sdk/devices/ccds_discovery.h>
 #include <horiba_cpp_sdk/devices/icl_device_manager.h>
+#include <horiba_cpp_sdk/devices/single_devices/ccd.h>
 #include <spdlog/spdlog.h>
 
+#include <memory>
 #include <stdexcept>
+#include <string>
+#include <utility>
+#include <vector>
 
 #ifdef _WIN32
+#include <errhandlingapi.h>
+#include <handleapi.h>
+#include <processthreadsapi.h>
+#include <stringapiset.h>
+#include <tlhelp32.h>
+#include <winbase.h>
 #include <windows.h>
+#include <wtypesbase.h>
+
+#include <codecvt>
 #endif
 
 namespace horiba::devices {
@@ -71,10 +85,11 @@ void ICLDeviceManager::discover_devices(bool error_on_no_device) {
   /* this->monos = monochromators_discovery.monochromators(); */
 }
 
-std::vector<std::shared_ptr<horiba::devices::single_devices::Monochromator>>
-ICLDeviceManager::monochromators() const {
-  return this->monos;
-}
+/* std::vector<std::shared_ptr<horiba::devices::single_devices::Monochromator>>
+ */
+/* ICLDeviceManager::monochromators() const { */
+/*   return this->monos; */
+/* } */
 
 std::vector<
     std::shared_ptr<horiba::devices::single_devices::ChargeCoupledDevice>>
@@ -111,6 +126,7 @@ void ICLDeviceManager::enable_binary_messages_on_icl() {
 
   if (!response.errors().empty()) {
     for (auto& error : response.errors()) {
+      spdlog::error(error);
     }
     // TODO: add DB Error
   }
@@ -118,38 +134,54 @@ void ICLDeviceManager::enable_binary_messages_on_icl() {
 
 void ICLDeviceManager::start_process(const std::string& path) {
 #ifdef _WIN32
-  std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-  const wchar_t* converted_path converter.from_bytes(path);
-  SECURITY_ATTRIBUTES security_attributes;
-  security_attributes.nLength = sizeof(SECURITY_ATTRIBUTES);
-  security_attributes.bInheritHandle = TRUE;
-  security_attributes.lpSecurityDescriptor = NULL;
+  int size_needed = MultiByteToWideChar(
+      CP_UTF8, 0, path.c_str(), static_cast<int>(path.length()), NULL, 0);
+  if (size_needed == 0) {
+    spdlog::error(
+        "[ICLDeviceManager] Failed to get needed size for path conversion. "
+        "Error code: {}",
+        GetLastError());
+    throw std::runtime_error("failed to get needed size for path conversion.");
+  }
 
+  std::wstring converted_path(size_needed, 0);
+  int chars_written = MultiByteToWideChar(CP_UTF8, 0, path.c_str(),
+                                          static_cast<int>(path.length()),
+                                          &converted_path[0], size_needed);
+  if (chars_written == 0) {
+    spdlog::error("[ICLDeviceManager] Failed to convert path. Error code: {}",
+                  GetLastError());
+    throw std::runtime_error("failed to convert path.");
+  }
+
+  STARTUPINFO startup_info;
   PROCESS_INFORMATION process_info;
-  ZeroMemory(&process_info, sizeof(PROCESS_INFORMATION));
 
-  if (!CreateProcess(NULL,                  // No module name (use command line)
-                     converted_path,        // Command line
-                     NULL,                  // Process handle not inheritable
-                     NULL,                  // Thread handle not inheritable
-                     TRUE,                  // Set handle inheritance to TRUE
-                     0,                     // No creation flags
-                     NULL,                  // Use parent's environment block
-                     NULL,                  // Use parent's starting directory
-                     &security_attributes,  // Pointer to security attributes
-                     &process_info  // Pointer to PROCESS_INFORMATION structure
+  ZeroMemory(&startup_info, sizeof(startup_info));
+  startup_info.cb = sizeof(startup_info);
+  ZeroMemory(&process_info, sizeof(process_info));
+
+  if (!CreateProcess(NULL,  // No module name (use command line)
+                     converted_path.c_str(),  // Command line
+                     NULL,                    // Process handle not inheritable
+                     NULL,                    // Thread handle not inheritable
+                     TRUE,                    // Set handle inheritance to TRUE
+                     0,                       // No creation flags
+                     NULL,                    // Use parent's environment block
+                     NULL,                    // Use parent's starting directory
+                     &startup_info,  // Pointer to STARTUPINFO structure
+                     &process_info   // Pointer to PROCESS_INFORMATION structure
                      )) {
     spdlog::error("[ICLDeviceManager] Failed to start process. Error code: {}",
                   GetLastError());
     throw std::runtime_error("failed to start icl process");
   }
 
-  // Close process and thread handles
   CloseHandle(process_info.hProcess);
   CloseHandle(process_info.hThread);
 #else
-  throw std::runtime_error(
-      "start_process unimplemented function under UNIX systems");
+  throw std::runtime_error("start_process (" + path +
+                           ") unimplemented function under UNIX systems");
 #endif
 }
 
@@ -166,7 +198,7 @@ bool ICLDeviceManager::is_process_running(const std::string& process_name) {
 
   if (!Process32FirstW(help_snapshot, &process_entry)) {
     CloseHandle(help_snapshot);
-    logger::error("Failed to retrieve process information.");
+    spdlog::error("Failed to retrieve process information.");
     return false;
   }
 
@@ -182,8 +214,8 @@ bool ICLDeviceManager::is_process_running(const std::string& process_name) {
 
   return process_found;
 #else
-  throw std::runtime_error(
-      "is_process_running unimplemented function under UNIX systems");
+  throw std::runtime_error("is_process_running( " + process_name +
+                           " ) unimplemented function under UNIX systems");
   return false;
 #endif
 }
