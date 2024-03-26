@@ -4,6 +4,7 @@
 #include <horiba_cpp_sdk/devices/single_devices/ccd.h>
 
 #include <catch2/catch_test_macros.hpp>
+#include <cstdlib>
 
 #include "../../icl_exe.h"
 
@@ -13,7 +14,9 @@ using namespace horiba::devices::single_devices;
 using namespace horiba::communication;
 
 TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
-  if (std::getenv("HAS_HARDWARE") == nullptr) {
+  const char* has_hardware = std::getenv("HAS_HARDWARE");
+  if (has_hardware == nullptr || std::string(has_hardware) == "0" ||
+      std::string(has_hardware) == "false") {
     SUCCEED("Skipped: HAS_HARDWARE is not set");
     return;
   }

@@ -3,6 +3,7 @@
 #include <horiba_cpp_sdk/devices/single_devices/ccd.h>
 
 #include <catch2/catch_test_macros.hpp>
+#include <cstdlib>
 
 #include "../fake_icl_server.h"
 #include "../icl_exe.h"
@@ -37,7 +38,9 @@ TEST_CASE_METHOD(FakeICLServer, "CCDs Discovery with fake ICL",
 }
 
 TEST_CASE_METHOD(ICLExe, "CCDs Discovery with ICL", "[ccd_discovery_hw]") {
-  if (std::getenv("HAS_HARDWARE") == nullptr) {
+  const char* has_hardware = std::getenv("HAS_HARDWARE");
+  if (has_hardware == nullptr || std::string(has_hardware) == "0" ||
+      std::string(has_hardware) == "false") {
     SUCCEED("Skipped: HAS_HARDWARE is not set");
     return;
   }

@@ -4,6 +4,7 @@
 
 #include <catch2/catch_message.hpp>
 #include <catch2/catch_test_macros.hpp>
+#include <cstdlib>
 #include <nlohmann/json.hpp>
 
 #include "../fake_icl_server.h"
@@ -127,10 +128,13 @@ TEST_CASE("WebSocket communicator test without fake ICL",
 
 TEST_CASE_METHOD(ICLExe, "WebSocket communicator test with real ICL",
                  "[websocket_communicator]") {
-  if (std::getenv("HAS_HARDWARE") == nullptr) {
+  const char* has_hardware = std::getenv("HAS_HARDWARE");
+  if (has_hardware == nullptr || std::string(has_hardware) == "0" ||
+      std::string(has_hardware) == "false") {
     SUCCEED("Skipped: HAS_HARDWARE is not set");
     return;
   }
+
   // arrange
   horiba::communication::WebSocketCommunicator websocket_communicator(
       "127.0.0.1", std::to_string(25010));

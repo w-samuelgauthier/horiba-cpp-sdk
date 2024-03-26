@@ -5,9 +5,9 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
+#include <cstdlib>
 
 #include "../../icl_exe.h"
-
 namespace horiba::test {
 
 using Catch::Matchers::Equals;
@@ -17,7 +17,9 @@ using namespace horiba::devices::single_devices;
 using namespace horiba::communication;
 
 TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
-  if (std::getenv("HAS_HARDWARE") == nullptr) {
+  const char* has_hardware = std::getenv("HAS_HARDWARE");
+  if (has_hardware == nullptr || std::string(has_hardware) == "0" ||
+      std::string(has_hardware) == "false") {
     SUCCEED("Skipped: HAS_HARDWARE is not set");
     return;
   }
