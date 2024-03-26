@@ -8,6 +8,10 @@
 #include <cstdlib>
 
 #include "../../icl_exe.h"
+
+// Warning about getenv being unsafe, we don't care about it here
+#pragma warning(disable : 4996)
+
 namespace horiba::test {
 
 using Catch::Matchers::Equals;
