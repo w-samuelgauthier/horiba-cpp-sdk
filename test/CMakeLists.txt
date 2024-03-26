@@ -39,6 +39,7 @@ add_executable(tests
   devices/single_devices/test_mono.cpp
   devices/single_devices/test_mono_on_hw.cpp
   devices/test_ccds_discovery.cpp
+  devices/test_monos_discovery.cpp
   devices/test_device_manager.cpp
   )
 target_link_libraries(

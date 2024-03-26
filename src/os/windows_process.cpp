@@ -21,7 +21,7 @@ WindowsProcess::WindowsProcess(std::string process_path,
 void WindowsProcess::start() {
   if (this->running()) {
     spdlog::info("[WindowsProcess] '{}' is running, not starting it.",
-                 this->process_path);
+                 this->process_name);
     return;
   }
   auto full_path = this->process_path + this->process_name;
@@ -53,6 +53,7 @@ void WindowsProcess::start() {
   CloseHandle(process_info.hProcess);
   CloseHandle(process_info.hThread);
 }
+
 bool WindowsProcess::running() {
   HANDLE help_snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
   if (help_snapshot == INVALID_HANDLE_VALUE) {
@@ -91,6 +92,12 @@ bool WindowsProcess::running() {
 }
 
 void WindowsProcess::stop() {
+  if (!this->running()) {
+    spdlog::info("[WindowsProcess] '{}' is not running, not stopping it.",
+                 this->process_name);
+    return;
+  }
+
   HANDLE help_snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
   if (help_snapshot == INVALID_HANDLE_VALUE) {
     spdlog::error("[WindowsProcess] Failed to create snapshot");

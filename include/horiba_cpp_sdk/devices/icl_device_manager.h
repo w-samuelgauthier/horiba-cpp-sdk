@@ -59,9 +59,8 @@ class ICLDeviceManager final : public DeviceManager {
    *
    * @return connected monochromators
    */
-  /* std::vector<std::shared_ptr<horiba::devices::single_devices::Monochromator>>
-   */
-  /* monochromators() const override; */
+  std::vector<std::shared_ptr<horiba::devices::single_devices::Monochromator>>
+  monochromators() const override;
 
   /**
    * @brief The connected charge coupled devices.
@@ -79,9 +78,8 @@ class ICLDeviceManager final : public DeviceManager {
   bool manage_icl_lifetime;
   bool enable_binary_messages;
   std::shared_ptr<horiba::communication::Communicator> communicator;
-  /* std::vector<std::shared_ptr<horiba::devices::single_devices::Monochromator>>
-   */
-  /*     monos; */
+  std::vector<std::shared_ptr<horiba::devices::single_devices::Monochromator>>
+      monos;
   std::vector<
       std::shared_ptr<horiba::devices::single_devices::ChargeCoupledDevice>>
       ccds;

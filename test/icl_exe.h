@@ -20,7 +20,7 @@ class ICLExe {
     spdlog::debug("ICLExe");
 #if WIN32
     this->icl_process = std::make_shared<horiba::os::WindowsProcess>(
-        R"(C:\Program Files\HORIBA Scientific\SDK\icl.exe)", "icl.exe");
+        R"(C:\Program Files\HORIBA Scientific\SDK\)", "icl.exe");
     this->icl_process->start();
 #else
     spdlog::debug("On a Unix platform, skip starting icl.exe");
