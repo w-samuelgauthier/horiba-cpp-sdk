@@ -1,4 +1,5 @@
 
+#include <horiba_cpp_sdk/communication/command.h>
 #include <horiba_cpp_sdk/communication/websocket_communicator.h>
 #include <horiba_cpp_sdk/devices/single_devices/ccd.h>
 
@@ -20,6 +21,8 @@ TEST_CASE("CCD test on HW", "[ccd_hw]") {
   // arrange
   auto websocket_communicator =
       std::make_shared<WebSocketCommunicator>("127.0.0.1", "25010");
+  auto _ignored_response =
+      websocket_communicator->request_with_response(Command("ccd_discover"));
   auto ccd = ChargeCoupledDevice(0, websocket_communicator);
 
   SECTION("CCD can be opened") {

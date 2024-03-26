@@ -35,7 +35,11 @@ add_executable(tests
   # communication/test_response.cpp
   communication/test_websocket_communicator.cpp
   devices/single_devices/test_ccd.cpp
+  devices/single_devices/test_ccd_on_hw.cpp
+  devices/single_devices/test_mono.cpp
+  devices/single_devices/test_mono_on_hw.cpp
   devices/test_ccds_discovery.cpp
+  devices/test_device_manager.cpp
   )
 target_link_libraries(
   tests

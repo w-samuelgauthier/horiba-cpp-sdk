@@ -25,7 +25,7 @@ namespace horiba::test {
  * If the sent command is not found in the fake responses it will just return it
  * without errors.
  */
-class FakeICLServer final {
+class FakeICLServer {
  public:
   static const int FAKE_ICL_PORT = 8765;
   static const std::string FAKE_ICL_ADDRESS;
@@ -135,7 +135,7 @@ class FakeICLServer final {
           response = this->icl_data[command].dump();
         } else if (command.compare(0, 4, "ccd_") == 0) {
           response = this->ccd_data[command].dump();
-        } else if (command.compare(0, 4, "mono_") == 0) {
+        } else if (command.compare(0, 5, "mono_") == 0) {
           response = this->mono_data[command].dump();
         } else {
           nlohmann::json generic_response;

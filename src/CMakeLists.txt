@@ -7,6 +7,7 @@ set(HORIBA_CPP_LIB_SOURCES
   devices/ccds_discovery.cpp
   devices/icl_device_manager.cpp
   devices/single_devices/ccd.cpp
+  devices/single_devices/mono.cpp
   devices/single_devices/device.cpp
   )
 
