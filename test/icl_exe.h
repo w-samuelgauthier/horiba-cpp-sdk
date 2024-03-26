@@ -16,14 +16,17 @@ namespace horiba::test {
  */
 class ICLExe {
  public:
-  ICLExe() : icl_process{nullptr} {
+  static const std::string ICL_EXE_PATH;
+  static const std::string ICL_EXE_NAME;
+
+  ICLExe() {
     spdlog::debug("ICLExe");
 #if WIN32
     this->icl_process = std::make_shared<horiba::os::WindowsProcess>(
-        R"(C:\Program Files\HORIBA Scientific\SDK\)", "icl.exe");
+        ICL_EXE_PATH, ICL_EXE_NAME);
     this->icl_process->start();
 #else
-    spdlog::debug("On a Unix platform, skip starting icl.exe");
+    spdlog::debug("On a Unix platform, skip starting {}", ICL_EXE_NAME);
 #endif
   }
 
@@ -32,13 +35,17 @@ class ICLExe {
 #if WIN32
     this->icl_process->stop();
 #else
-    spdlog::debug("On a Unix platform, skip stopping icl.exe");
+    spdlog::debug("On a Unix platform, skip stopping {}", ICL_EXE_NAME);
 #endif
   }
 
  private:
-  std::shared_ptr<horiba::os::Process> icl_process;
+  std::shared_ptr<horiba::os::Process> icl_process{nullptr};
 };
+
+inline const std::string ICLExe::ICL_EXE_PATH =
+    R"(C:\Program Files\HORIBA Scientific\SDK\)";
+inline const std::string ICLExe::ICL_EXE_NAME = R"(icl.exe)";
 
 }  // namespace horiba::test
 #endif /* ifndef ICLExe */

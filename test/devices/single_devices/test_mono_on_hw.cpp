@@ -2,10 +2,11 @@
 #include <horiba_cpp_sdk/communication/websocket_communicator.h>
 #include <horiba_cpp_sdk/devices/single_devices/mono.h>
 
+#include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 
-#include "../../fake_icl_server.h"
+#include "../../icl_exe.h"
 
 namespace horiba::test {
 
@@ -15,7 +16,7 @@ using Catch::Matchers::WithinAbs;
 using namespace horiba::devices::single_devices;
 using namespace horiba::communication;
 
-TEST_CASE("Mono test on HW", "[mono_hw]") {
+TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
   if (std::getenv("HAS_HARDWARE") == nullptr) {
     SUCCEED("Skipped: HAS_HARDWARE is not set");
     return;
@@ -99,8 +100,8 @@ TEST_CASE("Mono test on HW", "[mono_hw]") {
     // act
     // assert
     REQUIRE_NOTHROW(mono.calibrate_wavelength(120.0));
-    // we do not check if the new wavelength is set, as the fake answer from the
-    // ICL always returns the same value
+    // we do not check if the new wavelength is set, as the fake answer from */
+    // /*  * the ICL always returns the same value
   }
 
   SECTION("Mono move to target wavelength") {
@@ -110,8 +111,8 @@ TEST_CASE("Mono test on HW", "[mono_hw]") {
     // act
     // assert
     REQUIRE_NOTHROW(mono.move_to_target_wavelength(125.0));
-    // we do not check if the new wavelength is set, as the fake answer from the
-    // ICL always returns the same value
+    // we do not check if the new wavelength is set, as the fake answer from */
+    // /*  * the ICL always returns the same value
   }
 
   SECTION("Mono get turret grating") {
@@ -155,8 +156,8 @@ TEST_CASE("Mono test on HW", "[mono_hw]") {
     // assert
     REQUIRE_NOTHROW(mono.set_filter_wheel_position(
         Monochromator::FilterWheelPosition::BLUE));
-    // we do not check if the new filter wheel position is set, as the fake
-    // answer from the ICL always returns the same value
+    // we do not check if the new filter wheel position is set, as the fake */
+    // /* answer from the ICL always returns the same value
   }
 
   SECTION("Mono get mirror position") {
@@ -225,8 +226,8 @@ TEST_CASE("Mono test on HW", "[mono_hw]") {
     // assert
     REQUIRE_NOTHROW(mono.set_slit_step_position(
         Monochromator::Slit::A, Monochromator::SlitStepPosition::C));
-    // we do not check if the new slit step position is set, as the fake answer
-    // from the ICL always returns the same value
+    // we do not check if the new slit step position is set, as the fake */ /*
+    // * answer from the ICL always returns the same value
   }
 
   SECTION("Mono can open shutter") {
@@ -236,8 +237,8 @@ TEST_CASE("Mono test on HW", "[mono_hw]") {
     // act
     // assert
     REQUIRE_NOTHROW(mono.open_shutter());
-    // we do not check if the shutter is open, as the fake answer from the ICL
-    // always returns the same value
+    // we do not check if the shutter is open, as the fake answer from the */ /*
+    // * ICL always returns the same value
   }
 
   SECTION("Mono can close shutter") {
@@ -247,8 +248,8 @@ TEST_CASE("Mono test on HW", "[mono_hw]") {
     // act
     // assert
     REQUIRE_NOTHROW(mono.close_shutter());
-    // we do not check if the shutter is open, as the fake answer from the ICL
-    // always returns the same value
+    // we do not check if the shutter is open, as the fake answer from the */ /*
+    // * ICL always returns the same value
   }
 
   SECTION("Mono get shutter position") {
