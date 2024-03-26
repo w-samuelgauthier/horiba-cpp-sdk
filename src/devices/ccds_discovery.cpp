@@ -26,7 +26,7 @@ void ChargeCoupledDevicesDiscovery::execute(bool error_on_no_devices) {
   const auto response = this->communicator->request_with_response(
       communication::Command("ccd_list", {}));
   if (response.json_results().empty() && error_on_no_devices) {
-    throw new std::runtime_error("No CCDs connected");
+    throw std::runtime_error("No CCDs connected");
   }
 
   auto raw_cdds = response.json_results();

@@ -37,15 +37,15 @@ class MonochromatorsDiscovery : public DeviceDiscovery {
    *
    * @return The detected monochromators
    */
-  std::vector<std::shared_ptr<single_devices::Monochromator>> monochromators()
-      const;
+  [[nodiscard]] std::vector<std::shared_ptr<single_devices::Monochromator>>
+  monochromators() const;
 
  private:
   std::shared_ptr<horiba::communication::Communicator> communicator;
   std::vector<std::shared_ptr<single_devices::Monochromator>> monos;
 
   std::vector<std::shared_ptr<single_devices::Monochromator>> parse_monos(
-      nlohmann::json raw_monoss);
+      const nlohmann::json& raw_monos_list);
 };
 } /* namespace horiba::devices */
 #endif /* ifndef MONO_DEVICES_DISCOVERY_H */

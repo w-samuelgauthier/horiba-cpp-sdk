@@ -16,12 +16,10 @@ namespace horiba::communication {
 WebSocketCommunicator::WebSocketCommunicator(std::string host, std::string port)
     : host{std::move(host)}, port{std::move(port)} {}
 
-WebSocketCommunicator::~WebSocketCommunicator() {}
-
 void WebSocketCommunicator::open() {
   if (this->is_open()) {
     spdlog::error("Failed to open WebSocket: already opened");
-    throw new std::runtime_error("websocket is already open");
+    throw std::runtime_error("websocket is already open");
   }
 
   spdlog::debug("Opening WebSocket on {}:{}", this->host, this->port);
@@ -45,7 +43,7 @@ void WebSocketCommunicator::open() {
 void WebSocketCommunicator::close() {
   if (!this->is_open()) {
     spdlog::error("Failed to close WebSocket: not opened");
-    throw new std::runtime_error("websocket is not open");
+    throw std::runtime_error("websocket is not open");
   }
 
   this->websocket.close(boost::beast::websocket::close_code::normal);

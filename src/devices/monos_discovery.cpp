@@ -26,7 +26,7 @@ void MonochromatorsDiscovery::execute(bool error_on_no_devices) {
   const auto response = this->communicator->request_with_response(
       communication::Command("mono_list", {}));
   if (response.json_results().empty() && error_on_no_devices) {
-    throw new std::runtime_error("No Monochromators connected");
+    throw std::runtime_error("No Monochromators connected");
   }
 
   auto raw_monos_list = response.json_results()["list"];
@@ -39,7 +39,7 @@ MonochromatorsDiscovery::monochromators() const {
 }
 
 std::vector<std::shared_ptr<single_devices::Monochromator>>
-MonochromatorsDiscovery::parse_monos(nlohmann::json raw_monos_list) {
+MonochromatorsDiscovery::parse_monos(const nlohmann::json& raw_monos_list) {
   spdlog::info("[MonochromatorsDiscovery] detected #{} monos",
                raw_monos_list.size());
   std::vector<std::shared_ptr<single_devices::Monochromator>> detected_monos;
