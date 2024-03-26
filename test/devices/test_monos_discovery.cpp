@@ -52,6 +52,7 @@ TEST_CASE_METHOD(ICLExe, "Monochromators Discovery with ICL",
   // arrange
   auto websocket_communicator =
       std::make_shared<WebSocketCommunicator>("127.0.0.1", "25010");
+  websocket_communicator->open();
   auto monos_discovery =
       devices::MonochromatorsDiscovery(websocket_communicator);
 

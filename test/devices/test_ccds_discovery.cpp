@@ -51,6 +51,7 @@ TEST_CASE_METHOD(ICLExe, "CCDs Discovery with ICL", "[ccd_discovery_hw]") {
   // arrange
   auto websocket_communicator =
       std::make_shared<WebSocketCommunicator>("127.0.0.1", "25010");
+  websocket_communicator->open();
   auto ccds_discovery =
       devices::ChargeCoupledDevicesDiscovery(websocket_communicator);
 

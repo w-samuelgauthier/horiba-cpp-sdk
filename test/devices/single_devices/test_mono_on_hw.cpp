@@ -31,6 +31,7 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
   // arrange
   auto websocket_communicator =
       std::make_shared<WebSocketCommunicator>("127.0.0.1", "25010");
+  websocket_communicator->open();
   auto _ignored_response =
       websocket_communicator->request_with_response(Command("mono_discover"));
   auto mono = Monochromator(0, websocket_communicator);
