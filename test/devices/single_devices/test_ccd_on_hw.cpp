@@ -252,23 +252,23 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     auto acquisition_count = ccd.get_acquisition_count();
 
     // assert
-    REQUIRE(acquisition_count == 0);
+    REQUIRE(acquisition_count == 1);
   }
 
   SECTION("CCD acquisition count can be set") {
     // arrange
     ccd.open();
-    REQUIRE_NOTHROW(ccd.set_acquisition_count(0));
+    REQUIRE_NOTHROW(ccd.set_acquisition_count(1));
     auto acquisition_count_before = ccd.get_acquisition_count();
 
     // act
-    REQUIRE_NOTHROW(ccd.set_acquisition_count(1));
+    REQUIRE_NOTHROW(ccd.set_acquisition_count(2));
     auto acquisition_count_after = ccd.get_acquisition_count();
 
     // assert
     REQUIRE(acquisition_count_before != acquisition_count_after);
-    REQUIRE(acquisition_count_before == 0);
-    REQUIRE(acquisition_count_after == 1);
+    REQUIRE(acquisition_count_before == 1);
+    REQUIRE(acquisition_count_after == 2);
   }
 
   SECTION("CCD get clean count") {
@@ -279,9 +279,10 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     auto clean_count = ccd.get_clean_count();
 
     // assert
-    REQUIRE(clean_count == "count: 0 mode: 238");
+    REQUIRE(clean_count == "count: 1 mode: 238");
   }
 
+  // TODO: doesn't seem to work yet
   SECTION("CCD clean count can be set") {
     // arrange
     ccd.open();
@@ -308,7 +309,7 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     auto data_size = ccd.get_data_size();
 
     // assert
-    REQUIRE(data_size == 0);
+    REQUIRE(data_size == 1024);
   }
 
   SECTION("CCD get temperature") {

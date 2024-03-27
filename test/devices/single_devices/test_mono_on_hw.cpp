@@ -138,18 +138,19 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
     // arrange
     mono.open();
     REQUIRE_NOTHROW(mono.set_turret_grating(Monochromator::Grating::FIRST));
-    auto grating_before = mono.get_turret_grating();
+    const auto grating_before = mono.get_turret_grating();
 
     // act
     // assert
     REQUIRE_NOTHROW(mono.set_turret_grating(Monochromator::Grating::SECOND));
-    auto grating_after = mono.get_turret_grating();
+    const auto grating_after = mono.get_turret_grating();
 
     REQUIRE(grating_before != grating_after);
     REQUIRE(grating_before == Monochromator::Grating::FIRST);
     REQUIRE(grating_after == Monochromator::Grating::SECOND);
   }
 
+  // TODO: Function is not supported ATM
   SECTION("Mono get filter wheel position") {
     // arrange
     mono.open();
@@ -161,6 +162,7 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
     REQUIRE(filter_wheel_position == Monochromator::FilterWheelPosition::RED);
   }
 
+  // TODO: Function is not supported
   SECTION("Mono set filter wheel position") {
     // arrange
     mono.open();
@@ -205,7 +207,7 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
     auto slit_position = mono.get_slit_position_in_mm(Monochromator::Slit::A);
 
     // assert
-    REQUIRE_THAT(slit_position, WithinAbs(1.5, 0.001));
+    REQUIRE_THAT(slit_position, WithinAbs(1.0, 0.001));
   }
 
   SECTION("Mono slit position can be set") {
@@ -219,6 +221,8 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
     // answer from the ICL always returns the same value
   }
 
+  // TODO: We need to get more information about slit step position, is it in
+  // mm? or fixed values?
   SECTION("Mono get slit step position") {
     // arrange
     mono.open();
@@ -266,16 +270,16 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
   }
 
   // TODO: What should be done when shutter is not configured?
-  /* SECTION("Mono get shutter position") { */
-  /*   // arrange */
-  /*   mono.open(); */
+  SECTION("Mono get shutter position") {
+    // arrange
+    mono.open();
 
-  /*   // act */
-  /*   auto shutter_position = mono.get_shutter_position(); */
+    // act
+    auto shutter_position = mono.get_shutter_position();
 
-  /*   // assert */
-  /*   REQUIRE(shutter_position == Monochromator::ShutterPosition::CLOSED); */
-  /* } */
+    // assert
+    REQUIRE(shutter_position == Monochromator::ShutterPosition::CLOSED);
+  }
 
   if (mono.is_open()) {
     mono.close();

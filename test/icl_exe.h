@@ -6,6 +6,9 @@
 
 #if WIN32
 #include <horiba_cpp_sdk/os/windows_process.h>
+
+#include <chrono>
+#include <thread>
 #endif
 
 namespace horiba::test {
@@ -34,6 +37,11 @@ class ICLExe {
     spdlog::debug("~ICLExe");
 #if WIN32
     this->icl_process->stop();
+    while (this->icl_process->running()) {
+      spdlog::debug("[ICLExe] Waiting for {} to stop", ICL_EXE_NAME);
+      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    }
+    spdlog::debug("[ICLExe] {} stopped", ICL_EXE_NAME);
 #else
     spdlog::debug("On a Unix platform, skip stopping {}", ICL_EXE_NAME);
 #endif

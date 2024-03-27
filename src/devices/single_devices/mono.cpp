@@ -102,7 +102,7 @@ Monochromator::MirrorPosition Monochromator::get_mirror_position(
     Mirror mirror) {
   auto response = Device::execute_command(communication::Command(
       "mono_getMirrorPosition",
-      {{"index", Device::device_id()}, {"id", static_cast<int>(mirror)}}));
+      {{"index", Device::device_id()}, {"type", static_cast<int>(mirror)}}));
   auto json_results = response.json_results();
   auto position = json_results.at("position").get<int>();
 
