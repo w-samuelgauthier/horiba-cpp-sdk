@@ -24,6 +24,8 @@ void WindowsProcess::start() {
                  this->process_name);
     return;
   }
+  spdlog::info("[WindowsProcess] '{}' is not running, starting it.",
+               this->process_name);
   auto full_path = this->process_path + this->process_name;
   auto converted_path = const_cast<LPSTR>(full_path.c_str());
 
@@ -97,6 +99,9 @@ void WindowsProcess::stop() {
                  this->process_name);
     return;
   }
+
+  spdlog::info("[WindowsProcess] '{}' is running, stopping it.",
+               this->process_name);
 
   HANDLE help_snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
   if (help_snapshot == INVALID_HANDLE_VALUE) {

@@ -102,7 +102,7 @@ Monochromator::MirrorPosition Monochromator::get_mirror_position(
     Mirror mirror) {
   auto response = Device::execute_command(communication::Command(
       "mono_getMirrorPosition",
-      {{"index", Device::device_id()}, {"type", static_cast<int>(mirror)}}));
+      {{"index", Device::device_id()}, {"id", static_cast<int>(mirror)}}));
   auto json_results = response.json_results();
   auto position = json_results.at("position").get<int>();
 
@@ -113,14 +113,14 @@ void Monochromator::set_mirror_position(Mirror mirror,
                                         MirrorPosition position) {
   auto _ignored_response = Device::execute_command(communication::Command(
       "mono_moveMirror", {{"index", Device::device_id()},
-                          {"type", static_cast<int>(mirror)},
+                          {"id", static_cast<int>(mirror)},
                           {"position", static_cast<int>(position)}}));
 }
 
 float Monochromator::get_slit_position_in_mm(Slit slit) {
   auto response = Device::execute_command(communication::Command(
       "mono_getSlitPositionInMM",
-      {{"index", Device::device_id()}, {"type", static_cast<int>(slit)}}));
+      {{"index", Device::device_id()}, {"id", static_cast<int>(slit)}}));
   auto json_results = response.json_results();
   auto position = json_results.at("position").get<float>();
 
@@ -130,7 +130,7 @@ float Monochromator::get_slit_position_in_mm(Slit slit) {
 void Monochromator::set_slit_position(Slit slit, float position_in_mm) {
   auto _ignored_response = Device::execute_command(communication::Command(
       "mono_moveSlitMM", {{"index", Device::device_id()},
-                          {"type", static_cast<int>(slit)},
+                          {"id", static_cast<int>(slit)},
                           {"position", position_in_mm}}));
 }
 
@@ -138,7 +138,7 @@ Monochromator::SlitStepPosition Monochromator::get_slit_step_position(
     Slit slit) {
   auto response = Device::execute_command(communication::Command(
       "mono_getSlitStepPosition",
-      {{"index", Device::device_id()}, {"type", static_cast<int>(slit)}}));
+      {{"index", Device::device_id()}, {"id", static_cast<int>(slit)}}));
   auto json_results = response.json_results();
   auto position = json_results.at("position").get<int>();
 

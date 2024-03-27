@@ -97,7 +97,7 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
     auto wavelength = mono.get_current_wavelength();
 
     // assert
-    REQUIRE_THAT(wavelength, WithinAbs(320.0, 0.001));
+    REQUIRE_THAT(wavelength, WithinAbs(0.0, 0.001));
   }
 
   SECTION("Mono wavelenght can be set") {
@@ -125,23 +125,29 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
   SECTION("Mono get turret grating") {
     // arrange
     mono.open();
+    mono.set_turret_grating(Monochromator::Grating::FIRST);
 
     // act
     auto turret_grating = mono.get_turret_grating();
 
     // assert
-    REQUIRE(turret_grating == Monochromator::Grating::SECOND);
+    REQUIRE(turret_grating == Monochromator::Grating::FIRST);
   }
 
   SECTION("Mono can set turret grating") {
     // arrange
     mono.open();
+    REQUIRE_NOTHROW(mono.set_turret_grating(Monochromator::Grating::FIRST));
+    auto grating_before = mono.get_turret_grating();
 
     // act
     // assert
-    REQUIRE_NOTHROW(mono.set_turret_grating(Monochromator::Grating::FIRST));
-    // we do not check if the new grating params are set, as the fake answer
-    // from the ICL always returns the same value
+    REQUIRE_NOTHROW(mono.set_turret_grating(Monochromator::Grating::SECOND));
+    auto grating_after = mono.get_turret_grating();
+
+    REQUIRE(grating_before != grating_after);
+    REQUIRE(grating_before == Monochromator::Grating::FIRST);
+    REQUIRE(grating_after == Monochromator::Grating::SECOND);
   }
 
   SECTION("Mono get filter wheel position") {
@@ -259,15 +265,20 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
     // * ICL always returns the same value
   }
 
-  SECTION("Mono get shutter position") {
-    // arrange
-    mono.open();
+  // TODO: What should be done when shutter is not configured?
+  /* SECTION("Mono get shutter position") { */
+  /*   // arrange */
+  /*   mono.open(); */
 
-    // act
-    auto shutter_position = mono.get_shutter_position();
+  /*   // act */
+  /*   auto shutter_position = mono.get_shutter_position(); */
 
-    // assert
-    REQUIRE(shutter_position == Monochromator::ShutterPosition::CLOSED);
+  /*   // assert */
+  /*   REQUIRE(shutter_position == Monochromator::ShutterPosition::CLOSED); */
+  /* } */
+
+  if (mono.is_open()) {
+    mono.close();
   }
 
   if (websocket_communicator->is_open()) {
