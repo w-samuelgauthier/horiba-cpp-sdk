@@ -4,7 +4,7 @@
 #include <horiba_cpp_sdk/os/process.h>
 #include <spdlog/spdlog.h>
 
-#if WIN32
+#if _WIN32
 #include <horiba_cpp_sdk/os/windows_process.h>
 
 #include <chrono>
@@ -24,7 +24,7 @@ class ICLExe {
 
   ICLExe() {
     spdlog::debug("ICLExe");
-#if WIN32
+#if _WIN32
     this->icl_process = std::make_shared<horiba::os::WindowsProcess>(
         ICL_EXE_PATH, ICL_EXE_NAME);
     this->icl_process->start();
@@ -35,7 +35,7 @@ class ICLExe {
 
   ~ICLExe() {
     spdlog::debug("~ICLExe");
-#if WIN32
+#if _WIN32
     this->icl_process->stop();
     while (this->icl_process->running()) {
       spdlog::debug("[ICLExe] Waiting for {} to stop", ICL_EXE_NAME);

@@ -52,7 +52,7 @@ TEST_CASE("ICL Device Manager test on hardware", "[icl_device_manager_hw]") {
     SUCCEED("Skipped: HAS_HARDWARE is not set");
     return;
   }
-#if WIN32
+#if _WIN32
   const auto icl_path = R"(C:\Program Files\HORIBA Scientific\SDK\)";
   const auto icl_exe = R"(icl.exe)";
 
