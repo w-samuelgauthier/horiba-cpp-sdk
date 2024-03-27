@@ -26,7 +26,7 @@ void ChargeCoupledDevicesDiscovery::execute(bool error_on_no_devices) {
   const auto response = this->communicator->request_with_response(
       communication::Command("ccd_list", {}));
   if (response.json_results().empty() && error_on_no_devices) {
-    throw new std::runtime_error("No CCDs connected");
+    throw std::runtime_error("No CCDs connected");
   }
 
   auto raw_cdds = response.json_results();
@@ -51,8 +51,6 @@ ChargeCoupledDevicesDiscovery::parse_ccds(nlohmann::json raw_ccds) {
     // %<other_number>'
     size_t start = key.find('x') + 1;
     size_t stop = key.find(':');
-    spdlog::debug("[ChargeCoupledDevicesDiscovery] start={}, stop={}", start,
-                  stop);
     const std::string index = key.substr(start, stop - start);
     detected_ccds.push_back(
         std::make_shared<single_devices::ChargeCoupledDevice>(

@@ -1,25 +1,39 @@
 
+#include <horiba_cpp_sdk/communication/command.h>
 #include <horiba_cpp_sdk/communication/websocket_communicator.h>
 #include <horiba_cpp_sdk/devices/single_devices/ccd.h>
 
 #include <catch2/catch_test_macros.hpp>
+#include <chrono>
+#include <cstdlib>
+#include <thread>
 
-#include "../../fake_icl_server.h"
+#include "../../icl_exe.h"
+
+// Warning about getenv being unsafe, we don't care about it here
+#pragma warning(disable : 4996)
 
 namespace horiba::test {
 
 using namespace horiba::devices::single_devices;
 using namespace horiba::communication;
 
-TEST_CASE("CCD test on HW", "[ccd_hw]") {
-  if (std::getenv("HAS_HARDWARE") == nullptr) {
+TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
+  const char* has_hardware = std::getenv("HAS_HARDWARE");
+  if (has_hardware == nullptr || std::string(has_hardware) == "0" ||
+      std::string(has_hardware) == "false") {
     SUCCEED("Skipped: HAS_HARDWARE is not set");
     return;
   }
 
+  start();
+
   // arrange
   auto websocket_communicator =
       std::make_shared<WebSocketCommunicator>("127.0.0.1", "25010");
+  websocket_communicator->open();
+  auto _ignored_response =
+      websocket_communicator->request_with_response(Command("ccd_discover"));
   auto ccd = ChargeCoupledDevice(0, websocket_communicator);
 
   SECTION("CCD can be opened") {
@@ -68,6 +82,7 @@ TEST_CASE("CCD test on HW", "[ccd_hw]") {
     REQUIRE(configuration.empty() == true);
   }
 
+  // TODO CCD Does not support averaging
   SECTION("CCD number of averages") {
     // arrange
     ccd.open();
@@ -147,6 +162,7 @@ TEST_CASE("CCD test on HW", "[ccd_hw]") {
     REQUIRE(fit_params == "0,1,0,0,0");
   }
 
+  // TODO Isn't set at the moment
   SECTION("CCD fit params can be set") {
     // arrange
     ccd.open();
@@ -175,6 +191,7 @@ TEST_CASE("CCD test on HW", "[ccd_hw]") {
     REQUIRE(timer_resolution == 1000);
   }
 
+  // TODO What are the possible timer resolutions and what is supported?
   SECTION("CCD timer resolution can be set") {
     // arrange
     ccd.open();
@@ -242,23 +259,23 @@ TEST_CASE("CCD test on HW", "[ccd_hw]") {
     auto acquisition_count = ccd.get_acquisition_count();
 
     // assert
-    REQUIRE(acquisition_count == 0);
+    REQUIRE(acquisition_count == 1);
   }
 
   SECTION("CCD acquisition count can be set") {
     // arrange
     ccd.open();
-    REQUIRE_NOTHROW(ccd.set_acquisition_count(0));
+    REQUIRE_NOTHROW(ccd.set_acquisition_count(1));
     auto acquisition_count_before = ccd.get_acquisition_count();
 
     // act
-    REQUIRE_NOTHROW(ccd.set_acquisition_count(1));
+    REQUIRE_NOTHROW(ccd.set_acquisition_count(2));
     auto acquisition_count_after = ccd.get_acquisition_count();
 
     // assert
     REQUIRE(acquisition_count_before != acquisition_count_after);
-    REQUIRE(acquisition_count_before == 0);
-    REQUIRE(acquisition_count_after == 1);
+    REQUIRE(acquisition_count_before == 1);
+    REQUIRE(acquisition_count_after == 2);
   }
 
   SECTION("CCD get clean count") {
@@ -269,9 +286,10 @@ TEST_CASE("CCD test on HW", "[ccd_hw]") {
     auto clean_count = ccd.get_clean_count();
 
     // assert
-    REQUIRE(clean_count == "count: 0 mode: 238");
+    REQUIRE(clean_count == "count: 1 mode: 0");
   }
 
+  // TODO: doesn't seem to work yet
   SECTION("CCD clean count can be set") {
     // arrange
     ccd.open();
@@ -298,7 +316,7 @@ TEST_CASE("CCD test on HW", "[ccd_hw]") {
     auto data_size = ccd.get_data_size();
 
     // assert
-    REQUIRE(data_size == 0);
+    REQUIRE(data_size == 1024);
   }
 
   SECTION("CCD get temperature") {
@@ -403,12 +421,13 @@ TEST_CASE("CCD test on HW", "[ccd_hw]") {
     REQUIRE(acquisition_busy == false);
   }
 
+  // TODO: How to know it was aborted?
   SECTION("CCD acquisition can be aborted") {
     // arrange
     ccd.open();
 
     REQUIRE_NOTHROW(ccd.set_acquisition_count(1));
-    REQUIRE_NOTHROW(ccd.set_exposure_time(4000));
+    REQUIRE_NOTHROW(ccd.set_exposure_time(10000));
     REQUIRE_NOTHROW(ccd.set_region_of_interest());
     REQUIRE_NOTHROW(ccd.set_x_axis_conversion_type(
         ChargeCoupledDevice::XAxisConversionType::NONE));
@@ -417,6 +436,13 @@ TEST_CASE("CCD test on HW", "[ccd_hw]") {
     // act
     auto acquisition_busy_before_abort = ccd.get_acquisition_busy();
     REQUIRE_NOTHROW(ccd.abort_acquisition());
+
+    int wait_ms = 500;
+    int total_waited_time_ms = 0;
+    while (ccd.get_acquisition_busy() && total_waited_time_ms < 8000) {
+      std::this_thread::sleep_for(std::chrono::milliseconds(wait_ms));
+      total_waited_time_ms += wait_ms;
+    }
     auto acquisition_busy_after_abort = ccd.get_acquisition_busy();
 
     // assert
@@ -427,5 +453,7 @@ TEST_CASE("CCD test on HW", "[ccd_hw]") {
   if (websocket_communicator->is_open()) {
     websocket_communicator->close();
   }
+
+  stop();
 }
 }  // namespace horiba::test

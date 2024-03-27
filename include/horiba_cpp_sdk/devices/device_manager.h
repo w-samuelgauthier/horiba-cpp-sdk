@@ -42,16 +42,16 @@ class DeviceManager {
    *
    * @return connected monochromators
    */
-  /* virtual
-   * std::vector<std::shared_ptr<horiba::devices::single_devices::Monochromator>>
-   * monochromators() const = 0; */
+  [[nodiscard]] virtual std::vector<
+      std::shared_ptr<horiba::devices::single_devices::Monochromator>>
+  monochromators() const = 0;
 
   /**
    * @brief The connected charge coupled devices.
    *
    * @return connected ccds
    */
-  virtual std::vector<
+  [[nodiscard]] virtual std::vector<
       std::shared_ptr<horiba::devices::single_devices::ChargeCoupledDevice>>
   charge_coupled_devices() const = 0;
 };

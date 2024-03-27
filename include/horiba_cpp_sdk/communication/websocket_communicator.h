@@ -28,7 +28,7 @@ class WebSocketCommunicator : public Communicator {
    */
   WebSocketCommunicator(std::string host, std::string port);
 
-  ~WebSocketCommunicator() override;
+  ~WebSocketCommunicator() override = default;
 
   /**
    * @brief Opens the communication channel with the ICL

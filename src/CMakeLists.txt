@@ -6,8 +6,10 @@ set(HORIBA_CPP_LIB_SOURCES
   communication/websocket_communicator.cpp
   devices/ccds_discovery.cpp
   devices/icl_device_manager.cpp
+  devices/monos_discovery.cpp
   devices/single_devices/ccd.cpp
   devices/single_devices/device.cpp
+  devices/single_devices/mono.cpp
   )
 
 # Platform specific code
