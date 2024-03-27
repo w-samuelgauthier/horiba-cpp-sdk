@@ -73,8 +73,7 @@ class FakeICLServer {
  private:
   void load_fake_responses() {
     std::string icl_json_file_path{
-        std::filesystem::absolute("./test/fake_icl_responses/icl.json")
-            .string()};
+        std::filesystem::absolute("./fake_icl_responses/icl.json").string()};
     if (!std::filesystem::exists(icl_json_file_path)) {
       spdlog::error("[FakeICLServer] File '{}' does not exist",
                     icl_json_file_path);
@@ -84,8 +83,7 @@ class FakeICLServer {
     this->icl_data = nlohmann::json::parse(icl_json_file);
 
     std::string ccd_json_file_path{
-        std::filesystem::absolute("./test/fake_icl_responses/ccd.json")
-            .string()};
+        std::filesystem::absolute("./fake_icl_responses/ccd.json").string()};
     if (!std::filesystem::exists(ccd_json_file_path)) {
       spdlog::error("[FakeICLServer] File '{}' does not exist",
                     ccd_json_file_path);
@@ -95,8 +93,7 @@ class FakeICLServer {
     this->ccd_data = nlohmann::json::parse(ccd_json_file);
 
     std::string mono_json_file_path{
-        std::filesystem::absolute(
-            "./test/fake_icl_responses/monochromator.json")
+        std::filesystem::absolute("./fake_icl_responses/monochromator.json")
             .string()};
     if (!std::filesystem::exists(mono_json_file_path)) {
       spdlog::error("[FakeICLServer] File '{}' does not exist",

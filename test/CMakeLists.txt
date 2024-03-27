@@ -29,6 +29,11 @@ include(${Catch2_SOURCE_DIR}/extras/Catch.cmake)
 # add_test(NAME cli.version_matches COMMAND intro --version)
 # set_tests_properties(cli.version_matches PROPERTIES PASS_REGULAR_EXPRESSION "${PROJECT_VERSION}")
 
+# Copy fake icl messages into build directory to support CICD pipeline
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/fake_icl_responses/ccd.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/fake_icl_responses/)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/fake_icl_responses/icl.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/fake_icl_responses/)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/fake_icl_responses/monochromator.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/fake_icl_responses/)
+
 add_executable(tests
   tests.cpp
   communication/test_command.cpp
