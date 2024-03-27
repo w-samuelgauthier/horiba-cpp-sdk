@@ -30,9 +30,9 @@ class FakeICLServer {
   static const std::string FAKE_ICL_ADDRESS;
 
   FakeICLServer() {
-    spdlog::debug("FakeICLServer");
+    spdlog::debug("[FakeICLServer] FakeICLServer");
 
-    spdlog::debug("load fake responses");
+    spdlog::debug("[FakeICLServer] load fake responses");
     this->load_fake_responses();
 
     server_thread = std::thread([this] {
@@ -45,9 +45,9 @@ class FakeICLServer {
 
         boost::asio::ip::tcp::socket socket{ioc};
 
-        spdlog::debug("blocking to accept new connection");
+        spdlog::debug("[FakeICLServer] blocking to accept new connection");
         acceptor.accept(socket);
-        spdlog::debug("got new connection");
+        spdlog::debug("[FakeICLServer] got new connection");
 
         std::thread([this, socket = std::move(socket)]() mutable {
           do_session(std::move(socket));
@@ -56,15 +56,15 @@ class FakeICLServer {
           std::this_thread::sleep_for(
               std::chrono::milliseconds(SERVER_SLEEP_TIME_MS));
         }
-        spdlog::debug("server thread ending...");
+        spdlog::debug("[FakeICLServer] server thread ending...");
       } catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
+        spdlog::error("[FakeICLServer] Error: {}", e.what());
       }
     });
   }
 
   ~FakeICLServer() {
-    spdlog::debug("~FakeICLServer");
+    spdlog::debug("[FakeICLServer] ~FakeICLServer");
     if (server_thread.joinable()) {
       server_thread.join();
     }
@@ -76,9 +76,10 @@ class FakeICLServer {
         std::filesystem::absolute("./test/fake_icl_responses/icl.json")
             .string()};
     if (!std::filesystem::exists(icl_json_file_path)) {
-      spdlog::error("File '{}' does not exist", icl_json_file_path);
+      spdlog::error("[FakeICLServer] File '{}' does not exist",
+                    icl_json_file_path);
     }
-    spdlog::debug("ICL json file path: {}", icl_json_file_path);
+    spdlog::debug("[FakeICLServer] ICL json file path: {}", icl_json_file_path);
     std::ifstream icl_json_file(icl_json_file_path);
     this->icl_data = nlohmann::json::parse(icl_json_file);
 
@@ -86,9 +87,10 @@ class FakeICLServer {
         std::filesystem::absolute("./test/fake_icl_responses/ccd.json")
             .string()};
     if (!std::filesystem::exists(ccd_json_file_path)) {
-      spdlog::error("File '{}' does not exist", ccd_json_file_path);
+      spdlog::error("[FakeICLServer] File '{}' does not exist",
+                    ccd_json_file_path);
     }
-    spdlog::debug("CCD json file path: {}", ccd_json_file_path);
+    spdlog::debug("[FakeICLServer] CCD json file path: {}", ccd_json_file_path);
     std::ifstream ccd_json_file(ccd_json_file_path);
     this->ccd_data = nlohmann::json::parse(ccd_json_file);
 
@@ -97,16 +99,18 @@ class FakeICLServer {
             "./test/fake_icl_responses/monochromator.json")
             .string()};
     if (!std::filesystem::exists(mono_json_file_path)) {
-      spdlog::error("File '{}' does not exist", mono_json_file_path);
+      spdlog::error("[FakeICLServer] File '{}' does not exist",
+                    mono_json_file_path);
     }
-    spdlog::debug("Monochromator json file path: {}", mono_json_file_path);
+    spdlog::debug("[FakeICLServer] Monochromator json file path: {}",
+                  mono_json_file_path);
     std::ifstream mono_json_file(mono_json_file_path);
     this->mono_data = nlohmann::json::parse(mono_json_file);
   }
 
   void do_session(boost::asio::ip::tcp::socket socket) {
     try {
-      spdlog::debug("do_session");
+      spdlog::debug("[FakeICLServer] do_session");
       boost::beast::websocket::stream<boost::asio::ip::tcp::socket> websocket{
           std::move(socket)};
 
@@ -150,13 +154,13 @@ class FakeICLServer {
       }
     } catch (boost::beast::system_error const& se) {
       if (se.code() != boost::beast::websocket::error::closed) {
-        spdlog::error("Error: {}", se.code().message());
+        spdlog::error("[FakeICLServer] Error: {}", se.code().message());
       }
-      spdlog::debug("end of do_session");
+      spdlog::debug("[FakeICLServer] end of do_session");
       this->run_server = false;
     } catch (std::exception const& e) {
-      spdlog::error("Error: {}", e.what());
-      spdlog::debug("end of do_session");
+      spdlog::error("[FakeICLServer] Error: {}", e.what());
+      spdlog::debug("[FakeICLServer] end of do_session");
     }
   }
 

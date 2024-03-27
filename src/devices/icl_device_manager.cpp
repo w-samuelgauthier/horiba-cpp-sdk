@@ -25,12 +25,13 @@ ICLDeviceManager::ICLDeviceManager(
       enable_binary_messages{enable_binary_messages},
       communicator{
           std::make_shared<horiba::communication::WebSocketCommunicator>(
-              websocket_ip, websocket_port)} {}
+              this->websocket_ip, this->websocket_port)} {}
 
 void ICLDeviceManager::start() {
   if (this->manage_icl_lifetime) {
     this->icl_process->start();
   }
+  spdlog::debug("[ICLDeviceManager] ICL started");
 
   this->communicator->open();
 

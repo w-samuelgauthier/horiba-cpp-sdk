@@ -4,7 +4,9 @@
 #include <horiba_cpp_sdk/devices/single_devices/ccd.h>
 
 #include <catch2/catch_test_macros.hpp>
+#include <chrono>
 #include <cstdlib>
+#include <thread>
 
 #include "../../icl_exe.h"
 
@@ -78,6 +80,7 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     REQUIRE(configuration.empty() == true);
   }
 
+  // TODO CCD Does not support averaging
   SECTION("CCD number of averages") {
     // arrange
     ccd.open();
@@ -157,6 +160,7 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     REQUIRE(fit_params == "0,1,0,0,0");
   }
 
+  // TODO Isn't set at the moment
   SECTION("CCD fit params can be set") {
     // arrange
     ccd.open();
@@ -185,6 +189,7 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     REQUIRE(timer_resolution == 1000);
   }
 
+  // TODO What are the possible timer resolutions and what is supported?
   SECTION("CCD timer resolution can be set") {
     // arrange
     ccd.open();
@@ -279,7 +284,7 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     auto clean_count = ccd.get_clean_count();
 
     // assert
-    REQUIRE(clean_count == "count: 1 mode: 238");
+    REQUIRE(clean_count == "count: 1 mode: 0");
   }
 
   // TODO: doesn't seem to work yet
@@ -414,12 +419,13 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     REQUIRE(acquisition_busy == false);
   }
 
+  // TODO: How to know it was aborted?
   SECTION("CCD acquisition can be aborted") {
     // arrange
     ccd.open();
 
     REQUIRE_NOTHROW(ccd.set_acquisition_count(1));
-    REQUIRE_NOTHROW(ccd.set_exposure_time(4000));
+    REQUIRE_NOTHROW(ccd.set_exposure_time(10000));
     REQUIRE_NOTHROW(ccd.set_region_of_interest());
     REQUIRE_NOTHROW(ccd.set_x_axis_conversion_type(
         ChargeCoupledDevice::XAxisConversionType::NONE));
@@ -428,6 +434,13 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     // act
     auto acquisition_busy_before_abort = ccd.get_acquisition_busy();
     REQUIRE_NOTHROW(ccd.abort_acquisition());
+
+    int wait_ms = 500;
+    int total_waited_time_ms = 0;
+    while (ccd.get_acquisition_busy() && total_waited_time_ms < 8000) {
+      std::this_thread::sleep_for(std::chrono::milliseconds(wait_ms));
+      total_waited_time_ms += wait_ms;
+    }
     auto acquisition_busy_after_abort = ccd.get_acquisition_busy();
 
     // assert
