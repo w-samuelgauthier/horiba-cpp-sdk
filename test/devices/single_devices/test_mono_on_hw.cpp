@@ -28,6 +28,8 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
     return;
   }
 
+  start();
+
   // arrange
   auto websocket_communicator =
       std::make_shared<WebSocketCommunicator>("127.0.0.1", "25010");
@@ -288,5 +290,7 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
   if (websocket_communicator->is_open()) {
     websocket_communicator->close();
   }
+
+  stop();
 }
 }  // namespace horiba::test

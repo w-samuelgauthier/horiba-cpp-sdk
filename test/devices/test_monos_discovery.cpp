@@ -49,6 +49,8 @@ TEST_CASE_METHOD(ICLExe, "Monochromators Discovery with ICL",
     return;
   }
 
+  start();
+
   // arrange
   auto websocket_communicator =
       std::make_shared<WebSocketCommunicator>("127.0.0.1", "25010");
@@ -69,6 +71,8 @@ TEST_CASE_METHOD(ICLExe, "Monochromators Discovery with ICL",
   if (websocket_communicator->is_open()) {
     websocket_communicator->close();
   }
+
+  stop();
 }
 
 }  // namespace horiba::test

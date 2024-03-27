@@ -22,19 +22,22 @@ class ICLExe {
   static const std::string ICL_EXE_PATH;
   static const std::string ICL_EXE_NAME;
 
-  ICLExe() {
-    spdlog::debug("ICLExe");
+  ICLExe() { spdlog::debug("[ICLExe] ICLExe"); }
+
+  ~ICLExe() { spdlog::debug("[ICLExe] ~ICLExe"); }
+
+  void start() {
 #if _WIN32
     this->icl_process = std::make_shared<horiba::os::WindowsProcess>(
         ICL_EXE_PATH, ICL_EXE_NAME);
     this->icl_process->start();
 #else
-    spdlog::debug("On a Unix platform, skip starting {}", ICL_EXE_NAME);
+    spdlog::debug("[ICLExe] On a Unix platform, skip starting {}",
+                  ICL_EXE_NAME);
 #endif
   }
 
-  ~ICLExe() {
-    spdlog::debug("~ICLExe");
+  void stop() {
 #if _WIN32
     this->icl_process->stop();
     while (this->icl_process->running()) {
@@ -43,7 +46,8 @@ class ICLExe {
     }
     spdlog::debug("[ICLExe] {} stopped", ICL_EXE_NAME);
 #else
-    spdlog::debug("On a Unix platform, skip stopping {}", ICL_EXE_NAME);
+    spdlog::debug("[ICLExe] On a Unix platform, skip stopping {}",
+                  ICL_EXE_NAME);
 #endif
   }
 

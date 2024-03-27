@@ -138,6 +138,8 @@ TEST_CASE_METHOD(ICLExe, "WebSocket communicator test with real ICL",
     return;
   }
 
+  start();
+
   // arrange
   horiba::communication::WebSocketCommunicator websocket_communicator(
       "127.0.0.1", std::to_string(25010));
@@ -235,5 +237,7 @@ TEST_CASE_METHOD(ICLExe, "WebSocket communicator test with real ICL",
   if (websocket_communicator.is_open()) {
     websocket_communicator.close();
   }
+
+  stop();
 }
 }  // namespace horiba::test
