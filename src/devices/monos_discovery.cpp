@@ -29,7 +29,7 @@ void MonochromatorsDiscovery::execute(bool error_on_no_devices) {
     throw std::runtime_error("No Monochromators connected");
   }
 
-  auto raw_monos_list = response.json_results()["list"];
+  auto raw_monos_list = response.json_results()["devices"];
   this->monos = this->parse_monos(raw_monos_list);
 }
 
@@ -44,14 +44,9 @@ MonochromatorsDiscovery::parse_monos(const nlohmann::json& raw_monos_list) {
                raw_monos_list.size());
   std::vector<std::shared_ptr<single_devices::Monochromator>> detected_monos;
   for (const auto& raw_mono : raw_monos_list) {
-    // we need to extract the <number> from the string
-    // '<number>;<model>;<serial>'
-    const std::string raw_mono_string = raw_mono.get<std::string>();
-    const size_t start = 0;
-    const size_t stop = raw_mono_string.find(';');
-    const std::string index = raw_mono_string.substr(start, stop - start);
+    const int index = raw_mono["index"].get<int>();
     detected_monos.push_back(std::make_shared<single_devices::Monochromator>(
-        std::stoi(index), this->communicator));
+        index, this->communicator));
   }
   return detected_monos;
 }

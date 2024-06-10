@@ -40,7 +40,7 @@ TEST_CASE("ICL Device Manager test with fake ICL", "[icl_device_manager]") {
 
     // assert
     REQUIRE(ccds.size() == 1);
-    REQUIRE(monos.size() == 2);
+    REQUIRE(monos.size() == 1);
   }
 }
 

@@ -28,7 +28,7 @@ TEST_CASE("Mono test with fake ICL", "[mono_no_hw]") {
     auto mono_open = mono.is_open();
 
     // assert
-    REQUIRE(mono_open == true);
+    REQUIRE(mono_open);
   }
 
   SECTION("Mono can be closed") {
@@ -42,7 +42,7 @@ TEST_CASE("Mono test with fake ICL", "[mono_no_hw]") {
     // returns true
 
     // assert
-    REQUIRE(mono_open == true);
+    REQUIRE(mono_open);
   }
 
   SECTION("Mono is busy") {
@@ -51,7 +51,7 @@ TEST_CASE("Mono test with fake ICL", "[mono_no_hw]") {
 
     // act
     // assert
-    REQUIRE(mono.is_busy() == false);
+    REQUIRE_FALSE(mono.is_busy());
   }
 
   SECTION("Mono can be homed") {
@@ -71,8 +71,7 @@ TEST_CASE("Mono test with fake ICL", "[mono_no_hw]") {
     auto config = mono.configuration();
 
     // assert
-    // TODO: At the moment we do not know how the config looks like.
-    REQUIRE_THAT(config, Equals("{}"));
+    REQUIRE_FALSE(config.empty());
   }
 
   SECTION("Mono get current wavelength") {

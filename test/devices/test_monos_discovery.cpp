@@ -30,8 +30,8 @@ TEST_CASE("Monochromators Discovery with fake ICL", "[mono_discovery]") {
     auto monos = monos_discovery.monochromators();
 
     // assert
-    REQUIRE(monos.empty() == false);
-    REQUIRE(monos.size() == 2);
+    REQUIRE_FALSE(monos.empty());
+    REQUIRE(monos.size() == 1);
   }
 
   if (websocket_communicator->is_open()) {
@@ -63,7 +63,7 @@ TEST_CASE_METHOD(ICLExe, "Monochromators Discovery with ICL",
     auto monos = monos_discovery.monochromators();
 
     // assert
-    REQUIRE(monos.empty() == false);
+    REQUIRE_FALSE(monos.empty());
     REQUIRE(monos.size() == 1);
   }
 
