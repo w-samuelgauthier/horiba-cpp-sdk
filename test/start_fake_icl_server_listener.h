@@ -1,5 +1,6 @@
 #ifndef START_FAKE_ICL_SERVER_LISTENER
 #define START_FAKE_ICL_SERVER_LISTENER
+#include <catch2/catch_test_case_info.hpp>
 #include <catch2/reporters/catch_reporter_event_listener.hpp>
 #include <memory>
 #include <string>
@@ -7,6 +8,9 @@
 #include "fake_icl_server.h"
 
 namespace horiba::test {
+
+template <typename T>
+constexpr void UNUSED_PARAMETER(const T&) noexcept {}
 
 std::shared_ptr<FakeICLServer> fake_icl_fixture = nullptr;
 

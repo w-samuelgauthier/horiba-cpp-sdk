@@ -11,6 +11,7 @@
 CATCH_REGISTER_LISTENER(horiba::test::StartFakeICLServerListener)
 
 int main(int argc, char* argv[]) {
+  spdlog::set_level(spdlog::level::debug);
   using namespace Catch::Clara;
   Catch::Session session;
 

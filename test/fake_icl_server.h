@@ -39,40 +39,55 @@ class FakeICLServer {
 
     server_thread = std::thread([this] {
       try {
-        boost::asio::io_context ioc{1};
-
-        boost::asio::ip::tcp::acceptor acceptor{
-            ioc,
-            {boost::asio::ip::make_address(FAKE_ICL_ADDRESS), FAKE_ICL_PORT}};
-
         boost::asio::ip::tcp::socket socket{ioc};
 
-        spdlog::debug("[FakeICLServer] blocking to accept new connection");
-        acceptor.accept(socket);
-        spdlog::debug("[FakeICLServer] got new connection");
+        while (true) {
+          if (!this->run_server.load(std::memory_order_acquire)) {
+            break;
+          }
 
-        std::thread([this, socket = std::move(socket)]() mutable {
-          do_session(std::move(socket));
-        }).detach();
-        while (run_server) {
-          std::this_thread::sleep_for(
-              std::chrono::milliseconds(SERVER_SLEEP_TIME_MS));
+          spdlog::debug(
+              "[FakeICLServerThread] blocking to accept new connection");
+          acceptor.accept(socket);
+          spdlog::debug("[FakeICLServerThread] got new connection");
+
+          std::thread([this, socket = std::move(socket)]() mutable {
+            do_session(std::move(socket));
+          }).detach();
         }
-        spdlog::debug("[FakeICLServer] server thread ending...");
+        spdlog::debug("[FakeICLServerThread] server thread ending...");
       } catch (const std::exception& e) {
-        spdlog::error("[FakeICLServer] Error: {}", e.what());
+        spdlog::error("[FakeICLServerThread] Error: {}", e.what());
       }
     });
   }
 
   ~FakeICLServer() {
     spdlog::debug("[FakeICLServer] ~FakeICLServer");
+    this->run_server.store(false, std::memory_order_release);
+
+    spdlog::debug("[FakeICLServer] cancelling acceptor...");
+    this->acceptor.cancel();
+
+    spdlog::debug("[FakeICLServer] closing acceptor...");
+    this->acceptor.close();
+
+    spdlog::debug("[FakeICLServer] stopping ioc...");
+    this->ioc.stop();
+
+    spdlog::debug("[FakeICLServer] joining server thread...");
     if (server_thread.joinable()) {
       server_thread.join();
+      spdlog::debug("[FakeICLServer] server thread joined");
     }
   }
 
  private:
+  boost::asio::io_context ioc{1};
+
+  boost::asio::ip::tcp::acceptor acceptor{
+      ioc, {boost::asio::ip::make_address(FAKE_ICL_ADDRESS), FAKE_ICL_PORT}};
+
   void load_fake_responses() {
     std::string icl_json_file_path{
         std::filesystem::absolute(fake_responses_folder_path + "icl.json")
@@ -159,20 +174,19 @@ class FakeICLServer {
         spdlog::error("[FakeICLServer] Error: {}", se.code().message());
       }
       spdlog::debug("[FakeICLServer] end of do_session");
-      this->run_server = false;
     } catch (std::exception const& e) {
       spdlog::error("[FakeICLServer] Error: {}", e.what());
       spdlog::debug("[FakeICLServer] end of do_session");
     }
   }
 
-  const int SERVER_SLEEP_TIME_MS = 100;
   std::thread server_thread;
   std::atomic<bool> run_server{true};
   nlohmann::json icl_data;
   nlohmann::json ccd_data;
   nlohmann::json mono_data;
   const std::string fake_responses_folder_path;
+  std::mutex mutex;
 };
 
 inline const std::string FakeICLServer::FAKE_ICL_ADDRESS = "127.0.0.1";
