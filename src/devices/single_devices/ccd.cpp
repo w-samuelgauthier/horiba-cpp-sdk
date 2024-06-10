@@ -39,9 +39,8 @@ ChargeCoupledDevice::get_configuration() {
   auto response = Device::execute_command(communication::Command(
       "ccd_getConfig", {{"index", Device::device_id()}}));
   auto results = response.json_results();
+  auto t = results.at("configuration");
 
-  // TODO: chek how to properly return configuration. New type CCDConfiguration
-  // needed?
   std::unordered_map<std::string, std::any> configuration;
   for (const auto& [key, value] : results.items()) {
     configuration[std::string(key)] = value;
@@ -49,72 +48,72 @@ ChargeCoupledDevice::get_configuration() {
   return configuration;
 }
 
-int ChargeCoupledDevice::get_number_of_averages() {
-  auto response = Device::execute_command(communication::Command(
-      "ccd_getNumberOfAvgs", {{"index", Device::device_id()}}));
-  auto json_results = response.json_results();
-  return json_results.at("count").get<int>();
-}
-
-void ChargeCoupledDevice::set_number_of_averages(int number_of_averages) {
-  auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setNumberOfAvgs",
-      {{"index", Device::device_id()}, {"count", number_of_averages}}));
-}
-
-ChargeCoupledDevice::Gain ChargeCoupledDevice::get_gain() {
+int ChargeCoupledDevice::get_gain_token() {
   auto response = Device::execute_command(
       communication::Command("ccd_getGain", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
   auto gain = json_results.at("token").get<int>();
-
-  return static_cast<ChargeCoupledDevice::Gain>(gain);
+  return gain;
 }
 
-void ChargeCoupledDevice::set_gain(ChargeCoupledDevice::Gain gain) {
+void ChargeCoupledDevice::set_gain(int gain_token) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setGain",
-      {{"index", Device::device_id()}, {"token", static_cast<int>(gain)}}));
+      "ccd_setGain", {{"index", Device::device_id()}, {"token", gain_token}}));
 }
 
-ChargeCoupledDevice::Speed ChargeCoupledDevice::get_speed() {
+int ChargeCoupledDevice::get_speed_token() {
   auto response = Device::execute_command(
       communication::Command("ccd_getSpeed", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
   auto speed = json_results.at("token").get<int>();
-
-  return static_cast<ChargeCoupledDevice::Speed>(speed);
+  return speed;
 }
 
-void ChargeCoupledDevice::set_speed(ChargeCoupledDevice::Speed speed) {
+void ChargeCoupledDevice::set_speed(int speed_token) {
   auto _ignored_response = Device::execute_command(communication::Command(
       "ccd_setSpeed",
-      {{"index", Device::device_id()}, {"token", static_cast<int>(speed)}}));
+      {{"index", Device::device_id()}, {"token", speed_token}}));
 }
 
-std::string ChargeCoupledDevice::get_fit_params() {
+std::vector<int> ChargeCoupledDevice::get_fit_parameters() {
   auto response = Device::execute_command(communication::Command(
       "ccd_getFitParams", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
-  auto fit_params = json_results.at("params").get<std::string>();
+  auto raw_fit_params = json_results.at("params").get<std::string>();
+
+  std::vector<int> fit_params;
+  std::stringstream raw_fit_params_stream(raw_fit_params);
+  std::string item;
+  while (std::getline(raw_fit_params_stream, item, ',')) {
+    const int num = std::stoi(item);
+    fit_params.push_back(num);
+  }
   return fit_params;
 }
 
-void ChargeCoupledDevice::set_fit_params(std::string fit_params) {
+void ChargeCoupledDevice::set_fit_parameters(std::vector<int> fit_params) {
   auto _ignored_response = Device::execute_command(communication::Command(
       "ccd_setFitParams",
       {{"index", Device::device_id()}, {"params", fit_params}}));
 }
 
-int ChargeCoupledDevice::get_timer_resolution() {
+ChargeCoupledDevice::TimerResolution
+ChargeCoupledDevice::get_timer_resolution() {
   auto response = Device::execute_command(communication::Command(
       "ccd_getTimerResolution", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
   auto timer_resolution = json_results.at("resolution").get<int>();
-  return timer_resolution;
+  if (timer_resolution == 1000) {
+    return ChargeCoupledDevice::TimerResolution::THOUSAND_MICROSECONDS;
+  } else if (timer_resolution == 1) {
+    return ChargeCoupledDevice::TimerResolution::ONE_MICROSECOND;
+  } else {
+    throw std::runtime_error("Unknown timer resolution");
+  }
 }
 
-void ChargeCoupledDevice::set_timer_resolution(int timer_resolution) {
+void ChargeCoupledDevice::set_timer_resolution(
+    ChargeCoupledDevice::TimerResolution timer_resolution) {
   auto _ignored_response = Device::execute_command(communication::Command(
       "ccd_setTimerResolution",
       {{"index", Device::device_id()}, {"resolution", timer_resolution}}));
@@ -161,26 +160,26 @@ void ChargeCoupledDevice::set_acquisition_count(int count) {
       "ccd_setAcqCount", {{"index", Device::device_id()}, {"count", count}}));
 }
 
-std::string ChargeCoupledDevice::get_clean_count() {
+std::pair<int, ChargeCoupledDevice::CleanCountMode>
+ChargeCoupledDevice::get_clean_count() {
   auto response = Device::execute_command(communication::Command(
       "ccd_getCleanCount", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
   auto acquisition_count = json_results.at("count").get<int>();
-  auto acquisition_mode = json_results.at("mode").get<int>();
+  auto acquisition_mode = static_cast<ChargeCoupledDevice::CleanCountMode>(
+      json_results.at("mode").get<int>());
 
-  std::stringstream stream;
-  stream << "count: " << acquisition_count << " mode: " << acquisition_mode;
-
-  return stream.str();
+  return {acquisition_count, acquisition_mode};
 }
-void ChargeCoupledDevice::set_clean_count(int count, CleanCountMode mode) {
+void ChargeCoupledDevice::set_clean_count(
+    int count, ChargeCoupledDevice::CleanCountMode mode) {
   auto _ignored_response = Device::execute_command(communication::Command(
       "ccd_setCleanCount", {{"index", Device::device_id()},
                             {"count", count},
                             {"mode", static_cast<int>(mode)}}));
 }
 
-int ChargeCoupledDevice::get_data_size() {
+int ChargeCoupledDevice::get_acquisition_data_size() {
   auto response = Device::execute_command(communication::Command(
       "ccd_getDataSize", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
@@ -223,6 +222,154 @@ void ChargeCoupledDevice::set_exposure_time(int exposure_time_ms) {
       {{"index", Device::device_id()}, {"time", exposure_time_ms}}));
 }
 
+std::tuple<bool, int, int, int> ChargeCoupledDevice::get_trigger_input() {
+  auto response = Device::execute_command(communication::Command(
+      "ccd_getTriggerIn", {{"index", Device::device_id()}}));
+  auto json_results = response.json_results();
+  auto address = json_results.at("address").get<int>();
+  auto event = json_results.at("event").get<int>();
+  auto signal_type = json_results.at("signalType").get<int>();
+  auto enabled = (address > -1 && event > -1 && signal_type > -1);
+
+  return {enabled, address, event, signal_type};
+}
+
+void ChargeCoupledDevice::set_trigger_input(bool enabled, int address,
+                                            int event, int signal_type) {
+  if (!enabled) {
+    address = -1;
+    event = -1;
+    signal_type = -1;
+    auto _ignored_response = Device::execute_command(communication::Command(
+        "ccd_setTriggerIn", {{"index", Device::device_id()},
+                             {"enable", enabled},
+                             {"address", address},
+                             {"event", event},
+                             {"signalType", signal_type}}));
+    return;
+  }
+
+  auto config = get_configuration();
+  auto it_triggers = config.find("Trigger");
+  if (it_triggers == config.end()) {
+    throw std::runtime_error("Triggers not found in the configuration");
+  }
+
+  const auto& triggers = std::any_cast<nlohmann::json>(it_triggers->second);
+  auto found_triggers = std::find_if(triggers.begin(), triggers.end(),
+                                     [&address](const nlohmann::json& trigger) {
+                                       return trigger["Token"] == address;
+                                     });
+
+  if (found_triggers == triggers.end()) {
+    throw std::runtime_error("Trigger address " + std::to_string(address) +
+                             " not found in the configuration");
+  }
+
+  auto found_events = std::find_if(
+      (*found_triggers)["Events"].begin(), (*found_triggers)["Events"].end(),
+      [&event](const nlohmann::json& trigger_event) {
+        return trigger_event["Token"] == event;
+      });
+
+  if (found_events == (*found_triggers)["Events"].end()) {
+    throw std::runtime_error("Trigger event " + std::to_string(event) +
+                             " not found in the configuration");
+  }
+
+  auto found_signal_types = std::find_if(
+      (*found_events)["Types"].begin(), (*found_events)["Types"].end(),
+      [&signal_type](const nlohmann::json& signal) {
+        return signal["Token"] == signal_type;
+      });
+
+  if (found_signal_types == (*found_events)["Types"].end()) {
+    throw std::runtime_error("Trigger type " + std::to_string(signal_type) +
+                             " not found in the configuration");
+  }
+
+  auto _ignored_response = Device::execute_command(communication::Command(
+      "ccd_setTriggerIn", {{"index", Device::device_id()},
+                           {"enable", enabled},
+                           {"address", address},
+                           {"event", event},
+                           {"signalType", signal_type}}));
+}
+
+std::tuple<bool, int, int, int> ChargeCoupledDevice::get_signal_output() {
+  auto response = Device::execute_command(communication::Command(
+      "ccd_getSignalOut", {{"index", Device::device_id()}}));
+  auto json_results = response.json_results();
+  auto address = json_results.at("address").get<int>();
+  auto event = json_results.at("event").get<int>();
+  auto signal_type = json_results.at("signalType").get<int>();
+  auto enabled = (address > -1 && event > -1 && signal_type > -1);
+
+  return {enabled, address, event, signal_type};
+}
+
+void ChargeCoupledDevice::set_signal_output(bool enabled, int address,
+                                            int event, int signal_type) {
+  if (!enabled) {
+    address = -1;
+    event = -1;
+    signal_type = -1;
+    auto _ignored_response = Device::execute_command(communication::Command(
+        "ccd_setSignalOut", {{"index", Device::device_id()},
+                             {"enable", enabled},
+                             {"address", address},
+                             {"event", event},
+                             {"signalType", signal_type}}));
+    return;
+  }
+
+  auto config = get_configuration();
+  auto it_signals = config.find("Signals");
+  if (it_signals == config.end()) {
+    throw std::runtime_error("Signals not found in the configuration");
+  }
+
+  const auto& signals = std::any_cast<nlohmann::json>(it_signals->second);
+  auto found_triggers = std::find_if(signals.begin(), signals.end(),
+                                     [&address](const nlohmann::json& trigger) {
+                                       return trigger["Token"] == address;
+                                     });
+
+  if (found_triggers == signals.end()) {
+    throw std::runtime_error("Signal address " + std::to_string(address) +
+                             " not found in the configuration");
+  }
+
+  auto found_events = std::find_if(
+      (*found_triggers)["Events"].begin(), (*found_triggers)["Events"].end(),
+      [&event](const nlohmann::json& trigger_event) {
+        return trigger_event["Token"] == event;
+      });
+
+  if (found_events == (*found_triggers)["Events"].end()) {
+    throw std::runtime_error("Signal event " + std::to_string(event) +
+                             " not found in the configuration");
+  }
+
+  auto found_signal_types = std::find_if(
+      (*found_events)["Types"].begin(), (*found_events)["Types"].end(),
+      [&signal_type](const nlohmann::json& signal) {
+        return signal["Token"] == signal_type;
+      });
+
+  if (found_signal_types == (*found_events)["Types"].end()) {
+    throw std::runtime_error("Signal type " + std::to_string(signal_type) +
+                             " not found in the configuration");
+  }
+
+  auto _ignored_response = Device::execute_command(communication::Command(
+      "ccd_setSignalOut", {{"index", Device::device_id()},
+                           {"enable", enabled},
+                           {"address", address},
+                           {"event", event},
+                           {"signalType", signal_type}}));
+}
+
 bool ChargeCoupledDevice::get_acquisition_ready() {
   auto response = Device::execute_command(communication::Command(
       "ccd_getAcquisitionReady", {{"index", Device::device_id()}}));
@@ -253,17 +400,11 @@ void ChargeCoupledDevice::set_region_of_interest(int roi_index, int x_origin,
                                             {"yBin", y_bin}}));
 }
 
-std::vector<int> ChargeCoupledDevice::get_acquisition_data() {
+std::any ChargeCoupledDevice::get_acquisition_data() {
   auto response = Device::execute_command(communication::Command(
       "ccd_getAcquisitionData", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
-
-  std::vector<int> data;
-  std::transform(json_results["data"]["xyData"].begin(),
-                 json_results["data"]["xyData"].end(), std::back_inserter(data),
-                 [](const auto& cell) { return cell[1]; });
-
-  return data;
+  return json_results.at("acquisition");
 }
 
 bool ChargeCoupledDevice::get_acquisition_busy() {
@@ -275,8 +416,9 @@ bool ChargeCoupledDevice::get_acquisition_busy() {
   return ready;
 }
 
-void ChargeCoupledDevice::abort_acquisition() {
+void ChargeCoupledDevice::abort_acquisition(bool reset_port) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setAcquisitionAbort", {{"index", Device::device_id()}}));
+      "ccd_setAcquisitionAbort",
+      {{"index", Device::device_id()}, {"resetPort", reset_port}}));
 }
 } /* namespace horiba::devices::single_devices */

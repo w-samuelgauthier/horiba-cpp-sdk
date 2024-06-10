@@ -219,8 +219,9 @@ TEST_CASE("CCD test with fake ICL", "[ccd_no_hw]") {
 
     // assert
     std::pair<int, ChargeCoupledDevice::CleanCountMode> expected_clean_count = {
-        1, ChargeCoupledDevice::CleanCountMode::MODE_1};
-    REQUIRE(clean_count == expected_clean_count);
+        1, ChargeCoupledDevice::CleanCountMode::MODE_UNKNOWN};
+    REQUIRE(clean_count.first == expected_clean_count.first);
+    REQUIRE(clean_count.second == expected_clean_count.second);
   }
 
   SECTION("CCD clean count can be set") {
@@ -332,7 +333,7 @@ TEST_CASE("CCD test with fake ICL", "[ccd_no_hw]") {
     auto acquisition_data = ccd.get_acquisition_data();
 
     // assert
-    REQUIRE(acquisition_data.has_value() == false);
+    REQUIRE(acquisition_data.has_value() == true);
   }
 
   SECTION("CCD get acquisition busy") {

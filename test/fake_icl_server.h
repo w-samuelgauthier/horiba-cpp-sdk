@@ -150,24 +150,25 @@ class FakeICLServer {
 
         const std::string command =
             json_command_request["command"].get<std::string>();
-        std::string response;
+        nlohmann::json response;
         if (command.compare(0, 4, "icl_") == 0) {
-          response = this->icl_data[command].dump();
+          response = this->icl_data[command];
+          response["id"] = json_command_request["id"];
         } else if (command.compare(0, 4, "ccd_") == 0) {
-          response = this->ccd_data[command].dump();
+          response = this->ccd_data[command];
+          response["id"] = json_command_request["id"];
         } else if (command.compare(0, 5, "mono_") == 0) {
-          response = this->mono_data[command].dump();
+          response = this->mono_data[command];
+          response["id"] = json_command_request["id"];
         } else {
-          nlohmann::json generic_response;
-          generic_response["command"] = json_command_request["command"];
-          generic_response["id"] = json_command_request["id"];
-          generic_response["results"] = nlohmann::json::object();
-          generic_response["errors"] = nlohmann::json::array();
-          response = generic_response.dump();
+          response["command"] = json_command_request["command"];
+          response["id"] = json_command_request["id"];
+          response["results"] = nlohmann::json::object();
+          response["errors"] = nlohmann::json::array();
         }
 
         websocket.text(websocket.got_text());
-        websocket.write(boost::asio::buffer(response));
+        websocket.write(boost::asio::buffer(response.dump()));
       }
     } catch (boost::beast::system_error const& se) {
       if (se.code() != boost::beast::websocket::error::closed) {

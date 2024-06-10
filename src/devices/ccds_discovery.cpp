@@ -44,17 +44,13 @@ ChargeCoupledDevicesDiscovery::parse_ccds(nlohmann::json raw_ccds) {
                raw_ccds.size());
   std::vector<std::shared_ptr<single_devices::ChargeCoupledDevice>>
       detected_ccds;
-  for (auto it = raw_ccds.begin(); it != raw_ccds.end(); ++it) {
-    const std::string& key = it.key();
-
-    // we need to extract the <number> from the string 'index<number>:
-    // %<other_number>'
-    size_t start = key.find('x') + 1;
-    size_t stop = key.find(':');
-    const std::string index = key.substr(start, stop - start);
+  auto devices = raw_ccds["devices"];
+  for (auto& device : devices) {
+    spdlog::info("[ChargeCoupledDevicesDiscovery] CCD: {}", device.dump());
+    const int index = device["index"].get<int>();
     detected_ccds.push_back(
         std::make_shared<single_devices::ChargeCoupledDevice>(
-            std::stoi(index), this->communicator));
+            index, this->communicator));
   }
   return detected_ccds;
 }

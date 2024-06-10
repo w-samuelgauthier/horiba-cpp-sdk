@@ -25,22 +25,10 @@ namespace horiba::devices::single_devices {
 class ChargeCoupledDevice final : public Device {
  public:
   enum class AcquisitionFormat : int {
-    SPECTRA,
+    SPECTRA = 0,
     IMAGE,
     CROP,
     FAST_KINETICS,
-  };
-
-  enum class Gain : int {
-    HIGH_LIGHT = 0,
-    BEST_DYNAMIC_RANGE,
-    HIGH_SENSITIVITY,
-  };
-
-  enum class Speed : int {
-    SLOW_45_kHz = 0,
-    MEDIUM_1_MHz,
-    FAST_1_MHz_Ultra,
   };
 
   /**
@@ -56,7 +44,16 @@ class ChargeCoupledDevice final : public Device {
     FROM_ICL_SETTINGS_INI
   };
 
-  enum class CleanCountMode : int { MODE_1 = 0 };
+  enum class CleanCountMode : int {
+    MODE_1 = 0,
+    // TODO: clarify the meaning of the modes
+    MODE_UNKNOWN = 238,
+  };
+
+  enum class TimerResolution : int {
+    THOUSAND_MICROSECONDS = 0,
+    ONE_MICROSECOND
+  };
 
   ChargeCoupledDevice(
       int id, std::shared_ptr<communication::Communicator> communicator);
@@ -105,58 +102,57 @@ class ChargeCoupledDevice final : public Device {
   std::unordered_map<std::string, std::any> get_configuration() noexcept(false);
 
   /**
-   * @brief Returns the number of averages of the CCD.
+   * @brief Returns the gain token of the CCD.
    *
-   * @return Number of averages
-   *
-   * @throw std::runtime_error when an error occurred on the device side
-   */
-  int get_number_of_averages() noexcept(false);
-
-  /**
-   * @brief Sets the number of averages of the CCD.
-   *
-   * @param number_of_averages The number of averages
-   *
-   * @throw std::runtime_error when an error occurred on the device side
-   */
-  void set_number_of_averages(int number_of_averages) noexcept(false);
-
-  /**
-   * @brief Returns the gain of the CCD.
+   * Note: The CCD can have different sensors installed, which can have
+   * different gain values. This is why only the token to the gain is returned.
+   * You need to first check what gain values are available for the CCD using
+   * the get_configuration function.
    *
    * @return Gain of the CCD
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
-  Gain get_gain() noexcept(false);
+  int get_gain_token() noexcept(false);
 
   /**
    * @brief Sets the gain of the CCD
+   *
+   * Note: The CCD can have different sensors installed, which can have
+   * different gain values. Therefore you need to first check what gain values
+   * are available for the CCD using the get_configuration function.
    *
    * @param gain Gain
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
-  void set_gain(Gain gain) noexcept(false);
+  void set_gain(int gain_token) noexcept(false);
 
   /**
    * @brief Returns the speed of the CCD
    *
-   * @return Speed
+   * Note: The CCD can have different sensors installed, which can have
+   * different speed values. Therefore you need to first check what speed values
+   * are available for the CCD using the get_configuration function.
+   *
+   * @return Speed token
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
-  Speed get_speed() noexcept(false);
+  int get_speed_token() noexcept(false);
 
   /**
    * @brief Sets the speed of the CCD
    *
-   * @param speed Speed in TODO: units and >details
+   * Note: The CCD can have different sensors installed, which can have
+   * different speed values. Therefore you need to first check what speed values
+   * are available for the CCD using the get_configuration function.
+   *
+   * @param speed int Speed token
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
-  void set_speed(Speed speed) noexcept(false);
+  void set_speed(int speed_token) noexcept(false);
 
   /**
    * @brief Returns the fit parameters of the CCD
@@ -165,7 +161,7 @@ class ChargeCoupledDevice final : public Device {
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
-  std::string get_fit_params() noexcept(false);
+  std::vector<int> get_fit_parameters() noexcept(false);
 
   /**
    * @brief Sets the fit parameters of the CCD
@@ -174,7 +170,7 @@ class ChargeCoupledDevice final : public Device {
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
-  void set_fit_params(std::string fit_params) noexcept(false);
+  void set_fit_parameters(std::vector<int> fit_params) noexcept(false);
 
   /**
    * @brief Returns the timer resolution of the CCD.
@@ -183,7 +179,7 @@ class ChargeCoupledDevice final : public Device {
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
-  int get_timer_resolution() noexcept(false);
+  ChargeCoupledDevice::TimerResolution get_timer_resolution() noexcept(false);
 
   /**
    * @brief Sets the timer resolution of the CCD
@@ -192,7 +188,8 @@ class ChargeCoupledDevice final : public Device {
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
-  void set_timer_resolution(int timer_resolution) noexcept(false);
+  void set_timer_resolution(
+      ChargeCoupledDevice::TimerResolution timer_resolution) noexcept(false);
 
   /**
    * @brief Sets the number of ROIs (Regions of Interest) or areas and the
@@ -262,7 +259,8 @@ class ChargeCoupledDevice final : public Device {
    *
    * @throws std::exception When an error occurs on the device side.
    */
-  std::string get_clean_count() noexcept(false);
+  std::pair<int, ChargeCoupledDevice::CleanCountMode>
+  get_clean_count() noexcept(false);
 
   /**
    * @brief Sets the clean count mode of the CCD and the corresponding mode.
@@ -272,7 +270,8 @@ class ChargeCoupledDevice final : public Device {
    *
    * @throws std::exception When an error occurs on the device side.
    */
-  void set_clean_count(int count, CleanCountMode mode) noexcept(false);
+  void set_clean_count(
+      int count, ChargeCoupledDevice::CleanCountMode mode) noexcept(false);
 
   /**
    * @brief Returns the size of the data from the CCD.
@@ -281,7 +280,7 @@ class ChargeCoupledDevice final : public Device {
    *
    * @throws std::exception When an error occurs on the device side.
    */
-  int get_data_size() noexcept(false);
+  int get_acquisition_data_size() noexcept(false);
 
   /**
    * @brief Returns the chip temperature of the CCD.
@@ -320,6 +319,114 @@ class ChargeCoupledDevice final : public Device {
   void set_exposure_time(int exposure_time_ms) noexcept(false);
 
   /**
+   * @brief This command is used to get the current setting of the input
+   * trigger.
+   *
+   * The address, event, and signalType parameters are used to define the input
+   * trigger based on the supported options of that particular CCD.
+   *
+   * The supported trigger options are retrieved using the get_configuration
+   * function, and begin with the “Triggers” string contained in the
+   * configuration.
+   *
+   * @return std::tuple<bool, int, int, int> The input trigger settings.
+   *            enabled (bool) Specifies if the signal is enabled (e.g. False =
+   *                           Disabled),
+   *            address (int) used to specify where the trigger is located.
+   *                          (e.g. 0 = Trigger Input). Note: Value of -1
+   *                          indicates that the input trigger is disabled,
+   *            event (int) used to specify when the trigger event should occur.
+   *                        (e.g. 0 = Once - Start All) Note: Value of -1
+   *                        indicates that the input trigger is disabled,
+   *            signal type (int) used to specify how the signal will cause the
+   *                              input trigger. (e.g. 0 = TTL Falling Edge)
+   *                              Note: Value of -1 indicates that the input
+   *                              trigger is disabled,
+   *
+   * @throws std::exception When an error occurs on the device side.
+   */
+  std::tuple<bool, int, int, int> get_trigger_input() noexcept(false);
+
+  /**
+   * @brief This command is used to enable or disable the trigger input.
+   *
+   * When enabling the trigger input, the address, event, and signalType
+   * parameters are used to define the input trigger based on the
+   * supported options of that particular CCD.
+   *
+   * The supported trigger options are retrieved using the get_configuration
+   * function, and begin with the “Triggers” string contained in the
+   * configuration.
+   *
+   * @param enabled Enable or disable the trigger input. Note : When disabling
+   * the input trigger, the address, event, and signalType parameters are
+   * ignored.
+   * @param address Used to specify where the trigger is located (e.g. 0 =
+   * Trigger Input)
+   * @param event Used to specify when the trigger event should occur. (e.g .0 =
+   * Once - Start All)
+   * @param signal_type Used to specify how the signal will cause the input
+   * trigger. (e.g .0 = TTL Falling Edge)
+   *
+   * @throws std::exception When an error occurs on the device side.
+   */
+  void set_trigger_input(bool enabled, int address, int event,
+                         int signal_type) noexcept(false);
+
+  /**
+   * @brief This command is used to get the current setting of the signal
+   * output.
+   *
+   * The address, event, and signalType parameters are used to define the signal
+   * based on the supported options of that particular CCD.
+   *
+   * The supported signal options are retrieved using the get_configuration
+   * command, and begin with the “Signals” string contained in the
+   * configuration.
+   *
+   * @return std::tuple<bool, int, int, int> The signal output settings.
+   *         enabled (bool): Specifies if the signal is enabled (e.g. False =
+   *                         Disabled),
+   *         address (int): Used to specify where the signal is located (e.g. 0
+   *                        = Signal Output), Note: Value of -1 indicates that
+   *                        the signal output is disabled,
+   *         event (int): Used to specify when the signal event should occur.
+   *                     (e.g. 3 = Shutter Open) Note: Value of -1 indicates
+   *                     that the signal output is disabled,
+   *         signal type (int): how the signal will cause the event. (e.g. 0 =
+   *                            TTL Active High) Note: Value of -1 indicates
+   *                            that the signal output is disabled,
+   *
+   * @throws std::exception When an error occurs on the device side.
+   */
+  std::tuple<bool, int, int, int> get_signal_output() noexcept(false);
+
+  /**
+   * @brief This command is used to enable or disable the signal output.
+   *
+   * When enabling the signal output, the address, event, and signalType
+   * parameters are used to define the signal based on the supported options of
+   * that particular CCD.
+   *
+   * The supported signal options are retrieved using the ccd_getConfig command,
+   * and begin with the “Signals” string contained in the configuration.
+   *
+   *  @param enabled Enable or disable the signal output. Note: When disabling
+   * the signal output, the address, event, and signal_type parameters are
+   * ignored.
+   *  @param address Used to specify where the signal is located (e.g. 0 =
+   * Signal Output)
+   *  @param event Used to specify when the signal event should occur. (e.g. 3 =
+   * Shutter Open)
+   *  @param signal_type How the signal will cause the event. (e.g. 0 = TTL
+   * Active High)
+   *
+   * @throws std::exception When an error occurs on the device side.
+   */
+  void set_signal_output(bool enabled, int address, int event,
+                         int signal_type) noexcept(false);
+
+  /**
    * @brief Returns true if the CCD is ready to acquire.
    *
    * @return bool True if the CCD is ready to acquire.
@@ -329,9 +436,16 @@ class ChargeCoupledDevice final : public Device {
   bool get_acquisition_ready() noexcept(false);
 
   /**
-   * @brief Starts the acquisition of the CCD.
+   * @brief Starts an acquisition that has been set up according to the
+   * previously defined acquisition parameters.
    *
-   * @param open_shutter Whether the shutter of the camera should be open.
+   * Note: To specify the acquisiton parameters please see
+   * set_region_of_interest, set_x_axis_conversion_type. If there are no
+   * acquisition parameters set at the time of acquisition it may result in no
+   * data being generated.
+   *
+   * @param open_shutter Whether the shutter of the camera should be open during
+   * the acquisition.
    *
    * @throws std::exception When an error occurs on the device side.
    */
@@ -358,15 +472,28 @@ class ChargeCoupledDevice final : public Device {
   /**
    * @brief Returns the acquisition data of the CCD.
    *
-   * The data comes as a 1D array, where the the index represents the x axis and
-   * the value the binned y sum.
+   * The acquisition data is a dictionary with the following keys:
+   * - acqIndex: Acquisition number
+   * - roi:
+   *   - roiIndex: Region of Interest number
+   *   - xOrigin: ROI’s X Origin
+   *   - yOrigin: ROI’s Y Origin
+   *   - xSize: ROI’s X Size
+   *   - ySize: ROI’s Y Size
+   *   - xBinning: ROI’s X Bin
+   *   - yBinning: ROI’s Y Bin
+   *   - xData: X data
+   *   - yData: Y data
+   * - Timestamp: This is a timestamp that relates to the time when the all the
+   * programmed acquisitions have completed. The data from all programmed
+   * acquisitions are retrieve from the CCD after all acquisitions have
+   * completed, therefore the same timestamp is used for all acquisitions.
    *
-   * @return std::vector<int> array containing acquisition data
-   * data.
+   * @return std::any Acquisition data.
    *
    * @throws std::exception When an error occurs on the device side.
    */
-  std::vector<int> get_acquisition_data() noexcept(false);
+  std::any get_acquisition_data() noexcept(false);
 
   /**
    * @brief Returns true if the CCD is busy with the acquisition.
@@ -382,7 +509,7 @@ class ChargeCoupledDevice final : public Device {
    *
    * @throws std::exception When an error occurs on the device side.
    */
-  void abort_acquisition() noexcept(false);
+  void abort_acquisition(bool reset_port) noexcept(false);
 
  private:
 };

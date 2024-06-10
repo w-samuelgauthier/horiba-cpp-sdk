@@ -51,7 +51,12 @@
     "errors": [
     ]
   },
-  "ccd_restart": {},
+  "ccd_restart": {
+    "id": 1234,
+    "command": "ccd_restart",
+    "results":{},
+    "errors": []
+  },
   "ccd_getConfig": {
     "command": "ccd_getConfig",
     "errors": [],
@@ -200,7 +205,12 @@
       "token": 0
     }
   },
-  "ccd_setGain": {},
+  "ccd_setGain": {
+    "command": "ccd_setGain",
+    "id": 1234,
+    "errors": [],
+    "results": {}
+  },
   "ccd_getSpeed": {
     "id": 1234,
     "command": "ccd_getSpeed",
@@ -210,7 +220,12 @@
       "token": 0
     }
   },
-  "ccd_setSpeed": {},
+  "ccd_setSpeed": {
+    "command": "ccd_setSpeed",
+    "id": 1234,
+    "errors": [],
+    "results": {}
+  },
   "ccd_getFitParams": {
     "id": 1234,
     "command": "ccd_getFitParams",
@@ -219,7 +234,12 @@
       "params": "0,1,0,0,0"
     }
   },
-  "ccd_setFitParams": {},
+  "ccd_setFitParams": {
+    "command": "ccd_setFitParams",
+    "id": 1234,
+    "errors": [],
+    "results": {}
+  },
   "ccd_getExposureTime": {
     "id": 1234,
     "command": "ccd_getExposureTime",
@@ -228,7 +248,12 @@
       "time": 0
     }
   },
-  "ccd_setExposureTime": {},
+  "ccd_setExposureTime": {
+    "command": "ccd_setExposureTime",
+    "id": 1234,
+    "errors": [],
+    "results": {}
+  },
   "ccd_getTimerResolution": {
     "id": 1234,
     "command": "ccd_getTimerResolution",
@@ -237,9 +262,24 @@
       "resolution": 1000
     }
   },
-  "ccd_setTimerResolution": {},
-  "ccd_setAcqFormat": {},
-  "ccd_setRoi": {},
+  "ccd_setTimerResolution": {
+    "command": "ccd_setTimerResolution",
+    "id": 1234,
+    "errors": [],
+    "results": {}
+  },
+  "ccd_setAcqFormat": {
+    "command": "ccd_setAcqFormat",
+    "id": 1234,
+    "errors": [],
+    "results": {}
+  },
+  "ccd_setRoi": {
+    "command": "ccd_setRoi",
+    "id": 1234,
+    "errors": [],
+    "results": {}
+  },
   "ccd_getXAxisConversionType": {
     "command": "ccd_getXAxisConversionType",
     "errors": [],
@@ -248,7 +288,12 @@
       "type": 0
     }
   },
-  "ccd_setXAxisConversionType": {},
+  "ccd_setXAxisConversionType": {
+    "command": "ccd_setXAxisConversionType",
+    "errors": [],
+    "id": 0,
+    "results": {}
+  },
   "ccd_getDataRetrievalMethod": {},
   "ccd_setDataRetrievalMethod": {},
   "ccd_getAcqCount": {
@@ -293,7 +338,12 @@
       "timestamp":"2024.04.22 15:07:50.096"
     }
   },
-  "ccd_setAcqCount": {},
+  "ccd_setAcqCount": {
+    "command": "ccd_setAcqCount",
+    "errors": [],
+    "id": 0,
+    "results": {}
+  },
   "ccd_getCleanCount": {
     "command": "ccd_getCleanCount",
     "errors": [],
@@ -303,7 +353,12 @@
       "mode": 238
     }
   },
-  "ccd_setCleanCount": {},
+  "ccd_setCleanCount": {
+    "command": "ccd_setCleanCount",
+    "errors": [],
+    "id": 0,
+    "results": {}
+  },
   "ccd_getDataSize": {
     "command": "ccd_getDataSize",
     "errors": [],
@@ -349,6 +404,12 @@
     "results": {
       "isBusy": false
     }
+  },
+  "ccd_setAcquisitionStart": {
+    "command": "ccd_setAcquisitionStart",
+    "errors": [],
+    "id": 1234,
+    "results": {}
   },
   "ccd_setAcquisitionAbort": {
     "command": "ccd_setAcquisitionAbort",
