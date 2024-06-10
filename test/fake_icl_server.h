@@ -28,8 +28,10 @@ class FakeICLServer {
  public:
   static const int FAKE_ICL_PORT = 8765;
   static const std::string FAKE_ICL_ADDRESS;
+  static std::string FAKE_RESPONSES_FOLDER_PATH;
 
-  FakeICLServer() {
+  FakeICLServer(std::string fake_responses_folder_path)
+      : fake_responses_folder_path{std::move(fake_responses_folder_path)} {
     spdlog::debug("[FakeICLServer] FakeICLServer");
 
     spdlog::debug("[FakeICLServer] load fake responses");
@@ -73,7 +75,8 @@ class FakeICLServer {
  private:
   void load_fake_responses() {
     std::string icl_json_file_path{
-        std::filesystem::absolute("./fake_icl_responses/icl.json").string()};
+        std::filesystem::absolute(fake_responses_folder_path + "icl.json")
+            .string()};
     if (!std::filesystem::exists(icl_json_file_path)) {
       spdlog::error("[FakeICLServer] File '{}' does not exist",
                     icl_json_file_path);
@@ -83,7 +86,8 @@ class FakeICLServer {
     this->icl_data = nlohmann::json::parse(icl_json_file);
 
     std::string ccd_json_file_path{
-        std::filesystem::absolute("./fake_icl_responses/ccd.json").string()};
+        std::filesystem::absolute(fake_responses_folder_path + "ccd.json")
+            .string()};
     if (!std::filesystem::exists(ccd_json_file_path)) {
       spdlog::error("[FakeICLServer] File '{}' does not exist",
                     ccd_json_file_path);
@@ -93,7 +97,8 @@ class FakeICLServer {
     this->ccd_data = nlohmann::json::parse(ccd_json_file);
 
     std::string mono_json_file_path{
-        std::filesystem::absolute("./fake_icl_responses/monochromator.json")
+        std::filesystem::absolute(fake_responses_folder_path +
+                                  "monochromator.json")
             .string()};
     if (!std::filesystem::exists(mono_json_file_path)) {
       spdlog::error("[FakeICLServer] File '{}' does not exist",
@@ -167,9 +172,9 @@ class FakeICLServer {
   nlohmann::json icl_data;
   nlohmann::json ccd_data;
   nlohmann::json mono_data;
+  const std::string fake_responses_folder_path;
 };
 
 inline const std::string FakeICLServer::FAKE_ICL_ADDRESS = "127.0.0.1";
-
 }  // namespace horiba::test
 #endif /* ifndef FAKE_ICL_SERVER_H */

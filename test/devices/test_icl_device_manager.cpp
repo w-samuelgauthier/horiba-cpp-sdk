@@ -21,8 +21,7 @@ namespace horiba::test {
 
 using json = nlohmann::json;
 
-TEST_CASE_METHOD(FakeICLServer, "ICL Device Manager test with fake ICL",
-                 "[icl_device_manager]") {
+TEST_CASE("ICL Device Manager test with fake ICL", "[icl_device_manager]") {
   spdlog::set_level(spdlog::level::debug);
 
   // arrange

@@ -15,7 +15,7 @@ using Catch::Matchers::WithinAbs;
 using namespace horiba::devices::single_devices;
 using namespace horiba::communication;
 
-TEST_CASE_METHOD(FakeICLServer, "Mono test with fake ICL", "[mono_no_hw]") {
+TEST_CASE("Mono test with fake ICL", "[mono_no_hw]") {
   // arrange
   auto websocket_communicator = std::make_shared<WebSocketCommunicator>(
       FakeICLServer::FAKE_ICL_ADDRESS,

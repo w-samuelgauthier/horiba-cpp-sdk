@@ -16,8 +16,7 @@ namespace horiba::test {
 using namespace horiba::devices::single_devices;
 using namespace horiba::communication;
 
-TEST_CASE_METHOD(FakeICLServer, "CCDs Discovery with fake ICL",
-                 "[ccd_discovery]") {
+TEST_CASE("CCDs Discovery with fake ICL", "[ccd_discovery]") {
   // arrange
   auto websocket_communicator = std::make_shared<WebSocketCommunicator>(
       FakeICLServer::FAKE_ICL_ADDRESS,

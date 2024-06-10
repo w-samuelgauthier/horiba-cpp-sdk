@@ -77,106 +77,93 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     auto configuration = ccd.get_configuration();
 
     // assert
-    // TODO: At the moment we do not know how the configuration looks like,
-    // hence it is empty
-    REQUIRE(configuration.empty() == true);
-  }
-
-  // TODO CCD Does not support averaging
-  SECTION("CCD number of averages") {
-    // arrange
-    ccd.open();
-
-    // act
-    auto number_of_averages = ccd.get_number_of_averages();
-
-    // assert
-    // TODO: At the moment this function is not supported by the ICL
-    REQUIRE(number_of_averages == 0);
+    REQUIRE(configuration.empty() == false);
   }
 
   SECTION("CCD get gain") {
     // arrange
+    auto expected_gain = 0;
     ccd.open();
 
     // act
-    auto gain = ccd.get_gain();
+    auto gain = ccd.get_gain_token();
 
     // assert
-    REQUIRE(gain == ChargeCoupledDevice::Gain::HIGH_LIGHT);
+    REQUIRE(gain == expected_gain);
   }
 
   SECTION("CCD gain can be set") {
     // arrange
+    auto expected_gain_before = 1;
+    auto expected_gain_after = 0;
     ccd.open();
-    REQUIRE_NOTHROW(ccd.set_gain(ChargeCoupledDevice::Gain::HIGH_LIGHT));
-    auto gain_before = ccd.get_gain();
+    REQUIRE_NOTHROW(ccd.set_gain(expected_gain_before));
+    auto actual_gain_before = ccd.get_gain_token();
 
     // act
-    REQUIRE_NOTHROW(
-        ccd.set_gain(ChargeCoupledDevice::Gain::BEST_DYNAMIC_RANGE));
-    auto gain_after = ccd.get_gain();
+    REQUIRE_NOTHROW(ccd.set_gain(expected_gain_after));
+    auto actual_gain_after = ccd.get_gain_token();
 
     // assert
-    REQUIRE(gain_before != gain_after);
-    REQUIRE(gain_before == ChargeCoupledDevice::Gain::HIGH_LIGHT);
-    REQUIRE(gain_after == ChargeCoupledDevice::Gain::BEST_DYNAMIC_RANGE);
+    REQUIRE(actual_gain_before == expected_gain_before);
+    REQUIRE(actual_gain_after == expected_gain_after);
   }
 
   SECTION("CCD get speed") {
     // arrange
     ccd.open();
+    auto expected_speed = 0;
 
     // act
-    auto speed = ccd.get_speed();
+    auto speed = ccd.get_speed_token();
 
     // assert
-    REQUIRE(speed == ChargeCoupledDevice::Speed::SLOW_45_kHz);
+    REQUIRE(speed == expected_speed);
   }
 
   SECTION("CCD speed can be set") {
     // arrange
+    auto expected_speed_before = 1;
+    auto expected_speed_after = 0;
     ccd.open();
-    REQUIRE_NOTHROW(ccd.set_speed(ChargeCoupledDevice::Speed::SLOW_45_kHz));
-    auto speed_before = ccd.get_speed();
+    REQUIRE_NOTHROW(ccd.set_speed(expected_speed_before));
+    auto actual_speed_before = ccd.get_speed_token();
 
     // act
-    REQUIRE_NOTHROW(ccd.set_speed(ChargeCoupledDevice::Speed::MEDIUM_1_MHz));
-    auto speed_after = ccd.get_speed();
+    REQUIRE_NOTHROW(ccd.set_speed(expected_speed_after));
+    auto actual_speed_after = ccd.get_speed_token();
 
     // assert
-    REQUIRE(speed_before != speed_after);
-    REQUIRE(speed_before == ChargeCoupledDevice::Speed::SLOW_45_kHz);
-    REQUIRE(speed_after == ChargeCoupledDevice::Speed::MEDIUM_1_MHz);
+    REQUIRE(actual_speed_before == expected_speed_before);
+    REQUIRE(actual_speed_after == expected_speed_after);
   }
 
-  SECTION("CCD get fit params") {
+  SECTION("CCD get fit parameters") {
     // arrange
     ccd.open();
 
     // act
-    auto fit_params = ccd.get_fit_params();
+    auto fit_parameters = ccd.get_fit_parameters();
 
     // assert
-    // TODO: at the moment we do not know what is returned, so it stays a string
-    REQUIRE(fit_params == "0,1,0,0,0");
+    std::vector<int> expected_fit_parameters = {0, 1, 0, 0, 0};
+    REQUIRE(fit_parameters == expected_fit_parameters);
   }
 
-  // TODO Isn't set at the moment
-  SECTION("CCD fit params can be set") {
+  SECTION("CCD fit parameters can be set") {
     // arrange
     ccd.open();
-    REQUIRE_NOTHROW(ccd.set_fit_params("0,1,0,0,0"));
-    auto fit_params_before = ccd.get_fit_params();
+    std::vector<int> fit_parameters = {0, 1, 0, 0, 0};
+    REQUIRE_NOTHROW(ccd.set_fit_parameters(fit_parameters));
+    auto fit_parameters_before = ccd.get_fit_parameters();
 
     // act
-    REQUIRE_NOTHROW(ccd.set_fit_params("0,1,0,0,1"));
-    auto fit_params_after = ccd.get_fit_params();
+    fit_parameters = {0, 1, 0, 0, 1};
+    REQUIRE_NOTHROW(ccd.set_fit_parameters(fit_parameters));
+    auto fit_parameters_after = ccd.get_fit_parameters();
 
     // assert
-    REQUIRE(fit_params_before != fit_params_after);
-    REQUIRE(fit_params_before != "0,1,0,0,0");
-    REQUIRE(fit_params_after != "0,1,0,0,1");
+    REQUIRE(fit_parameters_before != fit_parameters_after);
   }
 
   SECTION("CCD get timer resolution") {
@@ -187,25 +174,28 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     auto timer_resolution = ccd.get_timer_resolution();
 
     // assert
-    // TODO: check if this is the case
-    REQUIRE(timer_resolution == 1000);
+    REQUIRE(timer_resolution ==
+            ChargeCoupledDevice::TimerResolution::THOUSAND_MICROSECONDS);
   }
 
-  // TODO What are the possible timer resolutions and what is supported?
   SECTION("CCD timer resolution can be set") {
     // arrange
     ccd.open();
-    REQUIRE_NOTHROW(ccd.set_timer_resolution(1000));
+    REQUIRE_NOTHROW(ccd.set_timer_resolution(
+        ChargeCoupledDevice::TimerResolution::THOUSAND_MICROSECONDS));
     auto timer_resolution_before = ccd.get_timer_resolution();
 
     // act
-    REQUIRE_NOTHROW(ccd.set_timer_resolution(2000));
+    REQUIRE_NOTHROW(ccd.set_timer_resolution(
+        ChargeCoupledDevice::TimerResolution::ONE_MICROSECOND));
     auto timer_resolution_after = ccd.get_timer_resolution();
 
     // assert
     REQUIRE(timer_resolution_before != timer_resolution_after);
-    REQUIRE(timer_resolution_before == 1000);
-    REQUIRE(timer_resolution_after == 2000);
+    REQUIRE(timer_resolution_before ==
+            ChargeCoupledDevice::TimerResolution::THOUSAND_MICROSECONDS);
+    REQUIRE(timer_resolution_after ==
+            ChargeCoupledDevice::TimerResolution::ONE_MICROSECOND);
   }
 
   SECTION("CCD acquisition format can be set") {
@@ -286,7 +276,9 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     auto clean_count = ccd.get_clean_count();
 
     // assert
-    REQUIRE(clean_count == "count: 1 mode: 0");
+    std::pair<int, ChargeCoupledDevice::CleanCountMode> expected_clean_count = {
+        1, ChargeCoupledDevice::CleanCountMode::MODE_1};
+    REQUIRE(clean_count == expected_clean_count);
   }
 
   // TODO: doesn't seem to work yet
@@ -302,10 +294,16 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
         ccd.set_clean_count(2, ChargeCoupledDevice::CleanCountMode::MODE_1));
     auto clean_count_after = ccd.get_clean_count();
 
+    std::pair<int, ChargeCoupledDevice::CleanCountMode>
+        expected_clean_count_before = {
+            0, ChargeCoupledDevice::CleanCountMode::MODE_1};
+    std::pair<int, ChargeCoupledDevice::CleanCountMode>
+        expected_clean_count_after = {
+            2, ChargeCoupledDevice::CleanCountMode::MODE_1};
     // assert
     REQUIRE(clean_count_before != clean_count_after);
-    REQUIRE(clean_count_before == "count: 0 mode: 238");
-    REQUIRE(clean_count_after == "count: 2 mode: 238");
+    REQUIRE(clean_count_before == expected_clean_count_before);
+    REQUIRE(clean_count_after == expected_clean_count_after);
   }
 
   SECTION("CCD get data size") {
@@ -313,7 +311,7 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     ccd.open();
 
     // act
-    auto data_size = ccd.get_data_size();
+    auto data_size = ccd.get_acquisition_data_size();
 
     // assert
     REQUIRE(data_size == 1024);
@@ -407,7 +405,7 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     auto acquisition_data = ccd.get_acquisition_data();
 
     // assert
-    REQUIRE(acquisition_data.empty() == true);
+    REQUIRE(acquisition_data.has_value() == false);
   }
 
   SECTION("CCD get acquisition busy") {
@@ -421,21 +419,22 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     REQUIRE(acquisition_busy == false);
   }
 
-  // TODO: How to know it was aborted?
   SECTION("CCD acquisition can be aborted") {
     // arrange
     ccd.open();
 
     REQUIRE_NOTHROW(ccd.set_acquisition_count(1));
-    REQUIRE_NOTHROW(ccd.set_exposure_time(10000));
+    REQUIRE_NOTHROW(ccd.set_exposure_time(100000));
     REQUIRE_NOTHROW(ccd.set_region_of_interest());
     REQUIRE_NOTHROW(ccd.set_x_axis_conversion_type(
         ChargeCoupledDevice::XAxisConversionType::NONE));
     REQUIRE_NOTHROW(ccd.set_acquisition_start(true));
 
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
     // act
     auto acquisition_busy_before_abort = ccd.get_acquisition_busy();
-    REQUIRE_NOTHROW(ccd.abort_acquisition());
+    REQUIRE_NOTHROW(ccd.abort_acquisition(true));
 
     int wait_ms = 500;
     int total_waited_time_ms = 0;

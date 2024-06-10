@@ -17,8 +17,8 @@ namespace horiba::test {
 
 using json = nlohmann::json;
 
-TEST_CASE_METHOD(FakeICLServer, "WebSocket communicator test with fake ICL",
-                 "[websocket_communicator]") {
+TEST_CASE("WebSocket communicator test with fake ICL",
+          "[websocket_communicator]") {
   // arrange
   horiba::communication::WebSocketCommunicator websocket_communicator(
       FakeICLServer::FAKE_ICL_ADDRESS,

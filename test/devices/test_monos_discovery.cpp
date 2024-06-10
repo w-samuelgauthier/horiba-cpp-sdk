@@ -16,8 +16,7 @@ namespace horiba::test {
 using namespace horiba::devices::single_devices;
 using namespace horiba::communication;
 
-TEST_CASE_METHOD(FakeICLServer, "Monochromators Discovery with fake ICL",
-                 "[mono_discovery]") {
+TEST_CASE("Monochromators Discovery with fake ICL", "[mono_discovery]") {
   // arrange
   auto websocket_communicator = std::make_shared<WebSocketCommunicator>(
       FakeICLServer::FAKE_ICL_ADDRESS,
