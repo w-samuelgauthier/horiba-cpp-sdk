@@ -42,7 +42,7 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     auto ccd_open = ccd.is_open();
 
     // assert
-    REQUIRE(ccd_open == true);
+    REQUIRE(ccd_open);
   }
 
   SECTION("CCD can be closed") {
@@ -56,8 +56,8 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     auto ccd_open_after_close = ccd.is_open();
 
     // assert
-    REQUIRE(ccd_open_before_close == true);
-    REQUIRE(ccd_open_after_close == false);
+    REQUIRE(ccd_open_before_close);
+    REQUIRE_FALSE(ccd_open_after_close);
   }
 
   SECTION("CCD can be restarted") {
@@ -67,6 +67,13 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     // act
     // assert
     REQUIRE_NOTHROW(ccd.restart());
+
+    int timeout_s = 4;
+    int current_timeout_s = 0;
+    while (current_timeout_s < timeout_s) {
+      std::this_thread::sleep_for(std::chrono::seconds(1));
+      current_timeout_s++;
+    }
   }
 
   SECTION("CCD configuration can be accessed") {
@@ -77,7 +84,7 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     auto configuration = ccd.get_configuration();
 
     // assert
-    REQUIRE(configuration.empty() == false);
+    REQUIRE_FALSE(configuration.empty());
   }
 
   SECTION("CCD get gain") {
@@ -281,7 +288,6 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     REQUIRE(clean_count == expected_clean_count);
   }
 
-  // TODO: doesn't seem to work yet
   SECTION("CCD clean count can be set") {
     // arrange
     ccd.open();
