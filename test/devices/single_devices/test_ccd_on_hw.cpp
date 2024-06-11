@@ -7,6 +7,7 @@
 #include <chrono>
 #include <cstdlib>
 #include <thread>
+#include <tuple>
 
 #include "../../icl_exe.h"
 
@@ -373,6 +374,79 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     REQUIRE(exposure_time_after == 1000);
   }
 
+  SECTION("CCD ROI") {
+    // arrange
+    ccd.open();
+    ccd.set_exposure_time(100);
+    ccd.set_acquisition_format(1, AcquisitionFormat::IMAGE);
+
+    // act
+    ccd.set_region_of_interest(0, 0, 0, 1000, 200, 1, 200);
+    if (ccd.get_acquisition_ready()) {
+      ccd.set_acquisition_start(true);
+
+      while (ccd.get_acquisition_busy()) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+      }
+
+      auto acquistion_data_size = ccd.get_acquisition_data_size();
+      auto acquisition_data = ccd.get_acquisition_data();
+
+      // assert
+      REQUIRE(acquistion_data_size == 1000);
+      REQUIRE(acquisition_data.has_value());
+      REQUIRE(acquisition_data[0]["roi"][0]["xOrigin"] == 0);
+    }
+  }
+
+  SECTION("CCD Trigger In") {
+    // arrange
+    ccd.open();
+    auto expected_trigger_input_before = std::make_tuple(false, -1, -1, -1);
+    auto expected_trigger_input_after = std::make_tuple(true, 0, 0, 0);
+
+    // act
+    ccd.set_trigger_input(std::get<0>(expected_trigger_input_before),
+                          std::get<1>(expected_trigger_input_before),
+                          std::get<2>(expected_trigger_input_before),
+                          std::get<3>(expected_trigger_input_before));
+    auto trigger_input_before = ccd.get_trigger_input();
+
+    ccd.set_trigger_input(std::get<0>(expected_trigger_input_after),
+                          std::get<1>(expected_trigger_input_after),
+                          std::get<2>(expected_trigger_input_after),
+                          std::get<3>(expected_trigger_input_after));
+    auto trigger_input_after = ccd.get_trigger_input();
+
+    // assert
+    REQUIRE(trigger_input_before == expected_trigger_input_before);
+    REQUIRE(trigger_input_after == expected_trigger_input_after);
+  }
+
+  SECTION("CCD Signal Out") {
+    // arrange
+    ccd.open();
+    auto expected_signal_output_before = std::make_tuple(false, -1, -1, -1);
+    auto expected_signal_output_after = std::make_tuple(true, 0, 0, 0);
+
+    // act
+    ccd.set_signal_output(std::get<0>(expected_signal_output_before),
+                          std::get<1>(expected_signal_output_before),
+                          std::get<2>(expected_signal_output_before),
+                          std::get<3>(expected_signal_output_before));
+    auto signal_output_before = ccd.get_signal_output();
+
+    ccd.set_signal_output(std::get<0>(expected_signal_output_after),
+                          std::get<1>(expected_signal_output_after),
+                          std::get<2>(expected_signal_output_after),
+                          std::get<3>(expected_signal_output_after));
+    auto signal_output_after = ccd.get_signal_output();
+
+    // assert
+    REQUIRE(signal_output_before == expected_signal_output_before);
+    REQUIRE(signal_output_after == expected_signal_output_after);
+  }
+
   SECTION("CCD get acquisition ready") {
     // arrange
     ccd.open();
@@ -407,11 +481,21 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     // arrange
     ccd.open();
 
+    const int exposure_time = 100;
+    REQUIRE_NOTHROW(ccd.set_acquisition_count(1));
+    REQUIRE_NOTHROW(ccd.set_exposure_time(exposure_time));
+    REQUIRE_NOTHROW(ccd.set_region_of_interest());
+    REQUIRE_NOTHROW(ccd.set_x_axis_conversion_type(
+        ChargeCoupledDevice::XAxisConversionType::NONE));
+    REQUIRE_NOTHROW(ccd.set_acquisition_start(true));
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
     // act
     auto acquisition_data = ccd.get_acquisition_data();
 
     // assert
-    REQUIRE(acquisition_data.has_value() == false);
+    REQUIRE(acquisition_data.has_value());
   }
 
   SECTION("CCD get acquisition busy") {

@@ -39,7 +39,6 @@ ChargeCoupledDevice::get_configuration() {
   auto response = Device::execute_command(communication::Command(
       "ccd_getConfig", {{"index", Device::device_id()}}));
   auto results = response.json_results();
-  auto t = results.at("configuration");
 
   std::unordered_map<std::string, std::any> configuration;
   for (const auto& [key, value] : results.items()) {
