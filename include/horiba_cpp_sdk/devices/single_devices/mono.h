@@ -22,44 +22,50 @@ class Monochromator final : public Device {
   ~Monochromator() override = default;
 
   /**
+   * @brief Shutters installed in the monochromator. Depending on the model, not
+   * all shutters may be available.
+   */
+  enum class Shutter : int { FIRST, SECOND };
+
+  /**
    * @brief Position of the shutter
    */
   enum class ShutterPosition : int { CLOSED, OPENED };
 
   /**
-   * @brief Gratings installed in the monochromator
+   * @brief Gratings installed in the monochromator. Depending on the model, not
+   * all gratings may be available.
    */
   enum class Grating : int { FIRST, SECOND, THIRD };
 
   /**
+   * @brief Filter wheels installed in the monochromator. Depending on the
+   * model, not all filter wheels may be available.
+   */
+  enum class FilterWheel : int { FIRST, SECOND };
+
+  /**
    * @brief Positions of the filter wheel installed in the monochromator.
-   * TODO : clarify naming of filter wheel positions
+   * Depending on the model, not all positions may be available.
    */
   enum class FilterWheelPosition : int { RED, GREEN, BLUE, YELLOW };
 
   /**
-   * @brief Mirrors installed in the monochromator
-   * TODO : clarify how the mirrors are called
+   * @brief Mirrors installed in the monochromator. Depending on the model, not
+   * all mirrors may be available.
    */
   enum class Mirror : int { FIRST, SECOND };
 
   /**
    * @brief Possible positions of the mirrors
-   * TODO : clarify what possible position there are
    */
-  enum class MirrorPosition : int { A, B };
+  enum class MirrorPosition : int { AXIAL, LATERAL };
 
   /**
-   * @brief Slits available on the monochromator.
-   * TODO : clarify how the slits are called
+   * @brief Slits available on the monochromator. Depending on the model, not
+   * all slits may be available.
    */
   enum class Slit : int { A, B, C, D };
-
-  /**
-   * @brief Slits steps available on the monochromator.
-   * TODO : clarify how the slits are called
-   */
-  enum class SlitStepPosition : int { A, B, C, D };
 
   /**
    * @brief Opens the device.
@@ -118,7 +124,7 @@ class Monochromator final : public Device {
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
-  float get_current_wavelength() noexcept(false);
+  double get_current_wavelength() noexcept(false);
 
   /**
    * @brief This command sets the wavelength value of the current grating
@@ -131,7 +137,7 @@ class Monochromator final : public Device {
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
-  void calibrate_wavelength(float wavelength) noexcept(false);
+  void calibrate_wavelength(double wavelength) noexcept(false);
 
   /**
    * @brief Orders the monochromator to move to the requested wavelength.
@@ -142,7 +148,7 @@ class Monochromator final : public Device {
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
-  void move_to_target_wavelength(float wavelength) noexcept(false);
+  void move_to_target_wavelength(double wavelength) noexcept(false);
 
   /**
    * @brief Current grating of the turret
@@ -167,31 +173,30 @@ class Monochromator final : public Device {
   /**
    * @brief Current position of the filter wheel.
    *
-   * TODO: refactor in case there can be more than one filter wheel. What should
-   * be done if no filter wheel is installed ?
+   * @param filter_wheel Desired filter wheel to get the position from
    *
    * @return current position of the filter wheel. See
    * Monochromator::FilterWheelPosition enum for possible values.
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
-  FilterWheelPosition get_filter_wheel_position() noexcept(false);
+  FilterWheelPosition get_filter_wheel_position(
+      FilterWheel filter_wheel) noexcept(false);
 
   /**
    * @brief Sets the current position of the filter wheel.
    *
+   * @param filter_wheel Desired filter wheel to set the position
    * @param position New position of the filter wheel. See
    * Monochromator::FilterWheelPosition enum for possible values.
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
-  void set_filter_wheel_position(FilterWheelPosition position) noexcept(false);
+  void set_filter_wheel_position(FilterWheel filter_wheel,
+                                 FilterWheelPosition position) noexcept(false);
 
   /**
    * @brief Position of the selected mirror
-   *
-   * TODO: Get more information about possible values and explain elements
-   * contained in monochromator at top of this class.
    *
    * @param mirror Desired mirror to get the position from. See
    * Monochromator::Mirror for possible values.
@@ -206,9 +211,6 @@ class Monochromator final : public Device {
   /**
    * @brief Sets the position of the selected mirror
    *
-   * TODO: Get more information about possible values and explain elements
-   * contained in monochromator at top of this class.
-   *
    * @param mirror Desired mirror to set the position. See Monochromator::Mirror
    * @param position Position to set. See Monochromator::MirrorPosition
    *
@@ -220,9 +222,6 @@ class Monochromator final : public Device {
   /**
    * @brief Returns the position in millimeters[mm] of the selected slit.
    *
-   * TODO: Get more information about possible values and explain elements
-   * contained in monochromator at top of this class.
-   *
    * @param slit Desired slit to get the position from. See Monochromator::Slit
    * for possible values
    *
@@ -230,13 +229,10 @@ class Monochromator final : public Device {
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
-  float get_slit_position_in_mm(Slit slit) noexcept(false);
+  double get_slit_position_in_mm(Slit slit) noexcept(false);
 
   /**
    * @brief Sets the position of the selected slit.
-   *
-   * TODO: Get more information about possible values and explain elements
-   * contained in monochromator at top of this class.
    *
    * @param slit Desired slit to set the position. See Monochromator::Slit for
    * possible values. position Position to set in millimeters[mm].
@@ -244,39 +240,29 @@ class Monochromator final : public Device {
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
-  void set_slit_position(Slit slit, float position_in_mm) noexcept(false);
+  void set_slit_position(Slit slit, double position_in_mm) noexcept(false);
 
   /**
    * @brief Returns the step position of the selected slit.
    *
-   * TODO: Get more information about possible values and explain elements
-   * contained in monochromator at top of this class.
+   * @param slit Desired slit to get the position from.
    *
-   * @param slit Desired slit to get the position from. See Monochromator::Slit
-   * for possible values
-   *
-   * @return Returns SlitStepPosition step position. See
-   * Monochromator::SlitStepPosition for possible values
+   * @return Returns the step position.
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
-  SlitStepPosition get_slit_step_position(Slit slit) noexcept(false);
+  int get_slit_step_position(Slit slit) noexcept(false);
 
   /**
    * @brief Sets the step position of the selected slit.
    *
-   * TODO: Get more information about possible values and explain elements
-   * contained in monochromator at top of this class.
-   *
    * @param slit Desired slit to set the step position. See Monochromator::Slit
    * for possible values.
-   * @param step_position The step position. See Monochromator::SlitStepPosition
-   * for possible values
+   * @param step_position The step position.
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
-  void set_slit_step_position(Slit slit,
-                              SlitStepPosition step_position) noexcept(false);
+  void set_slit_step_position(Slit slit, int step_position) noexcept(false);
 
   /**
    * @brief Opens the shutter.
@@ -295,11 +281,24 @@ class Monochromator final : public Device {
   /**
    * @brief Returns the shutter position.
    *
+   * @param shutter Desired shutter to get the position from. See
+   * Monochromator::Shutter.
+   *
    * @return ShutterPosition::OPEN or ShutterPosition::CLOSED
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
-  ShutterPosition get_shutter_position() noexcept(false);
+  ShutterPosition get_shutter_position(Shutter shutter) noexcept(false);
+
+  /**
+   * @brief Blocking waits until the monochromator is ready.
+   *
+   * @param timeout Maximum time, in seconds [s], to wait for the monochromator
+   * to be ready.
+   *
+   * @throw std::runtime_error when the timeout is reached
+   */
+  void wait_until_ready(std::chrono::seconds timeout) noexcept(false);
 };
 }  // namespace horiba::devices::single_devices
 #endif /* ifndef MONO_H */

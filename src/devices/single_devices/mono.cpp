@@ -1,6 +1,8 @@
 #include <horiba_cpp_sdk/communication/command.h>
 #include <horiba_cpp_sdk/devices/single_devices/mono.h>
 
+#include <thread>
+
 namespace horiba::devices::single_devices {
 Monochromator::Monochromator(
     int id, std::shared_ptr<communication::Communicator> communicator)
@@ -43,20 +45,20 @@ std::string Monochromator::configuration() {
   return json_results.dump();
 }
 
-float Monochromator::get_current_wavelength() {
+double Monochromator::get_current_wavelength() {
   auto response = Device::execute_command(communication::Command(
       "mono_getPosition", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
-  return json_results.at("wavelength").get<float>();
+  return json_results.at("wavelength").get<double>();
 }
 
-void Monochromator::calibrate_wavelength(float wavelength) {
+void Monochromator::calibrate_wavelength(double wavelength) {
   auto _ignored_response = Device::execute_command(communication::Command(
       "mono_setPosition",
       {{"index", Device::device_id()}, {"wavelength", wavelength}}));
 }
 
-void Monochromator::move_to_target_wavelength(float wavelength) {
+void Monochromator::move_to_target_wavelength(double wavelength) {
   auto _ignored_response = Device::execute_command(communication::Command(
       "mono_moveToPosition",
       {{"index", Device::device_id()}, {"wavelength", wavelength}}));
@@ -77,24 +79,23 @@ void Monochromator::set_turret_grating(Grating grating) {
                            {"position", static_cast<int>(grating)}}));
 }
 
-Monochromator::FilterWheelPosition Monochromator::get_filter_wheel_position() {
-  // TODO: refactor in case there can be more than one filter wheel. What should
-  // be done if no filter wheel is installed?
+Monochromator::FilterWheelPosition Monochromator::get_filter_wheel_position(
+    FilterWheel filter_wheel) {
   auto response = Device::execute_command(
       communication::Command("mono_getFilterWheelPosition",
-                             {{"index", Device::device_id()}, {"type", 1}}));
+                             {{"index", Device::device_id()},
+                              {"type", static_cast<int>(filter_wheel)}}));
   auto json_results = response.json_results();
   auto position = json_results.at("position").get<int>();
 
   return static_cast<Monochromator::FilterWheelPosition>(position);
 }
 
-void Monochromator::set_filter_wheel_position(FilterWheelPosition position) {
-  // TODO: refactor in case there can be more than one filter wheel. What should
-  // be done if no filter wheel is installed?
+void Monochromator::set_filter_wheel_position(FilterWheel filter_wheel,
+                                              FilterWheelPosition position) {
   auto _ignored_response = Device::execute_command(communication::Command(
       "mono_moveFilterWheel", {{"index", Device::device_id()},
-                               {"type", 1},
+                               {"type", static_cast<int>(filter_wheel)},
                                {"position", static_cast<int>(position)}}));
 }
 
@@ -117,40 +118,38 @@ void Monochromator::set_mirror_position(Mirror mirror,
                           {"position", static_cast<int>(position)}}));
 }
 
-float Monochromator::get_slit_position_in_mm(Slit slit) {
+double Monochromator::get_slit_position_in_mm(Slit slit) {
   auto response = Device::execute_command(communication::Command(
       "mono_getSlitPositionInMM",
       {{"index", Device::device_id()}, {"id", static_cast<int>(slit)}}));
   auto json_results = response.json_results();
-  auto position = json_results.at("position").get<float>();
+  auto position = json_results.at("position").get<double>();
 
   return position;
 }
 
-void Monochromator::set_slit_position(Slit slit, float position_in_mm) {
+void Monochromator::set_slit_position(Slit slit, double position_in_mm) {
   auto _ignored_response = Device::execute_command(communication::Command(
       "mono_moveSlitMM", {{"index", Device::device_id()},
                           {"id", static_cast<int>(slit)},
                           {"position", position_in_mm}}));
 }
 
-Monochromator::SlitStepPosition Monochromator::get_slit_step_position(
-    Slit slit) {
+int Monochromator::get_slit_step_position(Slit slit) {
   auto response = Device::execute_command(communication::Command(
       "mono_getSlitStepPosition",
       {{"index", Device::device_id()}, {"id", static_cast<int>(slit)}}));
   auto json_results = response.json_results();
   auto position = json_results.at("position").get<int>();
 
-  return static_cast<Monochromator::SlitStepPosition>(position);
+  return position;
 }
 
-void Monochromator::set_slit_step_position(Slit slit,
-                                           SlitStepPosition step_position) {
-  auto _ignored_response = Device::execute_command(communication::Command(
-      "mono_moveSlit", {{"index", Device::device_id()},
-                        {"type", static_cast<int>(slit)},
-                        {"position", static_cast<int>(step_position)}}));
+void Monochromator::set_slit_step_position(Slit slit, int step_position) {
+  auto _ignored_response = Device::execute_command(
+      communication::Command("mono_moveSlit", {{"index", Device::device_id()},
+                                               {"type", static_cast<int>(slit)},
+                                               {"position", step_position}}));
 }
 
 void Monochromator::open_shutter() {
@@ -163,13 +162,32 @@ void Monochromator::close_shutter() {
       "mono_shutterClose", {{"index", Device::device_id()}}));
 }
 
-Monochromator::ShutterPosition Monochromator::get_shutter_position() {
+Monochromator::ShutterPosition Monochromator::get_shutter_position(
+    Shutter shutter) {
   auto response = Device::execute_command(communication::Command(
       "mono_getShutterStatus", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
-  auto position = json_results.at("position").get<int>();
+  ShutterPosition position = ShutterPosition::CLOSED;
+  if (shutter == Shutter::FIRST) {
+    position = json_results.at("shutter 1").get<ShutterPosition>();
+  } else if (shutter == Shutter::SECOND) {
+    position = json_results.at("shutter 2").get<ShutterPosition>();
+  }
 
-  return static_cast<Monochromator::ShutterPosition>(position);
+  return position;
+}
+
+void Monochromator::wait_until_ready(std::chrono::seconds timeout) {
+  int current_timeout_s = 0;
+  while (this->is_busy() && current_timeout_s < timeout.count()) {
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    current_timeout_s++;
+  }
+
+  if (this->is_busy()) {
+    throw std::runtime_error(
+        "timeout reached while waiting for monochromator to be ready");
+  }
 }
 
 } /* namespace horiba::devices::single_devices */

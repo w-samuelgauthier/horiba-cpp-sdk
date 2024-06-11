@@ -77,21 +77,24 @@ TEST_CASE("Mono test with fake ICL", "[mono_no_hw]") {
   SECTION("Mono get current wavelength") {
     // arrange
     mono.open();
+    const auto expected_wavelength = 320.0;
+    const auto tolerance = 0.001;
 
     // act
-    auto wavelength = mono.get_current_wavelength();
+    auto actual_wavelength = mono.get_current_wavelength();
 
     // assert
-    REQUIRE_THAT(wavelength, WithinAbs(320.0, 0.001));
+    REQUIRE_THAT(actual_wavelength, WithinAbs(expected_wavelength, tolerance));
   }
 
   SECTION("Mono wavelenght can be set") {
     // arrange
     mono.open();
+    const auto wavelength = 120.0;
 
     // act
     // assert
-    REQUIRE_NOTHROW(mono.calibrate_wavelength(120.0));
+    REQUIRE_NOTHROW(mono.calibrate_wavelength(wavelength));
     // we do not check if the new wavelength is set, as the fake answer from the
     // ICL always returns the same value
   }
@@ -99,10 +102,11 @@ TEST_CASE("Mono test with fake ICL", "[mono_no_hw]") {
   SECTION("Mono move to target wavelength") {
     // arrange
     mono.open();
+    const auto wavelength = 125.0;
 
     // act
     // assert
-    REQUIRE_NOTHROW(mono.move_to_target_wavelength(125.0));
+    REQUIRE_NOTHROW(mono.move_to_target_wavelength(wavelength));
     // we do not check if the new wavelength is set, as the fake answer from the
     // ICL always returns the same value
   }
@@ -132,22 +136,27 @@ TEST_CASE("Mono test with fake ICL", "[mono_no_hw]") {
   SECTION("Mono get filter wheel position") {
     // arrange
     mono.open();
+    const auto filter_wheel = Monochromator::FilterWheel::FIRST;
+    const auto expected_filter_wheel_position =
+        Monochromator::FilterWheelPosition::RED;
 
     // act
-    auto filter_wheel_position = mono.get_filter_wheel_position();
+    auto filter_wheel_position = mono.get_filter_wheel_position(filter_wheel);
 
     // assert
-    REQUIRE(filter_wheel_position == Monochromator::FilterWheelPosition::RED);
+    REQUIRE(filter_wheel_position == expected_filter_wheel_position);
   }
 
   SECTION("Mono set filter wheel position") {
     // arrange
     mono.open();
+    const auto filter_wheel = Monochromator::FilterWheel::FIRST;
+    const auto filter_wheel_position = Monochromator::FilterWheelPosition::BLUE;
 
     // act
     // assert
-    REQUIRE_NOTHROW(mono.set_filter_wheel_position(
-        Monochromator::FilterWheelPosition::BLUE));
+    REQUIRE_NOTHROW(
+        mono.set_filter_wheel_position(filter_wheel, filter_wheel_position));
     // we do not check if the new filter wheel position is set, as the fake
     // answer from the ICL always returns the same value
   }
@@ -155,23 +164,25 @@ TEST_CASE("Mono test with fake ICL", "[mono_no_hw]") {
   SECTION("Mono get mirror position") {
     // arrange
     mono.open();
+    const auto mirror = Monochromator::Mirror::FIRST;
+    const auto expected_mirror_position = Monochromator::MirrorPosition::AXIAL;
 
     // act
-    auto mirror_position =
-        mono.get_mirror_position(Monochromator::Mirror::FIRST);
+    auto mirror_position = mono.get_mirror_position(mirror);
 
     // assert
-    REQUIRE(mirror_position == Monochromator::MirrorPosition::A);
+    REQUIRE(mirror_position == expected_mirror_position);
   }
 
   SECTION("Mono mirror position can be set") {
     // arrange
     mono.open();
+    const auto mirror = Monochromator::Mirror::FIRST;
+    const auto mirror_position = Monochromator::MirrorPosition::LATERAL;
 
     // act
     // assert
-    REQUIRE_NOTHROW(mono.set_mirror_position(Monochromator::Mirror::FIRST,
-                                             Monochromator::MirrorPosition::B));
+    REQUIRE_NOTHROW(mono.set_mirror_position(mirror, mirror_position));
     // we do not check if the new position is set, as the fake answer
     // from the ICL always returns the same value
   }
@@ -179,12 +190,14 @@ TEST_CASE("Mono test with fake ICL", "[mono_no_hw]") {
   SECTION("Mono get slit position") {
     // arrange
     mono.open();
+    const auto tolerance = 0.001;
+    const auto slit = Monochromator::Slit::A;
 
     // act
-    auto slit_position = mono.get_slit_position_in_mm(Monochromator::Slit::A);
+    auto slit_position = mono.get_slit_position_in_mm(slit);
 
     // assert
-    REQUIRE_THAT(slit_position, WithinAbs(1.5, 0.001));
+    REQUIRE_THAT(slit_position, WithinAbs(1.5, tolerance));
   }
 
   SECTION("Mono slit position can be set") {
@@ -201,23 +214,25 @@ TEST_CASE("Mono test with fake ICL", "[mono_no_hw]") {
   SECTION("Mono get slit step position") {
     // arrange
     mono.open();
+    const auto slit = Monochromator::Slit::A;
+    const auto expected_slit_step_position = 0;
 
     // act
-    auto slit_step_position =
-        mono.get_slit_step_position(Monochromator::Slit::A);
+    auto slit_step_position = mono.get_slit_step_position(slit);
 
     // assert
-    REQUIRE(slit_step_position == Monochromator::SlitStepPosition::A);
+    REQUIRE(slit_step_position == expected_slit_step_position);
   }
 
   SECTION("Mono slit step position can be set") {
     // arrange
     mono.open();
+    const auto slit = Monochromator::Slit::A;
+    const auto slit_step_position = 200;
 
     // act
     // assert
-    REQUIRE_NOTHROW(mono.set_slit_step_position(
-        Monochromator::Slit::A, Monochromator::SlitStepPosition::C));
+    REQUIRE_NOTHROW(mono.set_slit_step_position(slit, slit_step_position));
     // we do not check if the new slit step position is set, as the fake answer
     // from the ICL always returns the same value
   }
@@ -247,12 +262,15 @@ TEST_CASE("Mono test with fake ICL", "[mono_no_hw]") {
   SECTION("Mono get shutter position") {
     // arrange
     mono.open();
+    const auto shutter = Monochromator::Shutter::FIRST;
+    const auto expected_shutter_position =
+        Monochromator::ShutterPosition::CLOSED;
 
     // act
-    auto shutter_position = mono.get_shutter_position();
+    auto shutter_position = mono.get_shutter_position(shutter);
 
     // assert
-    REQUIRE(shutter_position == Monochromator::ShutterPosition::CLOSED);
+    REQUIRE(shutter_position == expected_shutter_position);
   }
 
   if (websocket_communicator->is_open()) {

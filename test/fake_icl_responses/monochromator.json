@@ -88,7 +88,6 @@
     },
     "errors": []
   },
-  "mono_setConfig": {},
   "mono_getPosition": {
     "id": 1234,
     "command": "mono_getPosition",
@@ -182,7 +181,8 @@
     "id": 1234,
     "command": "mono_getShutterStatus",
     "results": {
-      "position": 0
+      "shutter 1": 0,
+      "shutter 2": 1
     },
     "errors": []
   },
@@ -199,11 +199,5 @@
     "command": "mono_moveSlit",
     "results": {},
     "errors": []
-  },
-  "mono_enableLaser": {},
-  "mono_getLaserStatus": {},
-  "mono_setLaserPower": {},
-  "mono_getLaserPower": {},
-  "mono_getLidStatus": {},
-  "mono_getSwitchStatus": {}
+  }
 }

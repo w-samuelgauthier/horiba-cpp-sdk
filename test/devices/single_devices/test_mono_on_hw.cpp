@@ -28,6 +28,7 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
     return;
   }
 
+  // From the fixture ICLExe
   start();
 
   // arrange
@@ -44,7 +45,7 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
     auto mono_open = mono.is_open();
 
     // assert
-    REQUIRE(mono_open == true);
+    REQUIRE(mono_open);
   }
 
   SECTION("Mono can be closed") {
@@ -54,11 +55,11 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
 
     // act
     REQUIRE_NOTHROW(mono.close());
-    // we do not check if it is closed as the fake answer from the ICL always
-    // returns true
+    auto mono_closed = mono.is_open();
 
     // assert
-    REQUIRE(mono_open == true);
+    REQUIRE(mono_open);
+    REQUIRE_FALSE(mono_closed);
   }
 
   SECTION("Mono is busy") {
@@ -67,16 +68,20 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
 
     // act
     // assert
-    REQUIRE(mono.is_busy() == false);
+    REQUIRE_FALSE(mono.is_busy() == false);
   }
 
   SECTION("Mono can be homed") {
     // arrange
     mono.open();
+    const std::chrono::seconds max_timeout{30};
 
     // act
+    mono.home();
+    mono.wait_until_ready(max_timeout);
+
     // assert
-    REQUIRE_NOTHROW(mono.home());
+    REQUIRE_FALSE(mono.is_busy());
   }
 
   SECTION("Mono config") {
@@ -87,200 +92,188 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
     auto config = mono.configuration();
 
     // assert
-    // TODO: At the moment we do not know how the config looks like.
-    REQUIRE_THAT(config, Equals("{}"));
+    REQUIRE_FALSE(config.empty());
   }
 
-  SECTION("Mono get current wavelength") {
+  SECTION("Mono get current wavelength, Mono move to target wavelength") {
     // arrange
     mono.open();
+    const auto target_wavelength = 125.0;
+    const double tolerance = 0.001;
+    const std::chrono::seconds max_timeout{30};
 
     // act
+    mono.move_to_target_wavelength(target_wavelength);
+    mono.wait_until_ready(max_timeout);
     auto wavelength = mono.get_current_wavelength();
 
     // assert
-    REQUIRE_THAT(wavelength, WithinAbs(0.0, 0.001));
+    REQUIRE_THAT(wavelength, WithinAbs(target_wavelength, tolerance));
   }
 
   SECTION("Mono wavelenght can be set") {
     // arrange
     mono.open();
+    // TODO: How to test this without messing up the monochromator?
+    /* const auto target_wavelength = 125.0; */
+    /* const int max_timeout_s = 30; */
 
     // act
+    /* mono.calibrate_wavelength(target_wavelength); */
+    /* int current_timeout_s = 0; */
+    /* while (mono.is_busy() && current_timeout_s < max_timeout_s) { */
+    /*   std::this_thread::sleep_for(std::chrono::seconds(1)); */
+    /*   current_timeout_s++; */
+    /* } */
     // assert
-    REQUIRE_NOTHROW(mono.calibrate_wavelength(120.0));
-    // we do not check if the new wavelength is set, as the fake answer from */
-    // /*  * the ICL always returns the same value
+    REQUIRE_FALSE(mono.is_busy());
   }
 
-  SECTION("Mono move to target wavelength") {
+  SECTION("Mono turret grating") {
     // arrange
     mono.open();
+    auto expected_grating_before = Monochromator::Grating::FIRST;
+    auto expected_grating_after = Monochromator::Grating::SECOND;
+    const std::chrono::seconds max_timeout{180};
 
     // act
-    // assert
-    REQUIRE_NOTHROW(mono.move_to_target_wavelength(125.0));
-    // we do not check if the new wavelength is set, as the fake answer from */
-    // /*  * the ICL always returns the same value
-  }
+    mono.set_turret_grating(expected_grating_before);
+    mono.wait_until_ready(max_timeout);
+    auto turret_grating_before = mono.get_turret_grating();
 
-  SECTION("Mono get turret grating") {
-    // arrange
-    mono.open();
-    mono.set_turret_grating(Monochromator::Grating::FIRST);
-
-    // act
-    auto turret_grating = mono.get_turret_grating();
+    mono.set_turret_grating(expected_grating_after);
+    mono.wait_until_ready(max_timeout);
+    auto turret_grating_after = mono.get_turret_grating();
 
     // assert
-    REQUIRE(turret_grating == Monochromator::Grating::FIRST);
-  }
-
-  SECTION("Mono can set turret grating") {
-    // arrange
-    mono.open();
-    REQUIRE_NOTHROW(mono.set_turret_grating(Monochromator::Grating::FIRST));
-    const auto grating_before = mono.get_turret_grating();
-
-    // act
-    // assert
-    REQUIRE_NOTHROW(mono.set_turret_grating(Monochromator::Grating::SECOND));
-    const auto grating_after = mono.get_turret_grating();
-
-    REQUIRE(grating_before != grating_after);
-    REQUIRE(grating_before == Monochromator::Grating::FIRST);
-    REQUIRE(grating_after == Monochromator::Grating::SECOND);
+    REQUIRE(turret_grating_before == expected_grating_before);
+    REQUIRE(turret_grating_after == expected_grating_after);
   }
 
   // TODO: Function is not supported ATM
-  SECTION("Mono get filter wheel position") {
+  SECTION("Mono filter wheel position") {
     // arrange
     mono.open();
+    const auto filter_wheel = Monochromator::FilterWheel::FIRST;
+    const auto expected_filter_wheel_position_before =
+        Monochromator::FilterWheelPosition::RED;
+    const auto expected_filter_wheel_position_after =
+        Monochromator::FilterWheelPosition::GREEN;
+    const std::chrono::seconds max_timeout{180};
 
     // act
-    auto filter_wheel_position = mono.get_filter_wheel_position();
+    mono.set_filter_wheel_position(filter_wheel,
+                                   expected_filter_wheel_position_before);
+    mono.wait_until_ready(max_timeout);
+    auto filter_wheel_position_before =
+        mono.get_filter_wheel_position(filter_wheel);
+
+    mono.set_filter_wheel_position(filter_wheel,
+                                   expected_filter_wheel_position_after);
+    mono.wait_until_ready(max_timeout);
+    auto filter_wheel_position_after =
+        mono.get_filter_wheel_position(filter_wheel);
 
     // assert
-    REQUIRE(filter_wheel_position == Monochromator::FilterWheelPosition::RED);
+    REQUIRE(filter_wheel_position_before ==
+            expected_filter_wheel_position_before);
+    REQUIRE(filter_wheel_position_after ==
+            expected_filter_wheel_position_after);
   }
 
-  // TODO: Function is not supported
-  SECTION("Mono set filter wheel position") {
+  SECTION("Mono mirror position") {
     // arrange
     mono.open();
+    const auto mirror = Monochromator::Mirror::FIRST;
+    const auto expected_mirror_position_before =
+        Monochromator::MirrorPosition::LATERAL;
+    const auto expected_mirror_position_after =
+        Monochromator::MirrorPosition::AXIAL;
+    const std::chrono::seconds max_timeout{180};
 
     // act
+    mono.set_mirror_position(mirror, expected_mirror_position_before);
+    mono.wait_until_ready(max_timeout);
+    auto mirror_position_before = mono.get_mirror_position(mirror);
+
+    mono.set_mirror_position(mirror, expected_mirror_position_after);
+    mono.wait_until_ready(max_timeout);
+    auto mirror_position_after = mono.get_mirror_position(mirror);
+
     // assert
-    REQUIRE_NOTHROW(mono.set_filter_wheel_position(
-        Monochromator::FilterWheelPosition::BLUE));
-    // we do not check if the new filter wheel position is set, as the fake */
-    // /* answer from the ICL always returns the same value
+    REQUIRE(mirror_position_before == expected_mirror_position_before);
+    REQUIRE(mirror_position_after == expected_mirror_position_after);
   }
 
-  SECTION("Mono get mirror position") {
+  SECTION("Mono slit") {
     // arrange
     mono.open();
+    const auto slit = Monochromator::Slit::A;
+    const auto expected_slit_position_before_mm = 0.6;
+    const auto expected_slit_position_after_mm = 4.0;
+    const std::chrono::seconds max_timeout{180};
+    const double tolerance = 0.1;
 
     // act
-    auto mirror_position =
-        mono.get_mirror_position(Monochromator::Mirror::FIRST);
+    mono.set_slit_position(slit, expected_slit_position_before_mm);
+    mono.wait_until_ready(max_timeout);
+    const auto slit_position_before_mm = mono.get_slit_position_in_mm(slit);
+
+    mono.set_slit_position(slit, expected_slit_position_after_mm);
+    mono.wait_until_ready(max_timeout);
+    const auto slit_position_after_mm = mono.get_slit_position_in_mm(slit);
 
     // assert
-    REQUIRE(mirror_position == Monochromator::MirrorPosition::A);
+    REQUIRE_THAT(slit_position_before_mm,
+                 WithinAbs(expected_slit_position_before_mm, tolerance));
+    REQUIRE_THAT(slit_position_after_mm,
+                 WithinAbs(expected_slit_position_after_mm, tolerance));
   }
 
-  SECTION("Mono mirror position can be set") {
+  SECTION("Mono slit step position") {
     // arrange
     mono.open();
+    const auto slit = Monochromator::Slit::A;
+    const auto expected_slit_step_position_before = 200;
+    const auto expected_slit_step_position_after = 300;
+    const std::chrono::seconds max_timeout{180};
 
     // act
+    mono.set_slit_step_position(slit, expected_slit_step_position_before);
+    mono.wait_until_ready(max_timeout);
+    const auto slit_step_position_before = mono.get_slit_step_position(slit);
+
+    mono.set_slit_position(slit, expected_slit_step_position_after);
+    mono.wait_until_ready(max_timeout);
+    const auto slit_step_position_after = mono.get_slit_step_position(slit);
+
     // assert
-    REQUIRE_NOTHROW(mono.set_mirror_position(Monochromator::Mirror::FIRST,
-                                             Monochromator::MirrorPosition::B));
-    // we do not check if the new position is set, as the fake answer
-    // from the ICL always returns the same value
+    REQUIRE(slit_step_position_before == expected_slit_step_position_before);
+    REQUIRE(slit_step_position_after == expected_slit_step_position_after);
   }
 
-  SECTION("Mono get slit position") {
+  SECTION("Mono shutter") {
     // arrange
     mono.open();
+    const auto shutter = Monochromator::Shutter::FIRST;
+    const auto expected_shutter_position_before =
+        Monochromator::ShutterPosition::OPENED;
+    const auto expected_shutter_position_after =
+        Monochromator::ShutterPosition::CLOSED;
+    const std::chrono::seconds max_timeout{180};
 
     // act
-    auto slit_position = mono.get_slit_position_in_mm(Monochromator::Slit::A);
+    mono.open_shutter();
+    mono.wait_until_ready(max_timeout);
+    const auto shutter_position_before = mono.get_shutter_position(shutter);
+
+    mono.close_shutter();
+    mono.wait_until_ready(max_timeout);
+    const auto shutter_position_after = mono.get_shutter_position(shutter);
 
     // assert
-    REQUIRE_THAT(slit_position, WithinAbs(1.0, 0.001));
-  }
-
-  SECTION("Mono slit position can be set") {
-    // arrange
-    mono.open();
-
-    // act
-    // assert
-    REQUIRE_NOTHROW(mono.set_slit_position(Monochromator::Slit::A, 2.2));
-    // we do not check if the new slit position is set, as the fake
-    // answer from the ICL always returns the same value
-  }
-
-  // TODO: We need to get more information about slit step position, is it in
-  // mm? or fixed values?
-  SECTION("Mono get slit step position") {
-    // arrange
-    mono.open();
-
-    // act
-    auto slit_step_position =
-        mono.get_slit_step_position(Monochromator::Slit::A);
-
-    // assert
-    REQUIRE(slit_step_position == Monochromator::SlitStepPosition::A);
-  }
-
-  SECTION("Mono slit step position can be set") {
-    // arrange
-    mono.open();
-
-    // act
-    // assert
-    REQUIRE_NOTHROW(mono.set_slit_step_position(
-        Monochromator::Slit::A, Monochromator::SlitStepPosition::C));
-    // we do not check if the new slit step position is set, as the fake */ /*
-    // * answer from the ICL always returns the same value
-  }
-
-  SECTION("Mono can open shutter") {
-    // arrange
-    mono.open();
-
-    // act
-    // assert
-    REQUIRE_NOTHROW(mono.open_shutter());
-    // we do not check if the shutter is open, as the fake answer from the */ /*
-    // * ICL always returns the same value
-  }
-
-  SECTION("Mono can close shutter") {
-    // arrange
-    mono.open();
-
-    // act
-    // assert
-    REQUIRE_NOTHROW(mono.close_shutter());
-    // we do not check if the shutter is open, as the fake answer from the */ /*
-    // * ICL always returns the same value
-  }
-
-  // TODO: What should be done when shutter is not configured?
-  SECTION("Mono get shutter position") {
-    // arrange
-    mono.open();
-
-    // act
-    auto shutter_position = mono.get_shutter_position();
-
-    // assert
-    REQUIRE(shutter_position == Monochromator::ShutterPosition::CLOSED);
+    REQUIRE(shutter_position_before == expected_shutter_position_before);
+    REQUIRE(shutter_position_after == expected_shutter_position_after);
   }
 
   if (mono.is_open()) {
