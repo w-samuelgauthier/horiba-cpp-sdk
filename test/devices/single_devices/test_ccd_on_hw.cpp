@@ -6,6 +6,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <chrono>
 #include <cstdlib>
+#include <nlohmann/json.hpp>
 #include <thread>
 #include <tuple>
 
@@ -378,7 +379,8 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     // arrange
     ccd.open();
     ccd.set_exposure_time(100);
-    ccd.set_acquisition_format(1, AcquisitionFormat::IMAGE);
+    ccd.set_acquisition_format(1,
+                               ChargeCoupledDevice::AcquisitionFormat::IMAGE);
 
     // act
     ccd.set_region_of_interest(0, 0, 0, 1000, 200, 1, 200);
@@ -390,7 +392,8 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
       }
 
       auto acquistion_data_size = ccd.get_acquisition_data_size();
-      auto acquisition_data = ccd.get_acquisition_data();
+      auto acquisition_data =
+          std::any_cast<nlohmann::json>(ccd.get_acquisition_data());
 
       // assert
       REQUIRE(acquistion_data_size == 1000);
