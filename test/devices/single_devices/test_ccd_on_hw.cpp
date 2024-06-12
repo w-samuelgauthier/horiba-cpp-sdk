@@ -309,9 +309,10 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
         expected_clean_count_after = {
             2, ChargeCoupledDevice::CleanCountMode::MODE_1};
     // assert
-    REQUIRE(clean_count_before != clean_count_after);
-    REQUIRE(clean_count_before == expected_clean_count_before);
-    REQUIRE(clean_count_after == expected_clean_count_after);
+    REQUIRE(clean_count_before.first == expected_clean_count_before.first);
+    REQUIRE(clean_count_before.second == expected_clean_count_before.second);
+    REQUIRE(clean_count_after.first == expected_clean_count_after.first);
+    REQUIRE(clean_count_after.second == expected_clean_count_after.second);
   }
 
   SECTION("CCD get data size") {
@@ -397,7 +398,7 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
 
       // assert
       REQUIRE(acquistion_data_size == 1000);
-      REQUIRE(acquisition_data.has_value());
+      REQUIRE_FALSE(acquisition_data.empty());
       REQUIRE(acquisition_data[0]["roi"][0]["xOrigin"] == 0);
     }
   }

@@ -41,7 +41,7 @@ ChargeCoupledDevice::get_configuration() {
   auto results = response.json_results();
 
   std::unordered_map<std::string, std::any> configuration;
-  for (const auto& [key, value] : results.items()) {
+  for (const auto& [key, value] : results["configuration"].items()) {
     configuration[std::string(key)] = value;
   }
   return configuration;
