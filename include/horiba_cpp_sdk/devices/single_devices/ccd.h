@@ -4,6 +4,7 @@
 #include <horiba_cpp_sdk/communication/communicator.h>
 #include <horiba_cpp_sdk/devices/single_devices/device.h>
 
+#include <nlohmann/json.hpp>
 #include <any>
 #include <memory>
 #include <stdexcept>
@@ -99,7 +100,7 @@ class ChargeCoupledDevice final : public Device {
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
-  std::unordered_map<std::string, std::any> get_configuration() noexcept(false);
+  nlohmann::json get_configuration();
 
   /**
    * @brief Returns the gain token of the CCD.

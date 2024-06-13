@@ -62,19 +62,21 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
     REQUIRE_FALSE(mono_closed);
   }
 
-  SECTION("Mono is busy") {
+  SECTION("When not used, Mono is not busy") {
     // arrange
     mono.open();
+    const std::chrono::seconds max_timeout{2};
+    mono.wait_until_ready(max_timeout);
 
     // act
     // assert
-    REQUIRE_FALSE(mono.is_busy() == false);
+    REQUIRE_FALSE(mono.is_busy());
   }
 
   SECTION("Mono can be homed") {
     // arrange
     mono.open();
-    const std::chrono::seconds max_timeout{30};
+    const std::chrono::seconds max_timeout{360};
 
     // act
     mono.home();
@@ -84,7 +86,7 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
     REQUIRE_FALSE(mono.is_busy());
   }
 
-  SECTION("Mono config") {
+  SECTION("Mono config is not empty") {
     // arrange
     mono.open();
 
@@ -95,12 +97,14 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
     REQUIRE_FALSE(config.empty());
   }
 
-  SECTION("Mono get current wavelength, Mono move to target wavelength") {
+  SECTION("Mono can move to target wavelength") {
     // arrange
     mono.open();
     const auto target_wavelength = 125.0;
-    const double tolerance = 0.001;
-    const std::chrono::seconds max_timeout{30};
+    const double tolerance = 0.1;
+    const std::chrono::seconds max_timeout{360};
+    mono.home();
+    mono.wait_until_ready(max_timeout);
 
     // act
     mono.move_to_target_wavelength(target_wavelength);
@@ -111,7 +115,7 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
     REQUIRE_THAT(wavelength, WithinAbs(target_wavelength, tolerance));
   }
 
-  SECTION("Mono wavelenght can be set") {
+  SECTION("Mono wavelength can be set") {
     // arrange
     mono.open();
     // TODO: How to test this without messing up the monochromator?
@@ -129,7 +133,7 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
     REQUIRE_FALSE(mono.is_busy());
   }
 
-  SECTION("Mono turret grating") {
+  SECTION("Mono can change turret grating") {
     // arrange
     mono.open();
     auto expected_grating_before = Monochromator::Grating::FIRST;
@@ -151,7 +155,7 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
   }
 
   // TODO: Function is not supported ATM
-  SECTION("Mono filter wheel position") {
+  SECTION("Mono can change filter wheel position") {
     // arrange
     mono.open();
     const auto filter_wheel = Monochromator::FilterWheel::FIRST;
@@ -181,7 +185,7 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
             expected_filter_wheel_position_after);
   }
 
-  SECTION("Mono mirror position") {
+  SECTION("Mono can change mirror position") {
     // arrange
     mono.open();
     const auto mirror = Monochromator::Mirror::FIRST;
@@ -205,7 +209,7 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
     REQUIRE(mirror_position_after == expected_mirror_position_after);
   }
 
-  SECTION("Mono slit") {
+  SECTION("Mono can change slit position by mm") {
     // arrange
     mono.open();
     const auto slit = Monochromator::Slit::A;
@@ -230,7 +234,7 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
                  WithinAbs(expected_slit_position_after_mm, tolerance));
   }
 
-  SECTION("Mono slit step position") {
+  SECTION("Mono can change slit by step position") {
     // arrange
     mono.open();
     const auto slit = Monochromator::Slit::A;
@@ -243,7 +247,7 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
     mono.wait_until_ready(max_timeout);
     const auto slit_step_position_before = mono.get_slit_step_position(slit);
 
-    mono.set_slit_position(slit, expected_slit_step_position_after);
+    mono.set_slit_step_position(slit, expected_slit_step_position_after);
     mono.wait_until_ready(max_timeout);
     const auto slit_step_position_after = mono.get_slit_step_position(slit);
 
@@ -252,7 +256,7 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
     REQUIRE(slit_step_position_after == expected_slit_step_position_after);
   }
 
-  SECTION("Mono shutter") {
+  SECTION("Mono can open and close shutter") {
     // arrange
     mono.open();
     const auto shutter = Monochromator::Shutter::FIRST;

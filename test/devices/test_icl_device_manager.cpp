@@ -60,6 +60,7 @@ TEST_CASE("ICL Device Manager test on hardware", "[icl_device_manager_hw]") {
 
   horiba::devices::ICLDeviceManager device_manager(icl_process);
 
+  device_manager.start();
   SECTION("Devices can be discovered") {
     // act
     device_manager.discover_devices();
@@ -71,6 +72,7 @@ TEST_CASE("ICL Device Manager test on hardware", "[icl_device_manager_hw]") {
     REQUIRE(ccds.size() == 1);
     REQUIRE(monos.size() == 1);
   }
+  device_manager.stop();
 #else
   SUCCEED("ICL Device Manager tests on HW are not run on Unix systems");
 #endif

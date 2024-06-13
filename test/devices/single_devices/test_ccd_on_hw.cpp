@@ -287,7 +287,8 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     // assert
     std::pair<int, ChargeCoupledDevice::CleanCountMode> expected_clean_count = {
         1, ChargeCoupledDevice::CleanCountMode::MODE_1};
-    REQUIRE(clean_count == expected_clean_count);
+    REQUIRE(clean_count.first == expected_clean_count.first);
+    REQUIRE(clean_count.second == expected_clean_count.second);
   }
 
   SECTION("CCD clean count can be set") {
@@ -484,16 +485,26 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
   SECTION("CCD acquisition data can be obtained") {
     // arrange
     ccd.open();
+    // restart the ccd to reset previously set parameters
+    REQUIRE_NOTHROW(ccd.restart());
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
-    const int exposure_time = 100;
-    REQUIRE_NOTHROW(ccd.set_acquisition_count(1));
+    const int exposure_time = 1;
+    REQUIRE_NOTHROW(ccd.set_timer_resolution(ChargeCoupledDevice::TimerResolution::THOUSAND_MICROSECONDS));
+    REQUIRE_NOTHROW(ccd.set_acquisition_format(1, ChargeCoupledDevice::AcquisitionFormat::IMAGE));
     REQUIRE_NOTHROW(ccd.set_exposure_time(exposure_time));
     REQUIRE_NOTHROW(ccd.set_region_of_interest());
-    REQUIRE_NOTHROW(ccd.set_x_axis_conversion_type(
-        ChargeCoupledDevice::XAxisConversionType::NONE));
+    REQUIRE_FALSE(ccd.get_acquisition_busy());
+
+    while (!ccd.get_acquisition_ready()) {
+      std::this_thread::sleep_for(std::chrono::milliseconds(600));
+    }
+
     REQUIRE_NOTHROW(ccd.set_acquisition_start(true));
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    while (ccd.get_acquisition_busy()) {
+      std::this_thread::sleep_for(std::chrono::milliseconds(600));
+    }
 
     // act
     auto acquisition_data = ccd.get_acquisition_data();
@@ -510,7 +521,7 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     auto acquisition_busy = ccd.get_acquisition_busy();
 
     // assert
-    REQUIRE(acquisition_busy == false);
+    REQUIRE_FALSE(acquisition_busy);
   }
 
   SECTION("CCD acquisition can be aborted") {

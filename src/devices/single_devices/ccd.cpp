@@ -2,6 +2,8 @@
 
 #include <sstream>
 #include <unordered_map>
+#include <spdlog/spdlog.h>
+
 
 #include "horiba_cpp_sdk/communication/command.h"
 
@@ -34,17 +36,11 @@ void ChargeCoupledDevice::restart() {
       communication::Command("ccd_restart", {{"index", Device::device_id()}}));
 }
 
-std::unordered_map<std::string, std::any>
-ChargeCoupledDevice::get_configuration() {
+nlohmann::json ChargeCoupledDevice::get_configuration() {
   auto response = Device::execute_command(communication::Command(
       "ccd_getConfig", {{"index", Device::device_id()}}));
   auto results = response.json_results();
-
-  std::unordered_map<std::string, std::any> configuration;
-  for (const auto& [key, value] : results["configuration"].items()) {
-    configuration[std::string(key)] = value;
-  }
-  return configuration;
+  return results["configuration"];
 }
 
 int ChargeCoupledDevice::get_gain_token() {
@@ -249,18 +245,19 @@ void ChargeCoupledDevice::set_trigger_input(bool enabled, int address,
   }
 
   auto config = get_configuration();
-  auto it_triggers = config.find("Trigger");
+  spdlog::debug("[CCD] config: {}", config.dump());
+  auto it_triggers = config.find("Triggers");
   if (it_triggers == config.end()) {
     throw std::runtime_error("Triggers not found in the configuration");
   }
 
-  const auto& triggers = std::any_cast<nlohmann::json>(it_triggers->second);
-  auto found_triggers = std::find_if(triggers.begin(), triggers.end(),
+  const auto& triggers = it_triggers;
+  auto found_triggers = std::find_if(triggers->begin(), triggers->end(),
                                      [&address](const nlohmann::json& trigger) {
                                        return trigger["Token"] == address;
                                      });
 
-  if (found_triggers == triggers.end()) {
+  if (found_triggers == triggers->end()) {
     throw std::runtime_error("Trigger address " + std::to_string(address) +
                              " not found in the configuration");
   }
@@ -328,13 +325,13 @@ void ChargeCoupledDevice::set_signal_output(bool enabled, int address,
     throw std::runtime_error("Signals not found in the configuration");
   }
 
-  const auto& signals = std::any_cast<nlohmann::json>(it_signals->second);
-  auto found_triggers = std::find_if(signals.begin(), signals.end(),
+  const auto& signals = it_signals;
+  auto found_triggers = std::find_if(signals->begin(), signals->end(),
                                      [&address](const nlohmann::json& trigger) {
                                        return trigger["Token"] == address;
                                      });
 
-  if (found_triggers == signals.end()) {
+  if (found_triggers == signals->end()) {
     throw std::runtime_error("Signal address " + std::to_string(address) +
                              " not found in the configuration");
   }

@@ -148,7 +148,7 @@ int Monochromator::get_slit_step_position(Slit slit) {
 void Monochromator::set_slit_step_position(Slit slit, int step_position) {
   auto _ignored_response = Device::execute_command(
       communication::Command("mono_moveSlit", {{"index", Device::device_id()},
-                                               {"type", static_cast<int>(slit)},
+                                               {"id", static_cast<int>(slit)},
                                                {"position", step_position}}));
 }
 
@@ -178,6 +178,8 @@ Monochromator::ShutterPosition Monochromator::get_shutter_position(
 }
 
 void Monochromator::wait_until_ready(std::chrono::seconds timeout) {
+  std::this_thread::sleep_for(std::chrono::seconds(1));
+
   int current_timeout_s = 0;
   while (this->is_busy() && current_timeout_s < timeout.count()) {
     std::this_thread::sleep_for(std::chrono::seconds(1));
