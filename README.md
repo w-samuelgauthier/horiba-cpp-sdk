@@ -6,6 +6,22 @@
 
 *horiba-cpp-sdk* is a C++ library that provides source code for the development with Horiba devices.
 
+___
+
+⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️
+
+> [!WARNING]
+> This SDK is under development and not yet released.
+
+> [!IMPORTANT]
+> For this python code to work, the SDK from Horiba has to be purchased, installed and licensed.
+> The code in this repo and the SDK are under development and not yet released for public use!
+
+⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️⬆️
+
+___
+
+
 ## Basic Usage Examples
 
 1. Create a new folder with the following structure:
