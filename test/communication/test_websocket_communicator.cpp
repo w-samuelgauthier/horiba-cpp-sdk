@@ -4,17 +4,21 @@
 
 #include <catch2/catch_message.hpp>
 #include <catch2/catch_test_macros.hpp>
+#include <cstdlib>
 #include <nlohmann/json.hpp>
 
 #include "../fake_icl_server.h"
 #include "../icl_exe.h"
 
+// Warning about getenv being unsafe, we don't care about it here
+#pragma warning(disable : 4996)
+
 namespace horiba::test {
 
 using json = nlohmann::json;
 
-TEST_CASE_METHOD(FakeICLServer, "WebSocket communicator test with fake ICL",
-                 "[websocket_communicator]") {
+TEST_CASE("WebSocket communicator test with fake ICL",
+          "[websocket_communicator]") {
   // arrange
   horiba::communication::WebSocketCommunicator websocket_communicator(
       FakeICLServer::FAKE_ICL_ADDRESS,
@@ -127,10 +131,15 @@ TEST_CASE("WebSocket communicator test without fake ICL",
 
 TEST_CASE_METHOD(ICLExe, "WebSocket communicator test with real ICL",
                  "[websocket_communicator]") {
-  if (std::getenv("HAS_HARDWARE") == nullptr) {
+  const char* has_hardware = std::getenv("HAS_HARDWARE");
+  if (has_hardware == nullptr || std::string(has_hardware) == "0" ||
+      std::string(has_hardware) == "false") {
     SUCCEED("Skipped: HAS_HARDWARE is not set");
     return;
   }
+
+  start();
+
   // arrange
   horiba::communication::WebSocketCommunicator websocket_communicator(
       "127.0.0.1", std::to_string(25010));
@@ -228,5 +237,7 @@ TEST_CASE_METHOD(ICLExe, "WebSocket communicator test with real ICL",
   if (websocket_communicator.is_open()) {
     websocket_communicator.close();
   }
+
+  stop();
 }
 }  // namespace horiba::test

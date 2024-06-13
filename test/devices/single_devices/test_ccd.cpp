@@ -1,6 +1,8 @@
 #include <horiba_cpp_sdk/communication/websocket_communicator.h>
 #include <horiba_cpp_sdk/devices/single_devices/ccd.h>
 
+#include <catch2/catch_test_macros.hpp>
+
 #include "../../fake_icl_server.h"
 
 namespace horiba::test {
@@ -8,7 +10,7 @@ namespace horiba::test {
 using namespace horiba::devices::single_devices;
 using namespace horiba::communication;
 
-TEST_CASE_METHOD(FakeICLServer, "CCD test with fake ICL", "[ccd_no_hw]") {
+TEST_CASE("CCD test with fake ICL", "[ccd_no_hw]") {
   // arrange
   auto websocket_communicator = std::make_shared<WebSocketCommunicator>(
       FakeICLServer::FAKE_ICL_ADDRESS,
@@ -55,21 +57,7 @@ TEST_CASE_METHOD(FakeICLServer, "CCD test with fake ICL", "[ccd_no_hw]") {
     auto configuration = ccd.get_configuration();
 
     // assert
-    // TODO: At the moment we do not know how the configuration looks like,
-    // hence it is empty
-    REQUIRE(configuration.empty() == true);
-  }
-
-  SECTION("CCD number of averages") {
-    // arrange
-    ccd.open();
-
-    // act
-    auto number_of_averages = ccd.get_number_of_averages();
-
-    // assert
-    // TODO: At the moment this function is not supported by the ICL
-    REQUIRE(number_of_averages == 0);
+    REQUIRE(configuration.empty() == false);
   }
 
   SECTION("CCD get gain") {
@@ -77,10 +65,10 @@ TEST_CASE_METHOD(FakeICLServer, "CCD test with fake ICL", "[ccd_no_hw]") {
     ccd.open();
 
     // act
-    auto gain = ccd.get_gain();
+    auto gain = ccd.get_gain_token();
 
     // assert
-    REQUIRE(gain == ChargeCoupledDevice::Gain::HIGH_LIGHT);
+    REQUIRE(gain == 0);
   }
 
   SECTION("CCD gain can be set") {
@@ -89,7 +77,7 @@ TEST_CASE_METHOD(FakeICLServer, "CCD test with fake ICL", "[ccd_no_hw]") {
 
     // act
     // assert
-    REQUIRE_NOTHROW(ccd.set_gain(ChargeCoupledDevice::Gain::HIGH_LIGHT));
+    REQUIRE_NOTHROW(ccd.set_gain(1));
     // we do not check if the new gain is set, as the fake answer from the ICL
     // always returns the same value
   }
@@ -97,12 +85,13 @@ TEST_CASE_METHOD(FakeICLServer, "CCD test with fake ICL", "[ccd_no_hw]") {
   SECTION("CCD get speed") {
     // arrange
     ccd.open();
+    auto expected_speed_token = 0;
 
     // act
-    auto speed = ccd.get_speed();
+    auto actual_speed_token = ccd.get_speed_token();
 
     // assert
-    REQUIRE(speed == ChargeCoupledDevice::Speed::SLOW_45_kHz);
+    REQUIRE(actual_speed_token == expected_speed_token);
   }
 
   SECTION("CCD speed can be set") {
@@ -111,7 +100,7 @@ TEST_CASE_METHOD(FakeICLServer, "CCD test with fake ICL", "[ccd_no_hw]") {
 
     // act
     // assert
-    REQUIRE_NOTHROW(ccd.set_speed(ChargeCoupledDevice::Speed::SLOW_45_kHz));
+    REQUIRE_NOTHROW(ccd.set_speed(0));
     // we do not check if the new speed is set, as the fake answer from the ICL
     // always returns the same value
   }
@@ -121,11 +110,11 @@ TEST_CASE_METHOD(FakeICLServer, "CCD test with fake ICL", "[ccd_no_hw]") {
     ccd.open();
 
     // act
-    auto fit_params = ccd.get_fit_params();
+    auto fit_params = ccd.get_fit_parameters();
 
     // assert
-    // TODO: at the moment we do not know what is returned, so it stays a string
-    REQUIRE(fit_params == "0,1,0,0,0");
+    std::vector<int> expected_fit_params = {0, 1, 0, 0, 0};
+    REQUIRE(fit_params == expected_fit_params);
   }
 
   SECTION("CCD fit params can be set") {
@@ -134,7 +123,7 @@ TEST_CASE_METHOD(FakeICLServer, "CCD test with fake ICL", "[ccd_no_hw]") {
 
     // act
     // assert
-    REQUIRE_NOTHROW(ccd.set_fit_params("0,1,0,0,0"));
+    REQUIRE_NOTHROW(ccd.set_fit_parameters({0, 1, 0, 0, 0}));
     // we do not check if the new fit params are set, as the fake answer from
     // the ICL always returns the same value
   }
@@ -147,7 +136,8 @@ TEST_CASE_METHOD(FakeICLServer, "CCD test with fake ICL", "[ccd_no_hw]") {
     auto timer_resolution = ccd.get_timer_resolution();
 
     // assert
-    REQUIRE(timer_resolution == 1000);
+    REQUIRE(timer_resolution ==
+            ChargeCoupledDevice::TimerResolution::THOUSAND_MICROSECONDS);
   }
 
   SECTION("CCD timer resolution can be set") {
@@ -156,7 +146,8 @@ TEST_CASE_METHOD(FakeICLServer, "CCD test with fake ICL", "[ccd_no_hw]") {
 
     // act
     // assert
-    REQUIRE_NOTHROW(ccd.set_timer_resolution(2000));
+    REQUIRE_NOTHROW(ccd.set_timer_resolution(
+        ChargeCoupledDevice::TimerResolution::THOUSAND_MICROSECONDS));
     // we do not check if the new timer resolution is set, as the fake answer
     // from the ICL always returns the same value
   }
@@ -227,7 +218,10 @@ TEST_CASE_METHOD(FakeICLServer, "CCD test with fake ICL", "[ccd_no_hw]") {
     auto clean_count = ccd.get_clean_count();
 
     // assert
-    REQUIRE(clean_count == "count: 1 mode: 238");
+    std::pair<int, ChargeCoupledDevice::CleanCountMode> expected_clean_count = {
+        1, ChargeCoupledDevice::CleanCountMode::MODE_UNKNOWN};
+    REQUIRE(clean_count.first == expected_clean_count.first);
+    REQUIRE(clean_count.second == expected_clean_count.second);
   }
 
   SECTION("CCD clean count can be set") {
@@ -247,7 +241,7 @@ TEST_CASE_METHOD(FakeICLServer, "CCD test with fake ICL", "[ccd_no_hw]") {
     ccd.open();
 
     // act
-    auto data_size = ccd.get_data_size();
+    auto data_size = ccd.get_acquisition_data_size();
 
     // assert
     REQUIRE(data_size == 1024);
@@ -339,8 +333,7 @@ TEST_CASE_METHOD(FakeICLServer, "CCD test with fake ICL", "[ccd_no_hw]") {
     auto acquisition_data = ccd.get_acquisition_data();
 
     // assert
-    REQUIRE(acquisition_data.empty() == false);
-    REQUIRE(acquisition_data.size() == 3);
+    REQUIRE(acquisition_data.has_value() == true);
   }
 
   SECTION("CCD get acquisition busy") {
@@ -360,7 +353,7 @@ TEST_CASE_METHOD(FakeICLServer, "CCD test with fake ICL", "[ccd_no_hw]") {
 
     // act
     // assert
-    REQUIRE_NOTHROW(ccd.abort_acquisition());
+    REQUIRE_NOTHROW(ccd.abort_acquisition(true));
     // we do not check if the acquisition has truly stopped, as the fake answer
     // from the ICL always returns the same value
   }

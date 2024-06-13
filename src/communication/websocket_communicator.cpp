@@ -16,15 +16,15 @@ namespace horiba::communication {
 WebSocketCommunicator::WebSocketCommunicator(std::string host, std::string port)
     : host{std::move(host)}, port{std::move(port)} {}
 
-WebSocketCommunicator::~WebSocketCommunicator() {}
-
 void WebSocketCommunicator::open() {
   if (this->is_open()) {
-    spdlog::error("Failed to open WebSocket: already opened");
-    throw new std::runtime_error("websocket is already open");
+    spdlog::error(
+        "[WebSocketCommunicator] Failed to open WebSocket: already opened");
+    throw std::runtime_error("websocket is already open");
   }
 
-  spdlog::debug("Opening WebSocket on {}:{}", this->host, this->port);
+  spdlog::debug("[WebSocketCommunicator] Opening WebSocket on {}:{}",
+                this->host, this->port);
   boost::asio::ip::tcp::resolver resolver{this->context};
 
   auto const results = resolver.resolve(this->host, this->port);
@@ -39,24 +39,32 @@ void WebSocketCommunicator::open() {
 
   this->websocket.handshake(host + ':' + std::to_string(endpoint.port()), "/");
 
-  spdlog::debug("WebSocket opened");
+  spdlog::debug("[WebSocketCommunicator] WebSocket opened");
 }
 
 void WebSocketCommunicator::close() {
   if (!this->is_open()) {
-    spdlog::error("Failed to close WebSocket: not opened");
-    throw new std::runtime_error("websocket is not open");
+    spdlog::error(
+        "[WebSocketCommunicator] Failed to close WebSocket: not opened");
+    throw std::runtime_error("websocket is not open");
   }
 
   this->websocket.close(boost::beast::websocket::close_code::normal);
-  spdlog::debug("WebSocket closed");
+  spdlog::debug("[WebSocketCommunicator] WebSocket closed");
 }
 
 bool WebSocketCommunicator::is_open() { return this->websocket.is_open(); }
 
 Response WebSocketCommunicator::request_with_response(const Command& command) {
+  if (!this->is_open()) {
+    spdlog::error(
+        "[WebSocketCommunicator] cannot send request, websocket is closed");
+    throw std::runtime_error(
+        "cannot send request if websocket communicator is closed");
+  }
+
   std::string json_command = command.json().dump();
-  spdlog::debug("Sending request: {}", json_command);
+  spdlog::debug("[WebSocketCommunicator] Sending request: {}", json_command);
   this->websocket.write(boost::asio::buffer(json_command));
 
   boost::beast::flat_buffer buffer;
@@ -64,7 +72,8 @@ Response WebSocketCommunicator::request_with_response(const Command& command) {
 
   nlohmann::json json_response =
       nlohmann::json::parse(boost::beast::buffers_to_string(buffer.data()));
-  spdlog::debug("Received response: {}", json_response.dump());
+  spdlog::debug("[WebSocketCommunicator] Received response: {}",
+                json_response.dump());
 
   return Response{json_response["id"], json_response["command"],
                   json_response["results"], json_response["errors"]};

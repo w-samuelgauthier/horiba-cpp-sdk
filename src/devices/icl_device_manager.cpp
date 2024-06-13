@@ -3,6 +3,7 @@
 #include <horiba_cpp_sdk/communication/websocket_communicator.h>
 #include <horiba_cpp_sdk/devices/ccds_discovery.h>
 #include <horiba_cpp_sdk/devices/icl_device_manager.h>
+#include <horiba_cpp_sdk/devices/monos_discovery.h>
 #include <horiba_cpp_sdk/devices/single_devices/ccd.h>
 #include <spdlog/spdlog.h>
 
@@ -24,12 +25,13 @@ ICLDeviceManager::ICLDeviceManager(
       enable_binary_messages{enable_binary_messages},
       communicator{
           std::make_shared<horiba::communication::WebSocketCommunicator>(
-              websocket_ip, websocket_port)} {}
+              this->websocket_ip, this->websocket_port)} {}
 
 void ICLDeviceManager::start() {
   if (this->manage_icl_lifetime) {
     this->icl_process->start();
   }
+  spdlog::debug("[ICLDeviceManager] ICL started");
 
   this->communicator->open();
 
@@ -69,18 +71,17 @@ void ICLDeviceManager::discover_devices(bool error_on_no_device) {
   ccds_discovery.execute(error_on_no_device);
   this->ccds = ccds_discovery.charge_coupled_devices();
 
-  /* MonochromatorsDiscovery monochromators_discovery = */
-  /*     MonochromatorsDiscovery(this->communicator, this->icl_error_db); */
+  MonochromatorsDiscovery monochromators_discovery =
+      MonochromatorsDiscovery(this->communicator);
 
-  /* monochromators_discovery.execute(error_on_no_device); */
-  /* this->monos = monochromators_discovery.monochromators(); */
+  monochromators_discovery.execute(error_on_no_device);
+  this->monos = monochromators_discovery.monochromators();
 }
 
-/* std::vector<std::shared_ptr<horiba::devices::single_devices::Monochromator>>
- */
-/* ICLDeviceManager::monochromators() const { */
-/*   return this->monos; */
-/* } */
+std::vector<std::shared_ptr<horiba::devices::single_devices::Monochromator>>
+ICLDeviceManager::monochromators() const {
+  return this->monos;
+}
 
 std::vector<
     std::shared_ptr<horiba::devices::single_devices::ChargeCoupledDevice>>

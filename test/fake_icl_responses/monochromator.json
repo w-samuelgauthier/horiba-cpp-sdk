@@ -11,10 +11,13 @@
   "mono_list": {
     "id": 1234,
     "command": "mono_list",
-    "results": {
-      "list": [
-        "0;iHR550;sn12345",
-        "1;iHR320;snabscde"
+    "results":     {
+      "devices": [
+        {
+          "deviceType": "HORIBA Scientific iHR",
+          "index": 0,
+          "serialNumber":"1745B-2017-iHR320       "
+        }
       ]
     },
     "errors": []
@@ -62,11 +65,29 @@
     "id": 1234,
     "command": "mono_getConfig",
     "results":{
+      "configuration": {
+        "filterWheels":[],
+        "gratings": [
+          {"blaze":0,"grooveDensity":1800,"positionIndex":0},
+          {"blaze":0,"grooveDensity":1200,"positionIndex":1},
+          {"blaze":0,"grooveDensity":300,"positionIndex":2}
+        ],
+        "mirrors": [
+          {"location":1},
+          {"location":2}
+        ],
+        "monoModel": "iHR320",
+        "ports": [
+          {"monoPortLocation":1,"slitType":2},
+          {"monoPortLocation":2,"slitType":2},
+          {"monoPortLocation":4,"slitType":2}
+        ],
+        "procuctId":"257",
+        "serialNumber":""
+      }
     },
     "errors": []
-
   },
-  "mono_setConfig": {},
   "mono_getPosition": {
     "id": 1234,
     "command": "mono_getPosition",
@@ -134,7 +155,7 @@
     "id": 1234,
     "command": "mono_getSlitPositionInMM",
     "results": {
-      "position": 0
+      "position": 1.5
     },
     "errors": []
   },
@@ -160,7 +181,8 @@
     "id": 1234,
     "command": "mono_getShutterStatus",
     "results": {
-      "position": 0
+      "shutter 1": 0,
+      "shutter 2": 1
     },
     "errors": []
   },
@@ -177,11 +199,5 @@
     "command": "mono_moveSlit",
     "results": {},
     "errors": []
-  },
-  "mono_enableLaser": {},
-  "mono_getLaserStatus": {},
-  "mono_setLaserPower": {},
-  "mono_getLaserPower": {},
-  "mono_getLidStatus": {},
-  "mono_getSwitchStatus": {}
+  }
 }
