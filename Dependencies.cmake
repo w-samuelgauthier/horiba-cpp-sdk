@@ -15,14 +15,10 @@ function(horiba_cpp_sdk_setup_dependencies)
 
   CPMAddPackage("gh:TheLartians/Format.cmake@1.8.1")
 
-  if(NOT TARGET fmtlib::fmtlib)
-    CPMAddPackage("gh:fmtlib/fmt#9.1.0")
-  endif()
-
   if(NOT TARGET spdlog::spdlog)
     CPMAddPackage(
       NAME spdlog
-      VERSION 1.11.0
+      VERSION 1.14.0
       GITHUB_REPOSITORY "gabime/spdlog"
       OPTIONS "SPDLOG_FMT_EXTERNAL ON")
   endif()

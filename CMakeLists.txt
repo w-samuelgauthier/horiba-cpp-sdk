@@ -87,10 +87,6 @@ if(MSVC)
   get_all_installable_targets(all_targets)
   message("all_targets=${all_targets}")
   set_target_properties(${all_targets} PROPERTIES VS_DEBUGGER_ENVIRONMENT "PATH=$(VC_ExecutablePath_x64);%PATH%")
-
-  # Suppress C4996 warnings for MSVC. Those appear in the fmt library.
-  message("Suppressing C4996 warnings for MSVC")
-  add_compile_options(/wd4996)
 endif()
 
 # set the startup project for the "play" button in MSVC
