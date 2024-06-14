@@ -14,6 +14,11 @@ endif()
 # when compiling with PCH enabled
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+if(MSVC)
+  # Suppress C4996 warnings for MSVC. Those appear in the Boost library.
+  add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+endif()
+
 # Set the project name and language
 project(
   horiba_cpp_sdk
@@ -87,9 +92,6 @@ if(MSVC)
   get_all_installable_targets(all_targets)
   message("all_targets=${all_targets}")
   set_target_properties(${all_targets} PROPERTIES VS_DEBUGGER_ENVIRONMENT "PATH=$(VC_ExecutablePath_x64);%PATH%")
-
-  # Suppress C4996 warnings for MSVC
-  add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 endif()
 
 # set the startup project for the "play" button in MSVC
