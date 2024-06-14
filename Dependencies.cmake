@@ -8,6 +8,14 @@ function(horiba_cpp_sdk_setup_dependencies)
   # For each dependency, see if it's
   # already been provided to us by a parent project
 
+  CPMAddPackage(
+    NAME Ccache.cmake
+    GITHUB_REPOSITORY TheLartians/Ccache.cmake
+    VERSION 1.2
+  )
+
+  CPMAddPackage("gh:TheLartians/Format.cmake@1.8.1")
+
   if(NOT TARGET fmtlib::fmtlib)
     cpmaddpackage("gh:fmtlib/fmt#9.1.0")
   endif()
