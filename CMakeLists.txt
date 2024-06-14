@@ -16,7 +16,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 if(MSVC)
   # Suppress C4996 warnings for MSVC. Those appear in the fmt library.
-  message(STATUS "Suppressing C4996 warnings for MSVC")
+  message("Suppressing C4996 warnings for MSVC")
   add_compile_options(/wd4996)
 endif()
 
