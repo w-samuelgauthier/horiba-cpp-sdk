@@ -16,7 +16,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 if(MSVC)
   # Suppress C4996 warnings for MSVC. Those appear in the Boost library.
-  add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+  add_compile_definitions(_SCL_SECURE_NO_WARNINGS)
 endif()
 
 # Set the project name and language
