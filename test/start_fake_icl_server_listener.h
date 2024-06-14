@@ -31,6 +31,7 @@ class StartFakeICLServerListener : public Catch::EventListenerBase {
 
   static std::string fake_responses_folder_path;
 };
-std::string StartFakeICLServerListener::fake_responses_folder_path = ".";
+std::string StartFakeICLServerListener::fake_responses_folder_path =
+    "./fake_icl_responses/";
 } /* namespace horiba::test */
 #endif /* ifndef START_FAKE_ICL_SERVER_LISTENER */
