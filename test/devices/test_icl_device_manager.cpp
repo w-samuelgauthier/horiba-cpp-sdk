@@ -1,6 +1,10 @@
 #include <horiba_cpp_sdk/devices/icl_device_manager.h>
 #include <horiba_cpp_sdk/os/process.h>
 
+#if _WIN32
+#include <horiba_cpp_sdk/os/windows_process.h>
+#endif
+
 #include <catch2/catch_test_macros.hpp>
 #include <cstdlib>
 #include <memory>

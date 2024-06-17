@@ -5,6 +5,8 @@
 #include <horiba_cpp_sdk/devices/device_manager.h>
 #include <horiba_cpp_sdk/os/process.h>
 
+#include <string>
+
 namespace horiba::communication {
 class Communicator;
 } /* namespace horiba::communication */
