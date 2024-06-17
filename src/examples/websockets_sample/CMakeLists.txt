@@ -7,8 +7,7 @@ target_link_system_libraries(
   websockets
   PRIVATE
   CLI11::CLI11
-  spdlog::spdlog
-  )
+  spdlog::spdlog)
 
 message("${CMAKE_BINARY_DIR}")
 target_include_directories(websockets PRIVATE "${CMAKE_BINARY_DIR}/configured_files/include")
