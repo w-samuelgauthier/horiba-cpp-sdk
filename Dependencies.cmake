@@ -23,16 +23,12 @@ function(horiba_cpp_sdk_setup_dependencies)
       OPTIONS "SPDLOG_FMT_EXTERNAL ON")
   endif()
 
-  if(NOT TARGET Catch2::Catch2WithMain)
-    CPMAddPackage("gh:catchorg/Catch2@3.3.2")
+  if(NOT TARGET Catch2::Catch2)
+    CPMAddPackage("gh:catchorg/Catch2@3.6.0")
   endif()
 
   if(NOT TARGET CLI11::CLI11)
     CPMAddPackage("gh:CLIUtils/CLI11@2.3.2")
-  endif()
-
-  if(NOT TARGET tools::tools)
-    CPMAddPackage("gh:lefticus/tools#update_build_system")
   endif()
 
   if(NOT TARGET Boost::beast)

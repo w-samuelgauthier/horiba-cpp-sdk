@@ -55,7 +55,7 @@ target_link_libraries(
   PRIVATE horiba_cpp_sdk::horiba_cpp_sdk_warnings
           horiba_cpp_sdk::horiba_cpp_sdk_options
           horiba_cpp_sdk::horiba_cpp_sdk
-          Catch2::Catch2WithMain
+          Catch2::Catch2
           Boost::beast
           nlohmann_json::nlohmann_json
           spdlog::spdlog)

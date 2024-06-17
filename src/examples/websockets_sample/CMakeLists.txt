@@ -8,7 +8,7 @@ target_link_system_libraries(
   PRIVATE
   CLI11::CLI11
   spdlog::spdlog
-  lefticus::tools)
+  )
 
 message("${CMAKE_BINARY_DIR}")
 target_include_directories(websockets PRIVATE "${CMAKE_BINARY_DIR}/configured_files/include")
