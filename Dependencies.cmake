@@ -19,8 +19,7 @@ function(horiba_cpp_sdk_setup_dependencies)
     CPMAddPackage(
       NAME spdlog
       VERSION 1.14.0
-      GITHUB_REPOSITORY "gabime/spdlog"
-      OPTIONS "SPDLOG_FMT_EXTERNAL ON")
+      GITHUB_REPOSITORY "gabime/spdlog")
   endif()
 
   if(NOT TARGET Catch2::Catch2)
