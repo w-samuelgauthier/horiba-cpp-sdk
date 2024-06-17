@@ -2,6 +2,10 @@
 #include <horiba_cpp_sdk/devices/single_devices/ccd.h>
 
 #include <catch2/catch_test_macros.hpp>
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include "../../fake_icl_server.h"
 

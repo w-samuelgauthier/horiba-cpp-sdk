@@ -1,17 +1,12 @@
-#include <horiba_cpp_sdk/communication/command.h>
-#include <horiba_cpp_sdk/communication/response.h>
-#include <horiba_cpp_sdk/communication/websocket_communicator.h>
 #include <horiba_cpp_sdk/devices/icl_device_manager.h>
 #include <horiba_cpp_sdk/os/process.h>
 
-#include <catch2/catch_message.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <cstdlib>
-#include <nlohmann/json.hpp>
+#include <memory>
 #include <string>
 
 #include "../fake_icl_server.h"
-#include "../icl_exe.h"
 #include "../os/fake_process.h"
 
 // Warning about getenv being unsafe, we don't care about it here
@@ -25,7 +20,7 @@ TEST_CASE("ICL Device Manager test with fake ICL", "[icl_device_manager]") {
   spdlog::set_level(spdlog::level::debug);
 
   // arrange
-  std::shared_ptr<horiba::os::Process> fake_icl_process =
+  const std::shared_ptr<horiba::os::Process> fake_icl_process =
       std::make_shared<horiba::os::FakeProcess>();
   horiba::devices::ICLDeviceManager device_manager(
       fake_icl_process, FakeICLServer::FAKE_ICL_ADDRESS,
