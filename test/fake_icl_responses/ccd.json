@@ -34,13 +34,14 @@
     "id": 1234,
     "command": "ccd_open",
     "errors": [
-    ]
+    ],
+    "results":{}
   },
   "ccd_close": {
     "id": 1234,
     "command": "ccd_close",
-    "errors": [
-    ]
+    "errors": [],
+    "results":{}
   },
   "ccd_isOpen": {
     "id": 1234,
@@ -194,8 +195,6 @@
       "temperature": -31.219999313354492
     }
   },
-  "ccd_getNumberOfAvgs": {},
-  "ccd_setNumberOfAvgs": {},
   "ccd_getGain": {
     "id": 1234,
     "command": "ccd_getGain",

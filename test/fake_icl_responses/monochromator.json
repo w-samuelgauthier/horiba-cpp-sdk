@@ -33,12 +33,14 @@
   "mono_open": {
     "id": 1234,
     "command": "mono_open",
-    "errors": []
+    "errors": [],
+    "results": {}
   },
   "mono_close": {
     "id": 1234,
     "command": "mono_close",
-    "errors": []
+    "errors": [],
+    "results": {}
   },
   "mono_isOpen": {
     "id": 1234,
@@ -59,7 +61,8 @@
   "mono_init": {
     "id": 1234,
     "command": "mono_init",
-    "errors": []
+    "errors": [],
+    "results": {}
   },
   "mono_getConfig": {
     "id": 1234,
@@ -99,12 +102,14 @@
   "mono_setPosition": {
     "id": 1234,
     "command": "mono_setPosition",
-    "errors": []
+    "errors": [],
+    "results": {}
   },
   "mono_moveToPosition": {
     "id": 1234,
     "command": "mono_moveToPosition",
-    "errors": []
+    "errors": [],
+    "results": {}
   },
   "mono_getGratingPosition": {
     "id": 1234,
