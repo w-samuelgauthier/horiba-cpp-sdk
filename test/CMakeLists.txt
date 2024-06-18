@@ -29,13 +29,6 @@ include(${Catch2_SOURCE_DIR}/extras/Catch.cmake)
 # add_test(NAME cli.version_matches COMMAND intro --version)
 # set_tests_properties(cli.version_matches PROPERTIES PASS_REGULAR_EXPRESSION "${PROJECT_VERSION}")
 
-# Copy fake icl messages into build directory to support CICD pipeline
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/fake_icl_responses/ccd.json
-     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/fake_icl_responses/)
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/fake_icl_responses/icl.json
-     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/fake_icl_responses/)
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/fake_icl_responses/monochromator.json
-     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/fake_icl_responses/)
 
 add_executable(
   tests
@@ -67,6 +60,19 @@ if(WIN32 AND BUILD_SHARED_LIBS)
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:tests> $<TARGET_FILE_DIR:tests>
     COMMAND_EXPAND_LISTS)
 endif()
+
+# Copy fake icl responses json files into build directory to support CICD pipeline
+set(FAKE_ICL_RESPONSES_DIR_NAME "fake_icl_responses")
+set(FAKE_ICL_RESPONSES_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/${FAKE_ICL_RESPONSES_DIR_NAME}")
+set(FAKE_ICL_RESPONSES_DEST_DIR "${CMAKE_BINARY_DIR}/test/")
+
+# MSVC has a different directory structure for the build directory, with Debug/Release subdirectories
+if (MSVC)
+  set(FAKE_ICL_RESPONSES_DEST_DIR "${CMAKE_BINARY_DIR}/test/${CMAKE_BUILD_TYPE}/..")
+endif()
+
+message(STATUS "Copying fake icl responses from ${FAKE_ICL_RESPONSES_SOURCE_DIR} into ${FAKE_ICL_RESPONSES_DEST_DIR}")
+file(COPY ${FAKE_ICL_RESPONSES_SOURCE_DIR} DESTINATION ${FAKE_ICL_RESPONSES_DEST_DIR} FILES_MATCHING PATTERN "*.json")
 
 # automatically discover tests that are defined in catch based test files you can modify the unittests. Set TEST_PREFIX
 # to whatever you want, or use different for different binaries
