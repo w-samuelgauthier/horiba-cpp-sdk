@@ -4,9 +4,9 @@
 #include <horiba_cpp_sdk/communication/communicator.h>
 #include <horiba_cpp_sdk/devices/single_devices/device.h>
 
-#include <nlohmann/json.hpp>
 #include <any>
 #include <memory>
+#include <nlohmann/json.hpp>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>

@@ -77,3 +77,4 @@ ___
 
 ## Credits
 * Cmake project template from [lefticus](https://github.com/cpp-best-practices/cmake_template)
+* GitHub Actions CI/CD from [TheLartians](https://github.com/TheLartians/ModernCppStarter)

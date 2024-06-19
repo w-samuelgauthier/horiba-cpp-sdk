@@ -490,8 +490,10 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
     const int exposure_time = 1;
-    REQUIRE_NOTHROW(ccd.set_timer_resolution(ChargeCoupledDevice::TimerResolution::THOUSAND_MICROSECONDS));
-    REQUIRE_NOTHROW(ccd.set_acquisition_format(1, ChargeCoupledDevice::AcquisitionFormat::IMAGE));
+    REQUIRE_NOTHROW(ccd.set_timer_resolution(
+        ChargeCoupledDevice::TimerResolution::THOUSAND_MICROSECONDS));
+    REQUIRE_NOTHROW(ccd.set_acquisition_format(
+        1, ChargeCoupledDevice::AcquisitionFormat::IMAGE));
     REQUIRE_NOTHROW(ccd.set_exposure_time(exposure_time));
     REQUIRE_NOTHROW(ccd.set_region_of_interest());
     REQUIRE_FALSE(ccd.get_acquisition_busy());

@@ -1,5 +1,8 @@
 #include "horiba_cpp_sdk/communication/command.h"
 
+#include <atomic>
+#include <nlohmann/json.hpp>
+#include <string>
 #include <utility>
 
 namespace horiba::communication {

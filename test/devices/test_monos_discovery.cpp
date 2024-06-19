@@ -1,9 +1,10 @@
 #include <horiba_cpp_sdk/communication/websocket_communicator.h>
 #include <horiba_cpp_sdk/devices/monos_discovery.h>
-#include <horiba_cpp_sdk/devices/single_devices/mono.h>
 
 #include <catch2/catch_test_macros.hpp>
 #include <cstdlib>
+#include <memory>
+#include <string>
 
 #include "../fake_icl_server.h"
 #include "../icl_exe.h"

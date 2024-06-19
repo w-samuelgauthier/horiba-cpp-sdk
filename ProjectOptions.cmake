@@ -3,7 +3,6 @@ include(cmake/LibFuzzer.cmake)
 include(CMakeDependentOption)
 include(CheckCXXCompilerFlag)
 
-
 macro(horiba_cpp_sdk_supports_sanitizers)
   if((CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*") AND NOT WIN32)
     set(SUPPORTS_UBSAN ON)
@@ -79,7 +78,10 @@ macro(horiba_cpp_sdk_setup_options)
   endif()
 
   horiba_cpp_sdk_check_libfuzzer_support(LIBFUZZER_SUPPORTED)
-  if(LIBFUZZER_SUPPORTED AND (horiba_cpp_sdk_ENABLE_SANITIZER_ADDRESS OR horiba_cpp_sdk_ENABLE_SANITIZER_THREAD OR horiba_cpp_sdk_ENABLE_SANITIZER_UNDEFINED))
+  if(LIBFUZZER_SUPPORTED
+     AND (horiba_cpp_sdk_ENABLE_SANITIZER_ADDRESS
+          OR horiba_cpp_sdk_ENABLE_SANITIZER_THREAD
+          OR horiba_cpp_sdk_ENABLE_SANITIZER_UNDEFINED))
     set(DEFAULT_FUZZER ON)
   else()
     set(DEFAULT_FUZZER OFF)
@@ -108,7 +110,8 @@ macro(horiba_cpp_sdk_global_options)
     else()
       set(ENABLE_UBSAN_MINIMAL_RUNTIME TRUE)
     endif()
-    message("${horiba_cpp_sdk_ENABLE_HARDENING} ${ENABLE_UBSAN_MINIMAL_RUNTIME} ${horiba_cpp_sdk_ENABLE_SANITIZER_UNDEFINED}")
+    message(
+      "${horiba_cpp_sdk_ENABLE_HARDENING} ${ENABLE_UBSAN_MINIMAL_RUNTIME} ${horiba_cpp_sdk_ENABLE_SANITIZER_UNDEFINED}")
     horiba_cpp_sdk_enable_hardening(horiba_cpp_sdk_options ON ${ENABLE_UBSAN_MINIMAL_RUNTIME})
   endif()
 endmacro()

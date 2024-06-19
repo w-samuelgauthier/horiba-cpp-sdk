@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <functional>
 #include <iostream>
-#include <lefticus/tools/non_promoting_ints.hpp>
+/* #include <lefticus/tools/non_promoting_ints.hpp> */
 #include <optional>
 #include <random>
 #include <string>

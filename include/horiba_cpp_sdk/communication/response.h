@@ -21,27 +21,26 @@ class Response {
    * @param errors The errors, if any, of the command
    */
   Response(unsigned long long int id, std::string command,
-           nlohmann::json results, std::vector<std::string> errors);
-  ~Response() = default;
+           nlohmann::json::object_t results, std::vector<std::string> errors);
 
   /**
    * @brief JSON representation of the "results" field of the response.
    *
    * @return JSON of response["results"]
    */
-  nlohmann::json json_results() const;
+  [[nodiscard]] nlohmann::json json_results() const;
 
   /**
    * @brief Errors, if any, from the ICL.
    *
    * @return Errors happened during the call to the ICL
    */
-  std::vector<std::string> errors() const;
+  [[nodiscard]] std::vector<std::string> errors() const;
 
  private:
   unsigned long long int id;
   std::string command;
-  nlohmann::json results;
+  nlohmann::json::object_t results;
   std::vector<std::string> icl_errors;
 };
 } /* namespace horiba::communication */

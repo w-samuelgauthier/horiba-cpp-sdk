@@ -80,7 +80,7 @@ The following compilers should work:
 	<details>
 	<summary>Install command + Environment setup</summary>
 
-	On Windows, you need to install Visual Studio 2019 because of the SDK and libraries that ship with it.
+	On Windows, you need to install Visual Studio 2019 or higher because of the SDK and libraries that ship with it.
 
   	Visual Studio IDE - 2022 Community (installs Clang too):
 

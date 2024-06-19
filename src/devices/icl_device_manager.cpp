@@ -38,7 +38,8 @@ void ICLDeviceManager::start() {
   const communication::Response response =
       this->communicator->request_with_response(
           communication::Command("icl_info", {}));
-  spdlog::debug("[ICLDeviceManager] ICL info: {}", response.json_results());
+  spdlog::debug("[ICLDeviceManager] ICL info: {}",
+                response.json_results().dump());
 
   if (this->enable_binary_messages) {
     this->enable_binary_messages_on_icl();

@@ -3,9 +3,11 @@
 #include <spdlog/spdlog.h>
 
 #include <boost/beast/core/buffers_to_string.hpp>
+#include <boost/beast/core/flat_buffer.hpp>
 #include <boost/beast/core/make_printable.hpp>
 #include <exception>
 #include <memory>
+#include <nlohmann/json.hpp>
 #include <stdexcept>
 
 #include "horiba_cpp_sdk/communication/command.h"
