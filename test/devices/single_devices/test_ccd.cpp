@@ -234,8 +234,8 @@ TEST_CASE("CCD test with fake ICL", "[ccd_no_hw]") {
 
     // act
     // assert
-    REQUIRE_NOTHROW(
-        ccd.set_clean_count(0, ChargeCoupledDevice::CleanCountMode::MODE_1));
+    REQUIRE_NOTHROW(ccd.set_clean_count(
+        0, ChargeCoupledDevice::CleanCountMode::FIRST_ONLY));
     // we do not check if the new fit params are set, as the fake answer from
     // the ICL always returns the same value
   }

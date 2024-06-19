@@ -286,7 +286,7 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
 
     // assert
     std::pair<int, ChargeCoupledDevice::CleanCountMode> expected_clean_count = {
-        1, ChargeCoupledDevice::CleanCountMode::MODE_1};
+        1, ChargeCoupledDevice::CleanCountMode::FIRST_ONLY};
     REQUIRE(clean_count.first == expected_clean_count.first);
     REQUIRE(clean_count.second == expected_clean_count.second);
   }
@@ -294,21 +294,21 @@ TEST_CASE_METHOD(ICLExe, "CCD test on HW", "[ccd_hw]") {
   SECTION("CCD clean count can be set") {
     // arrange
     ccd.open();
-    REQUIRE_NOTHROW(
-        ccd.set_clean_count(0, ChargeCoupledDevice::CleanCountMode::MODE_1));
+    REQUIRE_NOTHROW(ccd.set_clean_count(
+        0, ChargeCoupledDevice::CleanCountMode::FIRST_ONLY));
     auto clean_count_before = ccd.get_clean_count();
 
     // act
-    REQUIRE_NOTHROW(
-        ccd.set_clean_count(2, ChargeCoupledDevice::CleanCountMode::MODE_1));
+    REQUIRE_NOTHROW(ccd.set_clean_count(
+        2, ChargeCoupledDevice::CleanCountMode::FIRST_ONLY));
     auto clean_count_after = ccd.get_clean_count();
 
     std::pair<int, ChargeCoupledDevice::CleanCountMode>
         expected_clean_count_before = {
-            0, ChargeCoupledDevice::CleanCountMode::MODE_1};
+            0, ChargeCoupledDevice::CleanCountMode::FIRST_ONLY};
     std::pair<int, ChargeCoupledDevice::CleanCountMode>
         expected_clean_count_after = {
-            2, ChargeCoupledDevice::CleanCountMode::MODE_1};
+            2, ChargeCoupledDevice::CleanCountMode::FIRST_ONLY};
     // assert
     REQUIRE(clean_count_before.first == expected_clean_count_before.first);
     REQUIRE(clean_count_before.second == expected_clean_count_before.second);
