@@ -26,6 +26,20 @@ jobs:
           path: "**/cpm_modules"
           key: ${{ github.workflow }}-cpm-modules-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
 
+      - name: setup-cpp
+        uses: aminya/setup-cpp@v1
+        with:
+          compiler: msvc
+          vcvarsall: true
+          cmake: true
+          ninja: true
+          vcpkg: false
+          ccache: true
+          clangtidy: true
+          cppcheck: true
+          gcovr: true
+          opencppcoverage: true
+
       - name: configure
         run: cmake -S. -Bbuild
 
