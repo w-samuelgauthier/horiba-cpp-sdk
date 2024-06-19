@@ -29,7 +29,6 @@ include(${Catch2_SOURCE_DIR}/extras/Catch.cmake)
 # add_test(NAME cli.version_matches COMMAND intro --version)
 # set_tests_properties(cli.version_matches PROPERTIES PASS_REGULAR_EXPRESSION "${PROJECT_VERSION}")
 
-
 add_executable(
   tests
   tests.cpp
@@ -67,12 +66,16 @@ set(FAKE_ICL_RESPONSES_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/${FAKE_ICL_RESPON
 set(FAKE_ICL_RESPONSES_DEST_DIR "${CMAKE_BINARY_DIR}/test/")
 
 # MSVC has a different directory structure for the build directory, with Debug/Release subdirectories
-if (MSVC)
+if(MSVC)
   set(FAKE_ICL_RESPONSES_DEST_DIR "${CMAKE_BINARY_DIR}/test/${CMAKE_BUILD_TYPE}/..")
 endif()
 
 message(STATUS "Copying fake icl responses from ${FAKE_ICL_RESPONSES_SOURCE_DIR} into ${FAKE_ICL_RESPONSES_DEST_DIR}")
-file(COPY ${FAKE_ICL_RESPONSES_SOURCE_DIR} DESTINATION ${FAKE_ICL_RESPONSES_DEST_DIR} FILES_MATCHING PATTERN "*.json")
+file(
+  COPY ${FAKE_ICL_RESPONSES_SOURCE_DIR}
+  DESTINATION ${FAKE_ICL_RESPONSES_DEST_DIR}
+  FILES_MATCHING
+  PATTERN "*.json")
 
 # automatically discover tests that are defined in catch based test files you can modify the unittests. Set TEST_PREFIX
 # to whatever you want, or use different for different binaries
