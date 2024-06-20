@@ -22,11 +22,14 @@ jobs:
 
       - name: Install dependencies
         run: |
-          brew install doxygen pygments jinja2-cli
-          # pip3 install jinja2 Pygments
+          brew install doxygen
+          python3 -m venv path/to/venv
+          source path/to/venv/bin/activate
+          pip3 install jinja2 Pygments
 
       - name: Build
         run: |
+          source path/to/venv/bin/activate
           cmake -Sdocumentation -Bbuild
           cmake --build build --target GenerateDocs
 
