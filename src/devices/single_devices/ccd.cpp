@@ -73,15 +73,7 @@ std::vector<int> ChargeCoupledDevice::get_fit_parameters() {
   auto response = Device::execute_command(communication::Command(
       "ccd_getFitParams", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
-  auto raw_fit_params = json_results.at("params").get<std::string>();
-
-  std::vector<int> fit_params;
-  std::stringstream raw_fit_params_stream(raw_fit_params);
-  std::string item;
-  while (std::getline(raw_fit_params_stream, item, ',')) {
-    const int num = std::stoi(item);
-    fit_params.push_back(num);
-  }
+  auto fit_params = json_results.at("fitParameters").get<std::vector<int>>();
   return fit_params;
 }
 
@@ -96,21 +88,15 @@ ChargeCoupledDevice::get_timer_resolution() {
   auto response = Device::execute_command(communication::Command(
       "ccd_getTimerResolution", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
-  auto timer_resolution = json_results.at("resolution").get<int>();
-  if (timer_resolution == 1000) {
-    return ChargeCoupledDevice::TimerResolution::THOUSAND_MICROSECONDS;
-  } else if (timer_resolution == 1) {
-    return ChargeCoupledDevice::TimerResolution::ONE_MICROSECOND;
-  } else {
-    throw std::runtime_error("Unknown timer resolution");
-  }
+  auto timer_resolution = json_results.at("resolutionToken").get<int>();
+  return static_cast<ChargeCoupledDevice::TimerResolution>(timer_resolution);
 }
 
 void ChargeCoupledDevice::set_timer_resolution(
     ChargeCoupledDevice::TimerResolution timer_resolution) {
   auto _ignored_response = Device::execute_command(communication::Command(
       "ccd_setTimerResolution",
-      {{"index", Device::device_id()}, {"resolution", timer_resolution}}));
+      {{"index", Device::device_id()}, {"resolutionToken", timer_resolution}}));
 }
 
 void ChargeCoupledDevice::set_acquisition_format(
@@ -244,8 +230,7 @@ void ChargeCoupledDevice::set_trigger_input(bool enabled, int address,
   }
 
   auto config = get_configuration();
-  spdlog::debug("[CCD] config: {}", config.dump());
-  auto it_triggers = config.find("Triggers");
+  auto it_triggers = config.find("triggers");
   if (it_triggers == config.end()) {
     throw std::runtime_error("Triggers not found in the configuration");
   }
@@ -253,7 +238,7 @@ void ChargeCoupledDevice::set_trigger_input(bool enabled, int address,
   const auto& triggers = it_triggers;
   auto found_triggers = std::find_if(triggers->begin(), triggers->end(),
                                      [&address](const nlohmann::json& trigger) {
-                                       return trigger["Token"] == address;
+                                       return trigger["token"] == address;
                                      });
 
   if (found_triggers == triggers->end()) {
@@ -262,23 +247,23 @@ void ChargeCoupledDevice::set_trigger_input(bool enabled, int address,
   }
 
   auto found_events = std::find_if(
-      (*found_triggers)["Events"].begin(), (*found_triggers)["Events"].end(),
+      (*found_triggers)["events"].begin(), (*found_triggers)["events"].end(),
       [&event](const nlohmann::json& trigger_event) {
-        return trigger_event["Token"] == event;
+        return trigger_event["token"] == event;
       });
 
-  if (found_events == (*found_triggers)["Events"].end()) {
+  if (found_events == (*found_triggers)["events"].end()) {
     throw std::runtime_error("Trigger event " + std::to_string(event) +
                              " not found in the configuration");
   }
 
   auto found_signal_types = std::find_if(
-      (*found_events)["Types"].begin(), (*found_events)["Types"].end(),
+      (*found_events)["types"].begin(), (*found_events)["types"].end(),
       [&signal_type](const nlohmann::json& signal) {
-        return signal["Token"] == signal_type;
+        return signal["token"] == signal_type;
       });
 
-  if (found_signal_types == (*found_events)["Types"].end()) {
+  if (found_signal_types == (*found_events)["types"].end()) {
     throw std::runtime_error("Trigger type " + std::to_string(signal_type) +
                              " not found in the configuration");
   }
@@ -327,7 +312,7 @@ void ChargeCoupledDevice::set_signal_output(bool enabled, int address,
   const auto& signals = it_signals;
   auto found_triggers = std::find_if(signals->begin(), signals->end(),
                                      [&address](const nlohmann::json& trigger) {
-                                       return trigger["Token"] == address;
+                                       return trigger["token"] == address;
                                      });
 
   if (found_triggers == signals->end()) {
@@ -336,23 +321,23 @@ void ChargeCoupledDevice::set_signal_output(bool enabled, int address,
   }
 
   auto found_events = std::find_if(
-      (*found_triggers)["Events"].begin(), (*found_triggers)["Events"].end(),
+      (*found_triggers)["events"].begin(), (*found_triggers)["events"].end(),
       [&event](const nlohmann::json& trigger_event) {
-        return trigger_event["Token"] == event;
+        return trigger_event["token"] == event;
       });
 
-  if (found_events == (*found_triggers)["Events"].end()) {
+  if (found_events == (*found_triggers)["events"].end()) {
     throw std::runtime_error("Signal event " + std::to_string(event) +
                              " not found in the configuration");
   }
 
   auto found_signal_types = std::find_if(
-      (*found_events)["Types"].begin(), (*found_events)["Types"].end(),
+      (*found_events)["types"].begin(), (*found_events)["types"].end(),
       [&signal_type](const nlohmann::json& signal) {
-        return signal["Token"] == signal_type;
+        return signal["token"] == signal_type;
       });
 
-  if (found_signal_types == (*found_events)["Types"].end()) {
+  if (found_signal_types == (*found_events)["types"].end()) {
     throw std::runtime_error("Signal type " + std::to_string(signal_type) +
                              " not found in the configuration");
   }

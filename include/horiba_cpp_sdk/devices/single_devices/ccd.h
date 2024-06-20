@@ -46,8 +46,11 @@ class ChargeCoupledDevice final : public Device {
   };
 
   enum class CleanCountMode : int {
-    MODE_1 = 0,
-    // TODO: clarify the meaning of the modes
+    NEVER = 0,
+    FIRST_ONLY = 1,
+    BETWEEN_ONLY = 2,
+    EACH = 3,
+    // TODO: clarify the meaning of the last mode
     MODE_UNKNOWN = 238,
   };
 
@@ -253,10 +256,10 @@ class ChargeCoupledDevice final : public Device {
   void set_acquisition_count(int count) noexcept(false);
 
   /**
-   * @brief Gets the clean count mode of the CCD and the corresponding mode.
+   * @brief Gets the number of cleans to be performed prior to measurement.
    *
-   * @return std::string Clean count information (e.g., "count: 10 mode:
-   * 0").
+   * @return std::pair<int, ChargeCoupledDevice::CleanCountMode> Clean count
+   * information.
    *
    * @throws std::exception When an error occurs on the device side.
    */
