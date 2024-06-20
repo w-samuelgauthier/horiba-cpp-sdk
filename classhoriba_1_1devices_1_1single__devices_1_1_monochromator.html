@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>horiba::devices::single_devices::Monochromator class | horiba_cpp_sdk</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,600,600i%7CSource+Code+Pro:400,400i,600" />
+  <link rel="stylesheet" href="m-dark+documentation.compiled.css" />
+  <link rel="icon" href="favicon-dark.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#22272e" />
+</head>
+<body>
+<header><nav id="navigation">
+  <div class="m-container">
+    <div class="m-row">
+      <a href="index.html" id="m-navbar-brand" class="m-col-t-8 m-col-m-none m-left-m">horiba_cpp_sdk</a>
+      <div class="m-col-t-4 m-hide-m m-text-right m-nopadr">
+        <a href="#search" class="m-doc-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+          <path id="m-doc-search-icon-path" d="m6 0c-3.31 0-6 2.69-6 6 0 3.31 2.69 6 6 6 1.49 0 2.85-0.541 3.89-1.44-0.0164 0.338 0.147 0.759 0.5 1.15l3.22 3.79c0.552 0.614 1.45 0.665 2 0.115 0.55-0.55 0.499-1.45-0.115-2l-3.79-3.22c-0.392-0.353-0.812-0.515-1.15-0.5 0.895-1.05 1.44-2.41 1.44-3.89 0-3.31-2.69-6-6-6zm0 1.56a4.44 4.44 0 0 1 4.44 4.44 4.44 4.44 0 0 1-4.44 4.44 4.44 4.44 0 0 1-4.44-4.44 4.44 4.44 0 0 1 4.44-4.44z"/>
+        </svg></a>
+        <a id="m-navbar-show" href="#navigation" title="Show navigation"></a>
+        <a id="m-navbar-hide" href="#" title="Hide navigation"></a>
+      </div>
+      <div id="m-navbar-collapse" class="m-col-t-12 m-show-m m-col-m-none m-right-m">
+        <div class="m-row">
+          <ol class="m-col-t-6 m-col-m-none">
+            <li>
+              <a href="pages.html">Pages</a>
+              <ol>
+                <li><a href="about.html">About</a></li>
+              </ol>
+            </li>
+            <li><a href="namespaces.html">Namespaces</a></li>
+          </ol>
+          <ol class="m-col-t-6 m-col-m-none" start="3">
+            <li><a href="annotated.html">Classes</a></li>
+            <li><a href="files.html">Files</a></li>
+            <li class="m-show-m"><a href="#search" class="m-doc-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+              <use href="#m-doc-search-icon-path" />
+            </svg></a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav></header>
+<main><article>
+  <div class="m-container m-container-inflatable">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <h1>
+          <span class="m-breadcrumb"><a href="namespacehoriba.html">horiba</a>::<wbr/></span><span class="m-breadcrumb"><a href="namespacehoriba_1_1devices.html">devices</a>::<wbr/></span><span class="m-breadcrumb"><a href="namespacehoriba_1_1devices_1_1single__devices.html">single_devices</a>::<wbr/></span>Monochromator <span class="m-thin">class</span> <span class="m-label m-flat m-warning">final</span>
+          <div class="m-doc-include m-code m-inverted m-text-right"><span class="cp">#include</span> <a class="cpf" href="mono_8h.html">&lt;horiba_cpp_sdk/devices/single_devices/mono.h&gt;</a></div>
+        </h1>
+        <p>Represents a <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html" class="m-doc">Monochromator</a> This class should not be created directly by the end user. Instead a <a href="classhoriba_1_1devices_1_1_device_manager.html" class="m-doc">DeviceManager</a> should be used to access the detected Monochromators on the system.</p>
+        <nav class="m-block m-default">
+          <h3>Contents</h3>
+          <ul>
+            <li>
+              Reference
+              <ul>
+                <li><a href="#base-classes">Base classes</a></li>
+                <li><a href="#pub-types">Public types</a></li>
+                <li><a href="#typeless-methods">Constructors, destructors, conversion operators</a></li>
+                <li><a href="#pub-methods">Public functions</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <section id="base-classes">
+          <h2><a href="#base-classes">Base classes</a></h2>
+          <dl class="m-doc">
+            <dt>
+              class <a href="classhoriba_1_1devices_1_1single__devices_1_1_device.html" class="m-doc">Device</a>
+            </dt>
+            <dd>Interface for devices connected to the ICL.</dd>
+          </dl>
+        </section>
+        <section id="pub-types">
+          <h2><a href="#pub-types">Public types</a></h2>
+          <dl class="m-doc">
+            <dt id="aded45bc8fd1f0c3719c08f47159a75bd">
+              <span class="m-doc-wrap-bumper">enum class <a href="#aded45bc8fd1f0c3719c08f47159a75bd" class="m-doc-self">Shutter</a>: int { </span><span class="m-doc-wrap"><a href="#aded45bc8fd1f0c3719c08f47159a75bda2c2624a5059934a947d6e25fe8332ade" class="m-doc">FIRST</a>,
+              <a href="#aded45bc8fd1f0c3719c08f47159a75bda2200becb80f0019c4a2ccecec350d0db" class="m-doc">SECOND</a> }</span>
+            </dt>
+            <dd>Shutters installed in the monochromator. Depending on the model, not all shutters may be available.</dd>
+            <dt id="a498dd8a34184fc3a3a63e6c414bfaf4d">
+              <span class="m-doc-wrap-bumper">enum class <a href="#a498dd8a34184fc3a3a63e6c414bfaf4d" class="m-doc-self">ShutterPosition</a>: int { </span><span class="m-doc-wrap"><a href="#a498dd8a34184fc3a3a63e6c414bfaf4da110ccf2f5d2ff4eda1fd1a494293467d" class="m-doc">CLOSED</a>,
+              <a href="#a498dd8a34184fc3a3a63e6c414bfaf4dae670c2408064392c6da7d0b721f7349c" class="m-doc">OPENED</a> }</span>
+            </dt>
+            <dd>Position of the shutter.</dd>
+            <dt id="a3e2e89e1acf6565b0cd2d7be4dbf022c">
+              <span class="m-doc-wrap-bumper">enum class <a href="#a3e2e89e1acf6565b0cd2d7be4dbf022c" class="m-doc-self">Grating</a>: int { </span><span class="m-doc-wrap"><a href="#a3e2e89e1acf6565b0cd2d7be4dbf022ca2c2624a5059934a947d6e25fe8332ade" class="m-doc">FIRST</a>,
+              <a href="#a3e2e89e1acf6565b0cd2d7be4dbf022ca2200becb80f0019c4a2ccecec350d0db" class="m-doc">SECOND</a>,
+              <a href="#a3e2e89e1acf6565b0cd2d7be4dbf022cac39efd068faa8bf1b4e348d7cd43c229" class="m-doc">THIRD</a> }</span>
+            </dt>
+            <dd>Gratings installed in the monochromator. Depending on the model, not all gratings may be available.</dd>
+            <dt id="aa3622c48e1a6ee0b8e72b1d15cd3cf4d">
+              <span class="m-doc-wrap-bumper">enum class <a href="#aa3622c48e1a6ee0b8e72b1d15cd3cf4d" class="m-doc-self">FilterWheel</a>: int { </span><span class="m-doc-wrap"><a href="#aa3622c48e1a6ee0b8e72b1d15cd3cf4da2c2624a5059934a947d6e25fe8332ade" class="m-doc">FIRST</a>,
+              <a href="#aa3622c48e1a6ee0b8e72b1d15cd3cf4da2200becb80f0019c4a2ccecec350d0db" class="m-doc">SECOND</a> }</span>
+            </dt>
+            <dd>Filter wheels installed in the monochromator. Depending on the model, not all filter wheels may be available.</dd>
+            <dt id="a6dfa6959b28866018a53da519908a392">
+              <span class="m-doc-wrap-bumper">enum class <a href="#a6dfa6959b28866018a53da519908a392" class="m-doc-self">FilterWheelPosition</a>: int { </span><span class="m-doc-wrap"><a href="#a6dfa6959b28866018a53da519908a392aa2d9547b5d3dd9f05984475f7c926da0" class="m-doc">RED</a>,
+              <a href="#a6dfa6959b28866018a53da519908a392a9de0e5dd94e861317e74964bed179fa0" class="m-doc">GREEN</a>,
+              <a href="#a6dfa6959b28866018a53da519908a392a1b3e1ee9bff86431dea6b181365ba65f" class="m-doc">BLUE</a>,
+              <a href="#a6dfa6959b28866018a53da519908a392a8a568e5f41b7e4da88fe5c4a00aad34e" class="m-doc">YELLOW</a> }</span>
+            </dt>
+            <dd>Positions of the filter wheel installed in the monochromator. Depending on the model, not all positions may be available.</dd>
+            <dt id="a19355c2a3667b76d95a5d3cf404835be">
+              <span class="m-doc-wrap-bumper">enum class <a href="#a19355c2a3667b76d95a5d3cf404835be" class="m-doc-self">Mirror</a>: int { </span><span class="m-doc-wrap"><a href="#a19355c2a3667b76d95a5d3cf404835bea2c2624a5059934a947d6e25fe8332ade" class="m-doc">FIRST</a>,
+              <a href="#a19355c2a3667b76d95a5d3cf404835bea2200becb80f0019c4a2ccecec350d0db" class="m-doc">SECOND</a> }</span>
+            </dt>
+            <dd>Mirrors installed in the monochromator. Depending on the model, not all mirrors may be available.</dd>
+            <dt id="a9f1457ac6fc68dcf087a1e5d3c10d772">
+              <span class="m-doc-wrap-bumper">enum class <a href="#a9f1457ac6fc68dcf087a1e5d3c10d772" class="m-doc-self">MirrorPosition</a>: int { </span><span class="m-doc-wrap"><a href="#a9f1457ac6fc68dcf087a1e5d3c10d772a0337be514c152c6f0a9c748668aa501b" class="m-doc">AXIAL</a>,
+              <a href="#a9f1457ac6fc68dcf087a1e5d3c10d772acb73be003936cf9b889410bfd25dffe8" class="m-doc">LATERAL</a> }</span>
+            </dt>
+            <dd>Possible positions of the mirrors.</dd>
+            <dt id="a28ab62f60df225724bcb992ec8e8de91">
+              <span class="m-doc-wrap-bumper">enum class <a href="#a28ab62f60df225724bcb992ec8e8de91" class="m-doc-self">Slit</a>: int { </span><span class="m-doc-wrap"><a href="#a28ab62f60df225724bcb992ec8e8de91a7fc56270e7a70fa81a5935b72eacbe29" class="m-doc">A</a>,
+              <a href="#a28ab62f60df225724bcb992ec8e8de91a9d5ed678fe57bcca610140957afab571" class="m-doc">B</a>,
+              <a href="#a28ab62f60df225724bcb992ec8e8de91a0d61f8370cad1d412f80b84d143e1257" class="m-doc">C</a>,
+              <a href="#a28ab62f60df225724bcb992ec8e8de91af623e75af30e62bbd73d6df5b50bb7b5" class="m-doc">D</a> }</span>
+            </dt>
+            <dd>Slits available on the monochromator. Depending on the model, not all slits may be available.</dd>
+          </dl>
+        </section>
+        <section id="typeless-methods">
+          <h2><a href="#typeless-methods">Constructors, destructors, conversion operators</a></h2>
+          <dl class="m-doc">
+            <dt id="a1aa9e4e9184669a899478d53714748f5">
+              <span class="m-doc-wrap-bumper"><a href="#a1aa9e4e9184669a899478d53714748f5" class="m-doc-self">Monochromator</a>(</span><span class="m-doc-wrap">int id,
+              std::shared_ptr&lt;<a href="classhoriba_1_1communication_1_1_communicator.html" class="m-doc">communication::<wbr />Communicator</a>&gt; communicator)</span>
+            </dt>
+            <dd><span></span></dd>
+            <dt id="aa461f025050776d7177c2e387f5853c2">
+              <span class="m-doc-wrap-bumper"><a href="#aa461f025050776d7177c2e387f5853c2" class="m-doc-self">~Monochromator</a>(</span><span class="m-doc-wrap">) <span class="m-label m-flat m-info">defaulted</span> <span class="m-label m-flat m-warning">override</span></span>
+            </dt>
+            <dd><span></span></dd>
+          </dl>
+        </section>
+        <section id="pub-methods">
+          <h2><a href="#pub-methods">Public functions</a></h2>
+          <dl class="m-doc">
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#afad63b317db6a4eeba6a0543030e7623" class="m-doc">open</a>(</span><span class="m-doc-wrap">) <span class="m-label m-flat m-warning">override</span></span>
+            </dt>
+            <dd>Opens the device.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a786fa1ff70ef8c2b9f21bb990e62b5d5" class="m-doc">close</a>(</span><span class="m-doc-wrap">) <span class="m-label m-flat m-warning">override</span></span>
+            </dt>
+            <dd>Closes the device.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a83f5ef5cff8cbd3d03ef7b7a1404e1ae" class="m-doc">is_open</a>(</span><span class="m-doc-wrap">) -&gt; bool</span>
+            </dt>
+            <dd>Checks if the connection to the monochromator is open.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#ac5a19babff8ad56d39de77b7ac2bf70c" class="m-doc">is_busy</a>(</span><span class="m-doc-wrap">) -&gt; bool</span>
+            </dt>
+            <dd>Checks if the monochromator is busy.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a5e4ac5fce041b752a535ee470d0e4468" class="m-doc">home</a>(</span><span class="m-doc-wrap">)</span>
+            </dt>
+            <dd>Starts the monochromator initialization process called &quot;homing&quot;.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a4a48dd20e5b99637f3ec8821a60e0950" class="m-doc">configuration</a>(</span><span class="m-doc-wrap">) -&gt; std::string</span>
+            </dt>
+            <dd>Returns the configuration of the monochromator.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#abe7a3fb74f4b2053385ce6334d0a32a7" class="m-doc">get_current_wavelength</a>(</span><span class="m-doc-wrap">) -&gt; double</span>
+            </dt>
+            <dd>Current wavelength of the monochromator&#x27;s position in nm.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a3f6b09b053bc0dcbc8eb2ec8ca5b84b1" class="m-doc">calibrate_wavelength</a>(</span><span class="m-doc-wrap">double wavelength)</span>
+            </dt>
+            <dd>This command sets the wavelength value of the current grating position of the monochromator.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a9734c47345f4050bfccc66a87915c360" class="m-doc">move_to_target_wavelength</a>(</span><span class="m-doc-wrap">double wavelength)</span>
+            </dt>
+            <dd>Orders the monochromator to move to the requested wavelength.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#adbc0ee9cbf877fff1a9e15e90c30f81b" class="m-doc">get_turret_grating</a>(</span><span class="m-doc-wrap">) -&gt; <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a3e2e89e1acf6565b0cd2d7be4dbf022c" class="m-doc">Grating</a></span>
+            </dt>
+            <dd>Current grating of the turret.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#aefb277917198aef790dbd1dcd2598ed6" class="m-doc">set_turret_grating</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a3e2e89e1acf6565b0cd2d7be4dbf022c" class="m-doc">Grating</a> grating)</span>
+            </dt>
+            <dd>Select turret grating.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a59ed7fd6fc53a5aa2f5d0f3e1bdc59da" class="m-doc">get_filter_wheel_position</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#aa3622c48e1a6ee0b8e72b1d15cd3cf4d" class="m-doc">FilterWheel</a> filter_wheel) -&gt; <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a6dfa6959b28866018a53da519908a392" class="m-doc">FilterWheelPosition</a></span>
+            </dt>
+            <dd>Current position of the filter wheel.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a7b532a15aa0f0c54feac13dd55920380" class="m-doc">set_filter_wheel_position</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#aa3622c48e1a6ee0b8e72b1d15cd3cf4d" class="m-doc">FilterWheel</a> filter_wheel,
+              <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a6dfa6959b28866018a53da519908a392" class="m-doc">FilterWheelPosition</a> position)</span>
+            </dt>
+            <dd>Sets the current position of the filter wheel.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a5f532adbdcd823ddfe5a3f89fe113a3a" class="m-doc">get_mirror_position</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a19355c2a3667b76d95a5d3cf404835be" class="m-doc">Mirror</a> mirror) -&gt; <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a9f1457ac6fc68dcf087a1e5d3c10d772" class="m-doc">MirrorPosition</a></span>
+            </dt>
+            <dd>Position of the selected mirror.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a160e36cdc2e1646f92976d8036a98cd6" class="m-doc">set_mirror_position</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a19355c2a3667b76d95a5d3cf404835be" class="m-doc">Mirror</a> mirror,
+              <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a9f1457ac6fc68dcf087a1e5d3c10d772" class="m-doc">MirrorPosition</a> position)</span>
+            </dt>
+            <dd>Sets the position of the selected mirror.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#ad77e5566db952ff7ed9cea779f05084f" class="m-doc">get_slit_position_in_mm</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a28ab62f60df225724bcb992ec8e8de91" class="m-doc">Slit</a> slit) -&gt; double</span>
+            </dt>
+            <dd>Returns the position in millimeters[mm] of the selected slit.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a95ace8981052f3c9bdfd264d0a8d5f65" class="m-doc">set_slit_position</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a28ab62f60df225724bcb992ec8e8de91" class="m-doc">Slit</a> slit,
+              double position_in_mm)</span>
+            </dt>
+            <dd>Sets the position of the selected slit.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a781b05b6eee39166b2bfa17c1207524a" class="m-doc">get_slit_step_position</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a28ab62f60df225724bcb992ec8e8de91" class="m-doc">Slit</a> slit) -&gt; int</span>
+            </dt>
+            <dd>Returns the step position of the selected slit.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a2e52eab6b8d23c02d9cb8330e69601f9" class="m-doc">set_slit_step_position</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a28ab62f60df225724bcb992ec8e8de91" class="m-doc">Slit</a> slit,
+              int step_position)</span>
+            </dt>
+            <dd>Sets the step position of the selected slit.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a932737b9b4f8ee934276f5791058c4b4" class="m-doc">open_shutter</a>(</span><span class="m-doc-wrap">)</span>
+            </dt>
+            <dd>Opens the shutter.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#aa3b13b0c7f04892f8328d687d37ebcd1" class="m-doc">close_shutter</a>(</span><span class="m-doc-wrap">)</span>
+            </dt>
+            <dd>Closes the shutter.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#afa35bd962364ff3a0c42b72317532a5c" class="m-doc">get_shutter_position</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#aded45bc8fd1f0c3719c08f47159a75bd" class="m-doc">Shutter</a> shutter) -&gt; <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a498dd8a34184fc3a3a63e6c414bfaf4d" class="m-doc">ShutterPosition</a></span>
+            </dt>
+            <dd>Returns the shutter position.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a4a4b3d4b5dea33032ad8d34fea6f9a0c" class="m-doc">wait_until_ready</a>(</span><span class="m-doc-wrap">std::chrono::seconds timeout)</span>
+            </dt>
+            <dd>Blocking waits until the monochromator is ready.</dd>
+          </dl>
+        </section>
+        <section>
+          <h2>Function documentation</h2>
+          <section class="m-doc-details" id="afad63b317db6a4eeba6a0543030e7623"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#afad63b317db6a4eeba6a0543030e7623" class="m-doc-self">open</a>(</span><span class="m-doc-wrap">) <span class="m-label m-warning">override</span></span></span>
+            </h3>
+            <p>Opens the device.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a786fa1ff70ef8c2b9f21bb990e62b5d5"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a786fa1ff70ef8c2b9f21bb990e62b5d5" class="m-doc-self">close</a>(</span><span class="m-doc-wrap">) <span class="m-label m-warning">override</span></span></span>
+            </h3>
+            <p>Closes the device.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a83f5ef5cff8cbd3d03ef7b7a1404e1ae"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">bool horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a83f5ef5cff8cbd3d03ef7b7a1404e1ae" class="m-doc-self">is_open</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Checks if the connection to the monochromator is open.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>True if the connection is open, false otherwise</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ac5a19babff8ad56d39de77b7ac2bf70c"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">bool horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ac5a19babff8ad56d39de77b7ac2bf70c" class="m-doc-self">is_busy</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Checks if the monochromator is busy.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>True if busy, false otherwise</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a5e4ac5fce041b752a535ee470d0e4468"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a5e4ac5fce041b752a535ee470d0e4468" class="m-doc-self">home</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Starts the monochromator initialization process called &quot;homing&quot;.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+<p>Use <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#ac5a19babff8ad56d39de77b7ac2bf70c" class="m-doc">is_<wbr />busy()</a> to know if the operation is still taking place.</p>
+          </div></section>
+          <section class="m-doc-details" id="a4a48dd20e5b99637f3ec8821a60e0950"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">std::string horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a4a48dd20e5b99637f3ec8821a60e0950" class="m-doc-self">configuration</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Returns the configuration of the monochromator.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>Configuration of the monochromator</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="abe7a3fb74f4b2053385ce6334d0a32a7"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">double horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#abe7a3fb74f4b2053385ce6334d0a32a7" class="m-doc-self">get_current_wavelength</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Current wavelength of the monochromator&#x27;s position in nm.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The current wavelength in nm</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a3f6b09b053bc0dcbc8eb2ec8ca5b84b1"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a3f6b09b053bc0dcbc8eb2ec8ca5b84b1" class="m-doc-self">calibrate_wavelength</a>(</span><span class="m-doc-wrap">double wavelength)</span></span>
+            </h3>
+            <p>This command sets the wavelength value of the current grating position of the monochromator.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">wavelength</td>
+                  <td>Wavelength in nm</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+<p>Warning! This could potentially un-calibrate the monochromator and report an incorrect wavelength compared to the actual output wavelength.</p>
+          </div></section>
+          <section class="m-doc-details" id="a9734c47345f4050bfccc66a87915c360"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a9734c47345f4050bfccc66a87915c360" class="m-doc-self">move_to_target_wavelength</a>(</span><span class="m-doc-wrap">double wavelength)</span></span>
+            </h3>
+            <p>Orders the monochromator to move to the requested wavelength.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">wavelength</td>
+                  <td>Wavelength in nm</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+<p>Use <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#ac5a19babff8ad56d39de77b7ac2bf70c" class="m-doc">is_<wbr />busy()</a> to know if the operation is still taking place.</p>
+          </div></section>
+          <section class="m-doc-details" id="adbc0ee9cbf877fff1a9e15e90c30f81b"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a3e2e89e1acf6565b0cd2d7be4dbf022c" class="m-doc">Grating</a> horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#adbc0ee9cbf877fff1a9e15e90c30f81b" class="m-doc-self">get_turret_grating</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Current grating of the turret.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>Current grating of turret, see <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a3e2e89e1acf6565b0cd2d7be4dbf022c" class="m-doc">Monochromator::<wbr />Grating</a> enum for possible values</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="aefb277917198aef790dbd1dcd2598ed6"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#aefb277917198aef790dbd1dcd2598ed6" class="m-doc-self">set_turret_grating</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a3e2e89e1acf6565b0cd2d7be4dbf022c" class="m-doc">Grating</a> grating)</span></span>
+            </h3>
+            <p>Select turret grating.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">grating</td>
+                  <td>New grating of the turret. See <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a3e2e89e1acf6565b0cd2d7be4dbf022c" class="m-doc">Monochromator::<wbr />Grating</a> enum for possible values.</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a59ed7fd6fc53a5aa2f5d0f3e1bdc59da"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a6dfa6959b28866018a53da519908a392" class="m-doc">FilterWheelPosition</a> horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a59ed7fd6fc53a5aa2f5d0f3e1bdc59da" class="m-doc-self">get_filter_wheel_position</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#aa3622c48e1a6ee0b8e72b1d15cd3cf4d" class="m-doc">FilterWheel</a> filter_wheel)</span></span>
+            </h3>
+            <p>Current position of the filter wheel.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">filter_wheel</td>
+                  <td>Desired filter wheel to get the position from</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr>
+                  <th>Returns</th>
+                  <td>current position of the filter wheel. See <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a6dfa6959b28866018a53da519908a392" class="m-doc">Monochromator::<wbr />FilterWheelPosition</a> enum for possible values.</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a7b532a15aa0f0c54feac13dd55920380"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a7b532a15aa0f0c54feac13dd55920380" class="m-doc-self">set_filter_wheel_position</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#aa3622c48e1a6ee0b8e72b1d15cd3cf4d" class="m-doc">FilterWheel</a> filter_wheel,
+              <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a6dfa6959b28866018a53da519908a392" class="m-doc">FilterWheelPosition</a> position)</span></span>
+            </h3>
+            <p>Sets the current position of the filter wheel.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">filter_wheel</td>
+                  <td>Desired filter wheel to set the position</td>
+                </tr>
+                <tr>
+                  <td>position</td>
+                  <td>New position of the filter wheel. See <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a6dfa6959b28866018a53da519908a392" class="m-doc">Monochromator::<wbr />FilterWheelPosition</a> enum for possible values.</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a5f532adbdcd823ddfe5a3f89fe113a3a"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a9f1457ac6fc68dcf087a1e5d3c10d772" class="m-doc">MirrorPosition</a> horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a5f532adbdcd823ddfe5a3f89fe113a3a" class="m-doc-self">get_mirror_position</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a19355c2a3667b76d95a5d3cf404835be" class="m-doc">Mirror</a> mirror)</span></span>
+            </h3>
+            <p>Position of the selected mirror.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">mirror</td>
+                  <td>Desired mirror to get the position from. See <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a19355c2a3667b76d95a5d3cf404835be" class="m-doc">Monochromator::<wbr />Mirror</a> for possible values.</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr>
+                  <th>Returns</th>
+                  <td>Current mirror position. See <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a9f1457ac6fc68dcf087a1e5d3c10d772" class="m-doc">Monochromator::<wbr />MirrorPosition</a> for possible values</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a160e36cdc2e1646f92976d8036a98cd6"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a160e36cdc2e1646f92976d8036a98cd6" class="m-doc-self">set_mirror_position</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a19355c2a3667b76d95a5d3cf404835be" class="m-doc">Mirror</a> mirror,
+              <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a9f1457ac6fc68dcf087a1e5d3c10d772" class="m-doc">MirrorPosition</a> position)</span></span>
+            </h3>
+            <p>Sets the position of the selected mirror.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">mirror</td>
+                  <td>Desired mirror to set the position. See <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a19355c2a3667b76d95a5d3cf404835be" class="m-doc">Monochromator::<wbr />Mirror</a></td>
+                </tr>
+                <tr>
+                  <td>position</td>
+                  <td>Position to set. See <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a9f1457ac6fc68dcf087a1e5d3c10d772" class="m-doc">Monochromator::<wbr />MirrorPosition</a></td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ad77e5566db952ff7ed9cea779f05084f"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">double horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ad77e5566db952ff7ed9cea779f05084f" class="m-doc-self">get_slit_position_in_mm</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a28ab62f60df225724bcb992ec8e8de91" class="m-doc">Slit</a> slit)</span></span>
+            </h3>
+            <p>Returns the position in millimeters[mm] of the selected slit.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">slit</td>
+                  <td>Desired slit to get the position from. See <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a28ab62f60df225724bcb992ec8e8de91" class="m-doc">Monochromator::<wbr />Slit</a> for possible values</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr>
+                  <th>Returns</th>
+                  <td>Position in mm</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a95ace8981052f3c9bdfd264d0a8d5f65"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a95ace8981052f3c9bdfd264d0a8d5f65" class="m-doc-self">set_slit_position</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a28ab62f60df225724bcb992ec8e8de91" class="m-doc">Slit</a> slit,
+              double position_in_mm)</span></span>
+            </h3>
+            <p>Sets the position of the selected slit.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">slit</td>
+                  <td>Desired slit to set the position. See <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a28ab62f60df225724bcb992ec8e8de91" class="m-doc">Monochromator::<wbr />Slit</a> for possible values. position Position to set in millimeters[mm].</td>
+                </tr>
+                <tr>
+                  <td>position_in_mm</td>
+                  <td>Position in mm</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a781b05b6eee39166b2bfa17c1207524a"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">int horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a781b05b6eee39166b2bfa17c1207524a" class="m-doc-self">get_slit_step_position</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a28ab62f60df225724bcb992ec8e8de91" class="m-doc">Slit</a> slit)</span></span>
+            </h3>
+            <p>Returns the step position of the selected slit.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">slit</td>
+                  <td>Desired slit to get the position from.</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr>
+                  <th>Returns</th>
+                  <td>Returns the step position.</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a2e52eab6b8d23c02d9cb8330e69601f9"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a2e52eab6b8d23c02d9cb8330e69601f9" class="m-doc-self">set_slit_step_position</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a28ab62f60df225724bcb992ec8e8de91" class="m-doc">Slit</a> slit,
+              int step_position)</span></span>
+            </h3>
+            <p>Sets the step position of the selected slit.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">slit</td>
+                  <td>Desired slit to set the step position. See <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a28ab62f60df225724bcb992ec8e8de91" class="m-doc">Monochromator::<wbr />Slit</a> for possible values.</td>
+                </tr>
+                <tr>
+                  <td>step_position</td>
+                  <td>The step position.</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a932737b9b4f8ee934276f5791058c4b4"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a932737b9b4f8ee934276f5791058c4b4" class="m-doc-self">open_shutter</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Opens the shutter.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="aa3b13b0c7f04892f8328d687d37ebcd1"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#aa3b13b0c7f04892f8328d687d37ebcd1" class="m-doc-self">close_shutter</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Closes the shutter.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="afa35bd962364ff3a0c42b72317532a5c"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a498dd8a34184fc3a3a63e6c414bfaf4d" class="m-doc">ShutterPosition</a> horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#afa35bd962364ff3a0c42b72317532a5c" class="m-doc-self">get_shutter_position</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#aded45bc8fd1f0c3719c08f47159a75bd" class="m-doc">Shutter</a> shutter)</span></span>
+            </h3>
+            <p>Returns the shutter position.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">shutter</td>
+                  <td>Desired shutter to get the position from. See <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#aded45bc8fd1f0c3719c08f47159a75bd" class="m-doc">Monochromator::<wbr />Shutter</a>.</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr>
+                  <th>Returns</th>
+                  <td>ShutterPosition::OPEN or <a href="classhoriba_1_1devices_1_1single__devices_1_1_monochromator.html#a498dd8a34184fc3a3a63e6c414bfaf4da110ccf2f5d2ff4eda1fd1a494293467d" class="m-doc">ShutterPosition::<wbr />CLOSED</a></td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a4a4b3d4b5dea33032ad8d34fea6f9a0c"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />Monochromator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a4a4b3d4b5dea33032ad8d34fea6f9a0c" class="m-doc-self">wait_until_ready</a>(</span><span class="m-doc-wrap">std::chrono::seconds timeout)</span></span>
+            </h3>
+            <p>Blocking waits until the monochromator is ready.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">timeout</td>
+                  <td>Maximum time, in seconds [s], to wait for the monochromator to be ready.</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when the timeout is reached</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+        </section>
+      </div>
+    </div>
+  </div>
+</article></main>
+<div class="m-doc-search" id="search">
+  <a href="#!" onclick="return hideSearch()"></a>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-m-8 m-push-m-2">
+        <div class="m-doc-search-header m-text m-small">
+          <div><span class="m-label m-default">Tab</span> / <span class="m-label m-default">T</span> to search, <span class="m-label m-default">Esc</span> to close</div>
+          <div id="search-symbolcount">&hellip;</div>
+        </div>
+        <div class="m-doc-search-content">
+          <form>
+            <input type="search" name="q" id="search-input" placeholder="Loading &hellip;" disabled="disabled" autofocus="autofocus" autocomplete="off" spellcheck="false" />
+          </form>
+          <noscript class="m-text m-danger m-text-center">Unlike everything else in the docs, the search functionality <em>requires</em> JavaScript.</noscript>
+          <div id="search-help" class="m-text m-dim m-text-center">
+            <p class="m-noindent">Search for symbols, directories, files, pages or
+            modules. You can omit any prefix from the symbol or file path; adding a
+            <code>:</code> or <code>/</code> suffix lists all members of given symbol or
+            directory.</p>
+            <p class="m-noindent">Use <span class="m-label m-dim">&darr;</span>
+            / <span class="m-label m-dim">&uarr;</span> to navigate through the list,
+            <span class="m-label m-dim">Enter</span> to go.
+            <span class="m-label m-dim">Tab</span> autocompletes common prefix, you can
+            copy a link to the result using <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">L</span> while <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">M</span> produces a Markdown link.</p>
+          </div>
+          <div id="search-notfound" class="m-text m-warning m-text-center">Sorry, nothing was found.</div>
+          <ul id="search-results"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="search-v2.js"></script>
+<script src="searchdata-v2.js" async="async"></script>
+<footer><nav>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <p>horiba_cpp_sdk. Created with <a href="https://doxygen.org/">Doxygen</a> 1.11.0 and <a href="https://mcss.mosra.cz/">m.css</a>.</p>
+      </div>
+    </div>
+  </div>
+</nav></footer>
+</body>
+</html>

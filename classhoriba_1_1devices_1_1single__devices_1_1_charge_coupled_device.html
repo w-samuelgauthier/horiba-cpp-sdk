@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>horiba::devices::single_devices::ChargeCoupledDevice class | horiba_cpp_sdk</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,600,600i%7CSource+Code+Pro:400,400i,600" />
+  <link rel="stylesheet" href="m-dark+documentation.compiled.css" />
+  <link rel="icon" href="favicon-dark.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#22272e" />
+</head>
+<body>
+<header><nav id="navigation">
+  <div class="m-container">
+    <div class="m-row">
+      <a href="index.html" id="m-navbar-brand" class="m-col-t-8 m-col-m-none m-left-m">horiba_cpp_sdk</a>
+      <div class="m-col-t-4 m-hide-m m-text-right m-nopadr">
+        <a href="#search" class="m-doc-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+          <path id="m-doc-search-icon-path" d="m6 0c-3.31 0-6 2.69-6 6 0 3.31 2.69 6 6 6 1.49 0 2.85-0.541 3.89-1.44-0.0164 0.338 0.147 0.759 0.5 1.15l3.22 3.79c0.552 0.614 1.45 0.665 2 0.115 0.55-0.55 0.499-1.45-0.115-2l-3.79-3.22c-0.392-0.353-0.812-0.515-1.15-0.5 0.895-1.05 1.44-2.41 1.44-3.89 0-3.31-2.69-6-6-6zm0 1.56a4.44 4.44 0 0 1 4.44 4.44 4.44 4.44 0 0 1-4.44 4.44 4.44 4.44 0 0 1-4.44-4.44 4.44 4.44 0 0 1 4.44-4.44z"/>
+        </svg></a>
+        <a id="m-navbar-show" href="#navigation" title="Show navigation"></a>
+        <a id="m-navbar-hide" href="#" title="Hide navigation"></a>
+      </div>
+      <div id="m-navbar-collapse" class="m-col-t-12 m-show-m m-col-m-none m-right-m">
+        <div class="m-row">
+          <ol class="m-col-t-6 m-col-m-none">
+            <li>
+              <a href="pages.html">Pages</a>
+              <ol>
+                <li><a href="about.html">About</a></li>
+              </ol>
+            </li>
+            <li><a href="namespaces.html">Namespaces</a></li>
+          </ol>
+          <ol class="m-col-t-6 m-col-m-none" start="3">
+            <li><a href="annotated.html">Classes</a></li>
+            <li><a href="files.html">Files</a></li>
+            <li class="m-show-m"><a href="#search" class="m-doc-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+              <use href="#m-doc-search-icon-path" />
+            </svg></a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav></header>
+<main><article>
+  <div class="m-container m-container-inflatable">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <h1>
+          <span class="m-breadcrumb"><a href="namespacehoriba.html">horiba</a>::<wbr/></span><span class="m-breadcrumb"><a href="namespacehoriba_1_1devices.html">devices</a>::<wbr/></span><span class="m-breadcrumb"><a href="namespacehoriba_1_1devices_1_1single__devices.html">single_devices</a>::<wbr/></span>ChargeCoupledDevice <span class="m-thin">class</span> <span class="m-label m-flat m-warning">final</span>
+          <div class="m-doc-include m-code m-inverted m-text-right"><span class="cp">#include</span> <a class="cpf" href="ccd_8h.html">&lt;horiba_cpp_sdk/devices/single_devices/ccd.h&gt;</a></div>
+        </h1>
+        <p>Represents a CCD camera.</p>
+        <nav class="m-block m-default">
+          <h3>Contents</h3>
+          <ul>
+            <li>
+              Reference
+              <ul>
+                <li><a href="#base-classes">Base classes</a></li>
+                <li><a href="#pub-types">Public types</a></li>
+                <li><a href="#typeless-methods">Constructors, destructors, conversion operators</a></li>
+                <li><a href="#pub-methods">Public functions</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+<p>This class should not be created directly by the end user. Instead a <a href="classhoriba_1_1devices_1_1_device_manager.html" class="m-doc">DeviceManager</a> should be used to access the detected CCDs on the system.</p><p>TODO: write a basic description of the CCD</p><p>The cells of the CCD can be binned and summed up.</p>
+        <section id="base-classes">
+          <h2><a href="#base-classes">Base classes</a></h2>
+          <dl class="m-doc">
+            <dt>
+              class <a href="classhoriba_1_1devices_1_1single__devices_1_1_device.html" class="m-doc">Device</a>
+            </dt>
+            <dd>Interface for devices connected to the ICL.</dd>
+          </dl>
+        </section>
+        <section id="pub-types">
+          <h2><a href="#pub-types">Public types</a></h2>
+          <dl class="m-doc">
+            <dt id="a6781cffa0697ec780fe9ef723a165a6c">
+              <span class="m-doc-wrap-bumper">enum class <a href="#a6781cffa0697ec780fe9ef723a165a6c" class="m-doc-self">AcquisitionFormat</a>: int { </span><span class="m-doc-wrap"><a href="#a6781cffa0697ec780fe9ef723a165a6ca8aacf9c365d9c19890e4b87f23da6a91" class="m-doc">SPECTRA</a> = 0,
+              <a href="#a6781cffa0697ec780fe9ef723a165a6ca23a12f67f614b5518c7f1c2465bf95e3" class="m-doc">IMAGE</a>,
+              <a href="#a6781cffa0697ec780fe9ef723a165a6ca611b0ab62590d6a92a429520f6a06363" class="m-doc">CROP</a>,
+              <a href="#a6781cffa0697ec780fe9ef723a165a6ca36135800b675049715e2abc7407b1a83" class="m-doc">FAST_KINETICS</a> }</span>
+            </dt>
+            <dd><span></span></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">enum class <a href="#ac5ed95993cf7bb5843ba0c81ce71978b" class="m-doc">XAxisConversionType</a>: int { </span><span class="m-doc-wrap"><a href="#ac5ed95993cf7bb5843ba0c81ce71978bab50339a10e1de285ac99d4c3990b8693" class="m-doc">NONE</a> = 0,
+              <a href="#ac5ed95993cf7bb5843ba0c81ce71978bad1bfe7576c2a7d33b60a29aeeb4b4f81" class="m-doc">FROM_CCD_FIRMWARE</a>,
+              <a href="#ac5ed95993cf7bb5843ba0c81ce71978bae1394349490e74af2dfcf3cb17e79635" class="m-doc">FROM_ICL_SETTINGS_INI</a> }</span>
+            </dt>
+            <dd>CCD X axis converstion type.</dd>
+            <dt id="afb83c611c399254178407fad8a4b8206">
+              <span class="m-doc-wrap-bumper">enum class <a href="#afb83c611c399254178407fad8a4b8206" class="m-doc-self">CleanCountMode</a>: int { </span><span class="m-doc-wrap"><a href="#afb83c611c399254178407fad8a4b8206a443475558f0168dff92ecde26b98ae5a" class="m-doc">NEVER</a> = 0,
+              <a href="#afb83c611c399254178407fad8a4b8206aa74e5c0c3863743378c1b2dffd8c1b23" class="m-doc">FIRST_ONLY</a> = 1,
+              <a href="#afb83c611c399254178407fad8a4b8206acca7a6924e87838f22e81ce7f973d1c9" class="m-doc">BETWEEN_ONLY</a> = 2,
+              <a href="#afb83c611c399254178407fad8a4b8206a510653b6d02db326c35f84313367806a" class="m-doc">EACH</a> = 3,
+              <a href="#afb83c611c399254178407fad8a4b8206a6a11106c9b0583798fe9ad3032bc7da9" class="m-doc">MODE_UNKNOWN</a> = 238 }</span>
+            </dt>
+            <dd><span></span></dd>
+            <dt id="a5731c71deed7bbd761107c52cfa99c0e">
+              <span class="m-doc-wrap-bumper">enum class <a href="#a5731c71deed7bbd761107c52cfa99c0e" class="m-doc-self">TimerResolution</a>: int { </span><span class="m-doc-wrap"><a href="#a5731c71deed7bbd761107c52cfa99c0ea7fbab4adfda3ffae24f31727aeb359e0" class="m-doc">THOUSAND_MICROSECONDS</a> = 0,
+              <a href="#a5731c71deed7bbd761107c52cfa99c0eac354ffeeeff99de289d902dadfbcc1c7" class="m-doc">ONE_MICROSECOND</a> }</span>
+            </dt>
+            <dd><span></span></dd>
+          </dl>
+        </section>
+        <section id="typeless-methods">
+          <h2><a href="#typeless-methods">Constructors, destructors, conversion operators</a></h2>
+          <dl class="m-doc">
+            <dt id="a2686e26aad66f002af2519a2b5d14ccd">
+              <span class="m-doc-wrap-bumper"><a href="#a2686e26aad66f002af2519a2b5d14ccd" class="m-doc-self">ChargeCoupledDevice</a>(</span><span class="m-doc-wrap">int id,
+              std::shared_ptr&lt;<a href="classhoriba_1_1communication_1_1_communicator.html" class="m-doc">communication::<wbr />Communicator</a>&gt; communicator)</span>
+            </dt>
+            <dd><span></span></dd>
+            <dt id="a2d5b4bb122fc88acc5d65c10c2113425">
+              <span class="m-doc-wrap-bumper"><a href="#a2d5b4bb122fc88acc5d65c10c2113425" class="m-doc-self">~ChargeCoupledDevice</a>(</span><span class="m-doc-wrap">) <span class="m-label m-flat m-info">defaulted</span> <span class="m-label m-flat m-warning">override</span></span>
+            </dt>
+            <dd><span></span></dd>
+          </dl>
+        </section>
+        <section id="pub-methods">
+          <h2><a href="#pub-methods">Public functions</a></h2>
+          <dl class="m-doc">
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a23ba8f76d42d78956846f3b713fc07ee" class="m-doc">open</a>(</span><span class="m-doc-wrap">) <span class="m-label m-flat m-warning">override</span></span>
+            </dt>
+            <dd>Opens the device.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#ac2727df47790b11e99044faf90408fc7" class="m-doc">close</a>(</span><span class="m-doc-wrap">) <span class="m-label m-flat m-warning">override</span></span>
+            </dt>
+            <dd>Closes the device.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a463ceee03bfedb9e846ba364a9851902" class="m-doc">is_open</a>(</span><span class="m-doc-wrap">) -&gt; bool</span>
+            </dt>
+            <dd>Checks if the connection to the CCD device is open.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a1dcedfefb5f50040fe11f12dde16876b" class="m-doc">restart</a>(</span><span class="m-doc-wrap">)</span>
+            </dt>
+            <dd>Restarts the CCD.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a1d15e79587fccf608427ba653082041f" class="m-doc">get_configuration</a>(</span><span class="m-doc-wrap">) -&gt; nlohmann::json</span>
+            </dt>
+            <dd>Returns the configuration of the CCD.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a2867871ac2df19903a053ecf43a6a25c" class="m-doc">get_gain_token</a>(</span><span class="m-doc-wrap">) -&gt; int</span>
+            </dt>
+            <dd>Returns the gain token of the CCD.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a1bf5c0dba6460bd151bb2f8c7a18d9aa" class="m-doc">set_gain</a>(</span><span class="m-doc-wrap">int gain_token)</span>
+            </dt>
+            <dd>Sets the gain of the CCD.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#aed812efa0aa24f4fbb87ff27573ed3e0" class="m-doc">get_speed_token</a>(</span><span class="m-doc-wrap">) -&gt; int</span>
+            </dt>
+            <dd>Returns the speed of the CCD.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#af820aa0d13a6143f369aa5fe4d41b3f1" class="m-doc">set_speed</a>(</span><span class="m-doc-wrap">int speed_token)</span>
+            </dt>
+            <dd>Sets the speed of the CCD.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#ad92f454971814a1b8de534fbb460cbe3" class="m-doc">get_fit_parameters</a>(</span><span class="m-doc-wrap">) -&gt; std::vector&lt;int&gt;</span>
+            </dt>
+            <dd>Returns the fit parameters of the CCD.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a54631cd0190d7c39140e5af4ef013340" class="m-doc">set_fit_parameters</a>(</span><span class="m-doc-wrap">std::vector&lt;int&gt; fit_params)</span>
+            </dt>
+            <dd>Sets the fit parameters of the CCD.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#af0753c3a3507434ba41e4e44982ffa96" class="m-doc">get_timer_resolution</a>(</span><span class="m-doc-wrap">) -&gt; <a href="classhoriba_1_1devices_1_1single__devices_1_1_charge_coupled_device.html#a5731c71deed7bbd761107c52cfa99c0e" class="m-doc">ChargeCoupledDevice::<wbr />TimerResolution</a></span>
+            </dt>
+            <dd>Returns the timer resolution of the CCD.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#ae685e57ad62e92e6673ec7896a6997b4" class="m-doc">set_timer_resolution</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_charge_coupled_device.html#a5731c71deed7bbd761107c52cfa99c0e" class="m-doc">ChargeCoupledDevice::<wbr />TimerResolution</a> timer_resolution)</span>
+            </dt>
+            <dd>Sets the timer resolution of the CCD.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a8e87fc1bc349df58848cb08e74a9d81d" class="m-doc">set_acquisition_format</a>(</span><span class="m-doc-wrap">int number_of_rois,
+              <a href="classhoriba_1_1devices_1_1single__devices_1_1_charge_coupled_device.html#a6781cffa0697ec780fe9ef723a165a6c" class="m-doc">AcquisitionFormat</a> acquisition_format)</span>
+            </dt>
+            <dd>Sets the number of ROIs (Regions of Interest) or areas and the acquisition format.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#acd2dd62e665c99da6979d7ace04b32f1" class="m-doc">get_x_axis_conversion_type</a>(</span><span class="m-doc-wrap">) -&gt; <a href="classhoriba_1_1devices_1_1single__devices_1_1_charge_coupled_device.html#ac5ed95993cf7bb5843ba0c81ce71978b" class="m-doc">XAxisConversionType</a></span>
+            </dt>
+            <dd>Gets the conversion type of the x axis.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a82420f41139e5c094a8df6098991dd79" class="m-doc">set_x_axis_conversion_type</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_charge_coupled_device.html#ac5ed95993cf7bb5843ba0c81ce71978b" class="m-doc">XAxisConversionType</a> conversion_type)</span>
+            </dt>
+            <dd>Sets the x-axis pixel conversion type to be used when retrieving the acquisition data with thee.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#ac3b7e5ec7a10303c6b78f0c58c64365b" class="m-doc">get_acquisition_count</a>(</span><span class="m-doc-wrap">) -&gt; int</span>
+            </dt>
+            <dd>Gets the number of acquisitions to be performed.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#aa30ea3470be59889dbfaf03afb2e8ac7" class="m-doc">set_acquisition_count</a>(</span><span class="m-doc-wrap">int count)</span>
+            </dt>
+            <dd>Sets the number of acquisitions to be performed. The acquisition count is used to perform multiple acquisitions in a row.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a7eed85aeac0d0ed75c2960d7c26099db" class="m-doc">get_clean_count</a>(</span><span class="m-doc-wrap">) -&gt; std::pair&lt;int, <a href="classhoriba_1_1devices_1_1single__devices_1_1_charge_coupled_device.html#afb83c611c399254178407fad8a4b8206" class="m-doc">ChargeCoupledDevice::<wbr />CleanCountMode</a>&gt;</span>
+            </dt>
+            <dd>Gets the number of cleans to be performed prior to measurement.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a74855a483fea6574ce0e9bc789dfff28" class="m-doc">set_clean_count</a>(</span><span class="m-doc-wrap">int count,
+              <a href="classhoriba_1_1devices_1_1single__devices_1_1_charge_coupled_device.html#afb83c611c399254178407fad8a4b8206" class="m-doc">ChargeCoupledDevice::<wbr />CleanCountMode</a> mode)</span>
+            </dt>
+            <dd>Sets the clean count mode of the CCD and the corresponding mode.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a09396d5df4d07be904f58e8890c64a25" class="m-doc">get_acquisition_data_size</a>(</span><span class="m-doc-wrap">) -&gt; int</span>
+            </dt>
+            <dd>Returns the size of the data from the CCD.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#abb74274ef38b25f8f4d6208576fecc1d" class="m-doc">get_temperature</a>(</span><span class="m-doc-wrap">) -&gt; double</span>
+            </dt>
+            <dd>Returns the chip temperature of the CCD.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#aed098d2020a43407186e5434fb89781d" class="m-doc">get_chip_size</a>(</span><span class="m-doc-wrap">) -&gt; std::pair&lt;int, int&gt;</span>
+            </dt>
+            <dd>Gets the chip resolution of the CCD.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#acdbafd1c74e00bb15dbf819080e3d060" class="m-doc">get_exposure_time</a>(</span><span class="m-doc-wrap">) -&gt; int</span>
+            </dt>
+            <dd>Returns the exposure time in milliseconds.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a4d12ff38a4061018c501813d88a24df9" class="m-doc">set_exposure_time</a>(</span><span class="m-doc-wrap">int exposure_time_ms)</span>
+            </dt>
+            <dd>Sets the exposure time in milliseconds.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a15f595fbaa07f97dfd1e0dfacbe49d6a" class="m-doc">get_trigger_input</a>(</span><span class="m-doc-wrap">) -&gt; std::tuple&lt;bool, int, int, int&gt;</span>
+            </dt>
+            <dd>This command is used to get the current setting of the input trigger.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a3e5745617235cb689f6c712e7be4c324" class="m-doc">set_trigger_input</a>(</span><span class="m-doc-wrap">bool enabled,
+              int address,
+              int event,
+              int signal_type)</span>
+            </dt>
+            <dd>This command is used to enable or disable the trigger input.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a19e638c0532eabdd3cf3889394736d46" class="m-doc">get_signal_output</a>(</span><span class="m-doc-wrap">) -&gt; std::tuple&lt;bool, int, int, int&gt;</span>
+            </dt>
+            <dd>This command is used to get the current setting of the signal output.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a912990c700b2f6eafc9e71fdec157fa5" class="m-doc">set_signal_output</a>(</span><span class="m-doc-wrap">bool enabled,
+              int address,
+              int event,
+              int signal_type)</span>
+            </dt>
+            <dd>This command is used to enable or disable the signal output.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a7e8e357220fa19a948edafd5bbd31ccb" class="m-doc">get_acquisition_ready</a>(</span><span class="m-doc-wrap">) -&gt; bool</span>
+            </dt>
+            <dd>Returns true if the CCD is ready to acquire.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#ab5096fb8fecf1bb2ddbd5a224eb38221" class="m-doc">set_acquisition_start</a>(</span><span class="m-doc-wrap">bool open_shutter)</span>
+            </dt>
+            <dd>Starts an acquisition that has been set up according to the previously defined acquisition parameters.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#abf9fbde5f43a0f6021de87db21399fa5" class="m-doc">set_region_of_interest</a>(</span><span class="m-doc-wrap">int roi_index = 1,
+              int x_origin = 0,
+              int y_origin = 0,
+              int x_size = 1024,
+              int y_size = 256,
+              int x_bin = 1,
+              int y_bin = 256)</span>
+            </dt>
+            <dd>Sets the region of interest (ROI) of the CCD.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a97e6ce9c17b589779de1109762fd6d12" class="m-doc">get_acquisition_data</a>(</span><span class="m-doc-wrap">) -&gt; std::any</span>
+            </dt>
+            <dd>Returns the acquisition data of the CCD.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a8649e5360979be28378b40ec1ef34d89" class="m-doc">get_acquisition_busy</a>(</span><span class="m-doc-wrap">) -&gt; bool</span>
+            </dt>
+            <dd>Returns true if the CCD is busy with the acquisition.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">void <a href="#a3d26cc9d81b124b59787f9f19d67e7da" class="m-doc">abort_acquisition</a>(</span><span class="m-doc-wrap">bool reset_port)</span>
+            </dt>
+            <dd>Stops the acquisition of the CCD.</dd>
+          </dl>
+        </section>
+        <section>
+          <h2>Enum documentation</h2>
+          <section class="m-doc-details" id="ac5ed95993cf7bb5843ba0c81ce71978b"><div>
+            <h3>
+              enum class horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /><a href="#ac5ed95993cf7bb5843ba0c81ce71978b" class="m-doc-self">XAxisConversionType</a>: int
+            </h3>
+            <p>CCD X axis converstion type.</p>
+<ul><li>None (default)</li><li>CCD FIT parameters contained in the CCD firmware</li><li>Mono Wavelength parameters contained in the icl_settings.ini file</li></ul>
+          </div></section>
+        </section>
+        <section>
+          <h2>Function documentation</h2>
+          <section class="m-doc-details" id="a23ba8f76d42d78956846f3b713fc07ee"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a23ba8f76d42d78956846f3b713fc07ee" class="m-doc-self">open</a>(</span><span class="m-doc-wrap">) <span class="m-label m-warning">override</span></span></span>
+            </h3>
+            <p>Opens the device.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ac2727df47790b11e99044faf90408fc7"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ac2727df47790b11e99044faf90408fc7" class="m-doc-self">close</a>(</span><span class="m-doc-wrap">) <span class="m-label m-warning">override</span></span></span>
+            </h3>
+            <p>Closes the device.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a463ceee03bfedb9e846ba364a9851902"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">bool horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a463ceee03bfedb9e846ba364a9851902" class="m-doc-self">is_open</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Checks if the connection to the CCD device is open.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>True if the connection is open, false otherwise.</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a1dcedfefb5f50040fe11f12dde16876b"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a1dcedfefb5f50040fe11f12dde16876b" class="m-doc-self">restart</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Restarts the CCD.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+<p>Note that this function only works if the camera has been opened before. The connection to the camera stays open after the restart.</p>
+          </div></section>
+          <section class="m-doc-details" id="a1d15e79587fccf608427ba653082041f"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">nlohmann::json horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a1d15e79587fccf608427ba653082041f" class="m-doc-self">get_configuration</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Returns the configuration of the CCD.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>Configuration of the CCD</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a2867871ac2df19903a053ecf43a6a25c"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">int horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a2867871ac2df19903a053ecf43a6a25c" class="m-doc-self">get_gain_token</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Returns the gain token of the CCD.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>Gain of the CCD</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+<p>Note: The CCD can have different sensors installed, which can have different gain values. This is why only the token to the gain is returned. You need to first check what gain values are available for the CCD using the get_configuration function.</p>
+          </div></section>
+          <section class="m-doc-details" id="a1bf5c0dba6460bd151bb2f8c7a18d9aa"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a1bf5c0dba6460bd151bb2f8c7a18d9aa" class="m-doc-self">set_gain</a>(</span><span class="m-doc-wrap">int gain_token)</span></span>
+            </h3>
+            <p>Sets the gain of the CCD.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+<p>Note: The CCD can have different sensors installed, which can have different gain values. Therefore you need to first check what gain values are available for the CCD using the get_configuration function.</p>
+          </div></section>
+          <section class="m-doc-details" id="aed812efa0aa24f4fbb87ff27573ed3e0"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">int horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#aed812efa0aa24f4fbb87ff27573ed3e0" class="m-doc-self">get_speed_token</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Returns the speed of the CCD.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>Speed token</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+<p>Note: The CCD can have different sensors installed, which can have different speed values. Therefore you need to first check what speed values are available for the CCD using the get_configuration function.</p>
+          </div></section>
+          <section class="m-doc-details" id="af820aa0d13a6143f369aa5fe4d41b3f1"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#af820aa0d13a6143f369aa5fe4d41b3f1" class="m-doc-self">set_speed</a>(</span><span class="m-doc-wrap">int speed_token)</span></span>
+            </h3>
+            <p>Sets the speed of the CCD.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+<p>Note: The CCD can have different sensors installed, which can have different speed values. Therefore you need to first check what speed values are available for the CCD using the get_configuration function.</p>
+          </div></section>
+          <section class="m-doc-details" id="ad92f454971814a1b8de534fbb460cbe3"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">std::vector&lt;int&gt; horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ad92f454971814a1b8de534fbb460cbe3" class="m-doc-self">get_fit_parameters</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Returns the fit parameters of the CCD.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>Fit parameters TODO: units and &gt;details</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a54631cd0190d7c39140e5af4ef013340"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a54631cd0190d7c39140e5af4ef013340" class="m-doc-self">set_fit_parameters</a>(</span><span class="m-doc-wrap">std::vector&lt;int&gt; fit_params)</span></span>
+            </h3>
+            <p>Sets the fit parameters of the CCD.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">fit_params</td>
+                  <td>Fit parameters TODO: units and &gt;details</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="af0753c3a3507434ba41e4e44982ffa96"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper"><a href="classhoriba_1_1devices_1_1single__devices_1_1_charge_coupled_device.html#a5731c71deed7bbd761107c52cfa99c0e" class="m-doc">ChargeCoupledDevice::<wbr />TimerResolution</a> horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#af0753c3a3507434ba41e4e44982ffa96" class="m-doc-self">get_timer_resolution</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Returns the timer resolution of the CCD.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>Timer resolution TODO: units and &gt;details</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ae685e57ad62e92e6673ec7896a6997b4"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ae685e57ad62e92e6673ec7896a6997b4" class="m-doc-self">set_timer_resolution</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_charge_coupled_device.html#a5731c71deed7bbd761107c52cfa99c0e" class="m-doc">ChargeCoupledDevice::<wbr />TimerResolution</a> timer_resolution)</span></span>
+            </h3>
+            <p>Sets the timer resolution of the CCD.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">timer_resolution</td>
+                  <td>Timer resolution TODO: units and &gt;details</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a8e87fc1bc349df58848cb08e74a9d81d"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a8e87fc1bc349df58848cb08e74a9d81d" class="m-doc-self">set_acquisition_format</a>(</span><span class="m-doc-wrap">int number_of_rois,
+              <a href="classhoriba_1_1devices_1_1single__devices_1_1_charge_coupled_device.html#a6781cffa0697ec780fe9ef723a165a6c" class="m-doc">AcquisitionFormat</a> acquisition_format)</span></span>
+            </h3>
+            <p>Sets the number of ROIs (Regions of Interest) or areas and the acquisition format.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">number_of_rois</td>
+                  <td>Number of regions of interest</td>
+                </tr>
+                <tr>
+                  <td>acquisition_format</td>
+                  <td>Acquisition format</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+<p>After using this command to set the number of ROIs and format, the ccd_setRoi command should be used to define each ROI.</p><p>Note: The Crop (2) and Fast Kinetics (3) acquisition formats are not supported by every CCD.</p>
+          </div></section>
+          <section class="m-doc-details" id="acd2dd62e665c99da6979d7ace04b32f1"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper"><a href="classhoriba_1_1devices_1_1single__devices_1_1_charge_coupled_device.html#ac5ed95993cf7bb5843ba0c81ce71978b" class="m-doc">XAxisConversionType</a> horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#acd2dd62e665c99da6979d7ace04b32f1" class="m-doc-self">get_x_axis_conversion_type</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Gets the conversion type of the x axis.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>Conversion Type of the x axis</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a82420f41139e5c094a8df6098991dd79"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a82420f41139e5c094a8df6098991dd79" class="m-doc-self">set_x_axis_conversion_type</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_charge_coupled_device.html#ac5ed95993cf7bb5843ba0c81ce71978b" class="m-doc">XAxisConversionType</a> conversion_type)</span></span>
+            </h3>
+            <p>Sets the x-axis pixel conversion type to be used when retrieving the acquisition data with thee.</p>
+<p>throw std::runtime_error when an error occurred on the device side</p>
+          </div></section>
+          <section class="m-doc-details" id="ac3b7e5ec7a10303c6b78f0c58c64365b"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">int horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ac3b7e5ec7a10303c6b78f0c58c64365b" class="m-doc-self">get_acquisition_count</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Gets the number of acquisitions to be performed.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>int The acquisition count.</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::exception</td>
+                  <td>When an error occurs on the device side.</td>
+                </tr>
+              </tbody>
+            </table>
+<p>The acquisition count is used to perform multiple acquisitions in a row.</p>
+          </div></section>
+          <section class="m-doc-details" id="aa30ea3470be59889dbfaf03afb2e8ac7"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#aa30ea3470be59889dbfaf03afb2e8ac7" class="m-doc-self">set_acquisition_count</a>(</span><span class="m-doc-wrap">int count)</span></span>
+            </h3>
+            <p>Sets the number of acquisitions to be performed. The acquisition count is used to perform multiple acquisitions in a row.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">count</td>
+                  <td>Number of acquisitions to be performed.</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::exception</td>
+                  <td>When an error occurs on the device side.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a7eed85aeac0d0ed75c2960d7c26099db"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">std::pair&lt;int, <a href="classhoriba_1_1devices_1_1single__devices_1_1_charge_coupled_device.html#afb83c611c399254178407fad8a4b8206" class="m-doc">ChargeCoupledDevice::<wbr />CleanCountMode</a>&gt; horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a7eed85aeac0d0ed75c2960d7c26099db" class="m-doc-self">get_clean_count</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Gets the number of cleans to be performed prior to measurement.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>std::pair&lt;int, ChargeCoupledDevice::CleanCountMode&gt; Clean count information.</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::exception</td>
+                  <td>When an error occurs on the device side.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a74855a483fea6574ce0e9bc789dfff28"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a74855a483fea6574ce0e9bc789dfff28" class="m-doc-self">set_clean_count</a>(</span><span class="m-doc-wrap">int count,
+              <a href="classhoriba_1_1devices_1_1single__devices_1_1_charge_coupled_device.html#afb83c611c399254178407fad8a4b8206" class="m-doc">ChargeCoupledDevice::<wbr />CleanCountMode</a> mode)</span></span>
+            </h3>
+            <p>Sets the clean count mode of the CCD and the corresponding mode.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">count</td>
+                  <td>Number of acquisitions to be performed.</td>
+                </tr>
+                <tr>
+                  <td>mode</td>
+                  <td>Clean count mode</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::exception</td>
+                  <td>When an error occurs on the device side.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a09396d5df4d07be904f58e8890c64a25"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">int horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a09396d5df4d07be904f58e8890c64a25" class="m-doc-self">get_acquisition_data_size</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Returns the size of the data from the CCD.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>int Size of the data. TODO: In which unit?</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::exception</td>
+                  <td>When an error occurs on the device side.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="abb74274ef38b25f8f4d6208576fecc1d"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">double horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#abb74274ef38b25f8f4d6208576fecc1d" class="m-doc-self">get_temperature</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Returns the chip temperature of the CCD.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>double Chip temperature in degrees Celsius.</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::exception</td>
+                  <td>When an error occurs on the device side.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="aed098d2020a43407186e5434fb89781d"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">std::pair&lt;int, int&gt; horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#aed098d2020a43407186e5434fb89781d" class="m-doc-self">get_chip_size</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Gets the chip resolution of the CCD.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>std::pair&lt;int, int&gt; Chip resolution (width, height).</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::exception</td>
+                  <td>When an error occurs on the device side.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="acdbafd1c74e00bb15dbf819080e3d060"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">int horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#acdbafd1c74e00bb15dbf819080e3d060" class="m-doc-self">get_exposure_time</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Returns the exposure time in milliseconds.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>int Exposure time in milliseconds.</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::exception</td>
+                  <td>When an error occurs on the device side.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a4d12ff38a4061018c501813d88a24df9"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a4d12ff38a4061018c501813d88a24df9" class="m-doc-self">set_exposure_time</a>(</span><span class="m-doc-wrap">int exposure_time_ms)</span></span>
+            </h3>
+            <p>Sets the exposure time in milliseconds.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">exposure_time_ms</td>
+                  <td>Exposure time in milliseconds.</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::exception</td>
+                  <td>When an error occurs on the device side.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a15f595fbaa07f97dfd1e0dfacbe49d6a"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">std::tuple&lt;bool, int, int, int&gt; horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a15f595fbaa07f97dfd1e0dfacbe49d6a" class="m-doc-self">get_trigger_input</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>This command is used to get the current setting of the input trigger.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>std::tuple&lt;bool, int, int, int&gt; The input trigger settings. enabled (bool) Specifies if the signal is enabled (e.g. False = Disabled), address (int) used to specify where the trigger is located. (e.g. 0 = Trigger Input). Note: Value of -1 indicates that the input trigger is disabled, event (int) used to specify when the trigger event should occur. (e.g. 0 = Once - Start All) Note: Value of -1 indicates that the input trigger is disabled, signal type (int) used to specify how the signal will cause the input trigger. (e.g. 0 = TTL Falling Edge) Note: Value of -1 indicates that the input trigger is disabled,</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::exception</td>
+                  <td>When an error occurs on the device side.</td>
+                </tr>
+              </tbody>
+            </table>
+<p>The address, event, and signalType parameters are used to define the input trigger based on the supported options of that particular CCD.</p><p>The supported trigger options are retrieved using the get_configuration function, and begin with the “Triggers” string contained in the configuration.</p>
+          </div></section>
+          <section class="m-doc-details" id="a3e5745617235cb689f6c712e7be4c324"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a3e5745617235cb689f6c712e7be4c324" class="m-doc-self">set_trigger_input</a>(</span><span class="m-doc-wrap">bool enabled,
+              int address,
+              int event,
+              int signal_type)</span></span>
+            </h3>
+            <p>This command is used to enable or disable the trigger input.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">enabled</td>
+                  <td>Enable or disable the trigger input. Note : When disabling the input trigger, the address, event, and signalType parameters are ignored.</td>
+                </tr>
+                <tr>
+                  <td>address</td>
+                  <td>Used to specify where the trigger is located (e.g. 0 = Trigger Input)</td>
+                </tr>
+                <tr>
+                  <td>event</td>
+                  <td>Used to specify when the trigger event should occur. (e.g .0 = Once - Start All)</td>
+                </tr>
+                <tr>
+                  <td>signal_type</td>
+                  <td>Used to specify how the signal will cause the input trigger. (e.g .0 = TTL Falling Edge)</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::exception</td>
+                  <td>When an error occurs on the device side.</td>
+                </tr>
+              </tbody>
+            </table>
+<p>When enabling the trigger input, the address, event, and signalType parameters are used to define the input trigger based on the supported options of that particular CCD.</p><p>The supported trigger options are retrieved using the get_configuration function, and begin with the “Triggers” string contained in the configuration.</p>
+          </div></section>
+          <section class="m-doc-details" id="a19e638c0532eabdd3cf3889394736d46"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">std::tuple&lt;bool, int, int, int&gt; horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a19e638c0532eabdd3cf3889394736d46" class="m-doc-self">get_signal_output</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>This command is used to get the current setting of the signal output.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>std::tuple&lt;bool, int, int, int&gt; The signal output settings. enabled (bool): Specifies if the signal is enabled (e.g. False = Disabled), address (int): Used to specify where the signal is located (e.g. 0 = Signal Output), Note: Value of -1 indicates that the signal output is disabled, event (int): Used to specify when the signal event should occur. (e.g. 3 = Shutter Open) Note: Value of -1 indicates that the signal output is disabled, signal type (int): how the signal will cause the event. (e.g. 0 = TTL Active High) Note: Value of -1 indicates that the signal output is disabled,</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::exception</td>
+                  <td>When an error occurs on the device side.</td>
+                </tr>
+              </tbody>
+            </table>
+<p>The address, event, and signalType parameters are used to define the signal based on the supported options of that particular CCD.</p><p>The supported signal options are retrieved using the get_configuration command, and begin with the “Signals” string contained in the configuration.</p>
+          </div></section>
+          <section class="m-doc-details" id="a912990c700b2f6eafc9e71fdec157fa5"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a912990c700b2f6eafc9e71fdec157fa5" class="m-doc-self">set_signal_output</a>(</span><span class="m-doc-wrap">bool enabled,
+              int address,
+              int event,
+              int signal_type)</span></span>
+            </h3>
+            <p>This command is used to enable or disable the signal output.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">enabled</td>
+                  <td>Enable or disable the signal output. Note: When disabling the signal output, the address, event, and signal_type parameters are ignored.</td>
+                </tr>
+                <tr>
+                  <td>address</td>
+                  <td>Used to specify where the signal is located (e.g. 0 = Signal Output)</td>
+                </tr>
+                <tr>
+                  <td>event</td>
+                  <td>Used to specify when the signal event should occur. (e.g. 3 = Shutter Open)</td>
+                </tr>
+                <tr>
+                  <td>signal_type</td>
+                  <td>How the signal will cause the event. (e.g. 0 = TTL Active High)</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::exception</td>
+                  <td>When an error occurs on the device side.</td>
+                </tr>
+              </tbody>
+            </table>
+<p>When enabling the signal output, the address, event, and signalType parameters are used to define the signal based on the supported options of that particular CCD.</p><p>The supported signal options are retrieved using the ccd_getConfig command, and begin with the “Signals” string contained in the configuration.</p>
+          </div></section>
+          <section class="m-doc-details" id="a7e8e357220fa19a948edafd5bbd31ccb"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">bool horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a7e8e357220fa19a948edafd5bbd31ccb" class="m-doc-self">get_acquisition_ready</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Returns true if the CCD is ready to acquire.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>bool True if the CCD is ready to acquire.</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::exception</td>
+                  <td>When an error occurs on the device side.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ab5096fb8fecf1bb2ddbd5a224eb38221"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ab5096fb8fecf1bb2ddbd5a224eb38221" class="m-doc-self">set_acquisition_start</a>(</span><span class="m-doc-wrap">bool open_shutter)</span></span>
+            </h3>
+            <p>Starts an acquisition that has been set up according to the previously defined acquisition parameters.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">open_shutter</td>
+                  <td>Whether the shutter of the camera should be open during the acquisition.</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::exception</td>
+                  <td>When an error occurs on the device side.</td>
+                </tr>
+              </tbody>
+            </table>
+<p>Note: To specify the acquisiton parameters please see set_region_of_interest, set_x_axis_conversion_type. If there are no acquisition parameters set at the time of acquisition it may result in no data being generated.</p>
+          </div></section>
+          <section class="m-doc-details" id="abf9fbde5f43a0f6021de87db21399fa5"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#abf9fbde5f43a0f6021de87db21399fa5" class="m-doc-self">set_region_of_interest</a>(</span><span class="m-doc-wrap">int roi_index = 1,
+              int x_origin = 0,
+              int y_origin = 0,
+              int x_size = 1024,
+              int y_size = 256,
+              int x_bin = 1,
+              int y_bin = 256)</span></span>
+            </h3>
+            <p>Sets the region of interest (ROI) of the CCD.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">roi_index</td>
+                  <td>Index of the region of interest. Defaults to 1.</td>
+                </tr>
+                <tr>
+                  <td>x_origin</td>
+                  <td>X origin of the region of interest. Defaults to 0.</td>
+                </tr>
+                <tr>
+                  <td>y_origin</td>
+                  <td>Y origin of the region of interest. Defaults to 0.</td>
+                </tr>
+                <tr>
+                  <td>x_size</td>
+                  <td>X size of the region of interest. Defaults to 1024.</td>
+                </tr>
+                <tr>
+                  <td>y_size</td>
+                  <td>Y size of the region of interest. Defaults to 256.</td>
+                </tr>
+                <tr>
+                  <td>x_bin</td>
+                  <td>X bin of the region of interest. Defaults to 1.</td>
+                </tr>
+                <tr>
+                  <td>y_bin</td>
+                  <td>Y bin of the region of interest. Defaults to 256.</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::exception</td>
+                  <td>When an error occurs on the device side.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a97e6ce9c17b589779de1109762fd6d12"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">std::any horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a97e6ce9c17b589779de1109762fd6d12" class="m-doc-self">get_acquisition_data</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Returns the acquisition data of the CCD.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>std::any Acquisition data.</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::exception</td>
+                  <td>When an error occurs on the device side.</td>
+                </tr>
+              </tbody>
+            </table>
+<p>The acquisition data is a dictionary with the following keys:</p><ul><li>acqIndex: Acquisition number</li><li>roi:<ul><li>roiIndex: Region of Interest number</li><li>xOrigin: ROI’s X Origin</li><li>yOrigin: ROI’s Y Origin</li><li>xSize: ROI’s X Size</li><li>ySize: ROI’s Y Size</li><li>xBinning: ROI’s X Bin</li><li>yBinning: ROI’s Y Bin</li><li>xData: X data</li><li>yData: Y data</li></ul></li><li>Timestamp: This is a timestamp that relates to the time when the all the programmed acquisitions have completed. The data from all programmed acquisitions are retrieve from the CCD after all acquisitions have completed, therefore the same timestamp is used for all acquisitions.</li></ul>
+          </div></section>
+          <section class="m-doc-details" id="a8649e5360979be28378b40ec1ef34d89"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">bool horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a8649e5360979be28378b40ec1ef34d89" class="m-doc-self">get_acquisition_busy</a>(</span><span class="m-doc-wrap">)</span></span>
+            </h3>
+            <p>Returns true if the CCD is busy with the acquisition.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>bool True if the CCD is busy.</td>
+                </tr>
+              </thead>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::exception</td>
+                  <td>When an error occurs on the device side.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a3d26cc9d81b124b59787f9f19d67e7da"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a3d26cc9d81b124b59787f9f19d67e7da" class="m-doc-self">abort_acquisition</a>(</span><span class="m-doc-wrap">bool reset_port)</span></span>
+            </h3>
+            <p>Stops the acquisition of the CCD.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">std::exception</td>
+                  <td>When an error occurs on the device side.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+        </section>
+      </div>
+    </div>
+  </div>
+</article></main>
+<div class="m-doc-search" id="search">
+  <a href="#!" onclick="return hideSearch()"></a>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-m-8 m-push-m-2">
+        <div class="m-doc-search-header m-text m-small">
+          <div><span class="m-label m-default">Tab</span> / <span class="m-label m-default">T</span> to search, <span class="m-label m-default">Esc</span> to close</div>
+          <div id="search-symbolcount">&hellip;</div>
+        </div>
+        <div class="m-doc-search-content">
+          <form>
+            <input type="search" name="q" id="search-input" placeholder="Loading &hellip;" disabled="disabled" autofocus="autofocus" autocomplete="off" spellcheck="false" />
+          </form>
+          <noscript class="m-text m-danger m-text-center">Unlike everything else in the docs, the search functionality <em>requires</em> JavaScript.</noscript>
+          <div id="search-help" class="m-text m-dim m-text-center">
+            <p class="m-noindent">Search for symbols, directories, files, pages or
+            modules. You can omit any prefix from the symbol or file path; adding a
+            <code>:</code> or <code>/</code> suffix lists all members of given symbol or
+            directory.</p>
+            <p class="m-noindent">Use <span class="m-label m-dim">&darr;</span>
+            / <span class="m-label m-dim">&uarr;</span> to navigate through the list,
+            <span class="m-label m-dim">Enter</span> to go.
+            <span class="m-label m-dim">Tab</span> autocompletes common prefix, you can
+            copy a link to the result using <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">L</span> while <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">M</span> produces a Markdown link.</p>
+          </div>
+          <div id="search-notfound" class="m-text m-warning m-text-center">Sorry, nothing was found.</div>
+          <ul id="search-results"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="search-v2.js"></script>
+<script src="searchdata-v2.js" async="async"></script>
+<footer><nav>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <p>horiba_cpp_sdk. Created with <a href="https://doxygen.org/">Doxygen</a> 1.11.0 and <a href="https://mcss.mosra.cz/">m.css</a>.</p>
+      </div>
+    </div>
+  </div>
+</nav></footer>
+</body>
+</html>
