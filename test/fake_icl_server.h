@@ -203,4 +203,3 @@ class FakeICLServer {
 inline const std::string FakeICLServer::FAKE_ICL_ADDRESS = "127.0.0.1";
 }  // namespace horiba::test
 #endif /* ifndef FAKE_ICL_SERVER_H */
-
