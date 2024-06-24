@@ -1,1 +1,2 @@
 add_subdirectory(center_scan)
+add_subdirectory(gain_speed_info)

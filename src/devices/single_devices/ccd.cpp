@@ -8,6 +8,8 @@
 
 namespace horiba::devices::single_devices {
 
+using namespace nlohmann;
+
 ChargeCoupledDevice::ChargeCoupledDevice(
     int id, std::shared_ptr<communication::Communicator> communicator)
     : Device(id, communicator) {}
@@ -15,36 +17,36 @@ ChargeCoupledDevice::ChargeCoupledDevice(
 void ChargeCoupledDevice::open() {
   Device::open();
   auto _ignored_response = Device::execute_command(
-      communication::Command("ccd_open", {{"index", Device::device_id()}}));
+      communication::Command("ccd_open", {"index", Device::device_id()}));
 }
 
 void ChargeCoupledDevice::close() {
   auto _ignored_response = Device::execute_command(
-      communication::Command("ccd_close", {{"index", Device::device_id()}}));
+      communication::Command("ccd_close", {"index", Device::device_id()}));
 }
 
 bool ChargeCoupledDevice::is_open() {
   auto response = Device::execute_command(
-      communication::Command("ccd_isOpen", {{"index", Device::device_id()}}));
+      communication::Command("ccd_isOpen", {"index", Device::device_id()}));
   auto json_results = response.json_results();
   return json_results.at("open").get<bool>();
 }
 
 void ChargeCoupledDevice::restart() {
   auto _ignored_response = Device::execute_command(
-      communication::Command("ccd_restart", {{"index", Device::device_id()}}));
+      communication::Command("ccd_restart", {"index", Device::device_id()}));
 }
 
 nlohmann::json ChargeCoupledDevice::get_configuration() {
-  auto response = Device::execute_command(communication::Command(
-      "ccd_getConfig", {{"index", Device::device_id()}}));
+  auto response = Device::execute_command(
+      communication::Command("ccd_getConfig", {"index", Device::device_id()}));
   auto results = response.json_results();
   return results["configuration"];
 }
 
 int ChargeCoupledDevice::get_gain_token() {
   auto response = Device::execute_command(
-      communication::Command("ccd_getGain", {{"index", Device::device_id()}}));
+      communication::Command("ccd_getGain", {"index", Device::device_id()}));
   auto json_results = response.json_results();
   auto gain = json_results.at("token").get<int>();
   return gain;
@@ -52,12 +54,13 @@ int ChargeCoupledDevice::get_gain_token() {
 
 void ChargeCoupledDevice::set_gain(int gain_token) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setGain", {{"index", Device::device_id()}, {"token", gain_token}}));
+      "ccd_setGain",
+      json::object({{"index", Device::device_id()}, {"token", gain_token}})));
 }
 
 int ChargeCoupledDevice::get_speed_token() {
   auto response = Device::execute_command(
-      communication::Command("ccd_getSpeed", {{"index", Device::device_id()}}));
+      communication::Command("ccd_getSpeed", {"index", Device::device_id()}));
   auto json_results = response.json_results();
   auto speed = json_results.at("token").get<int>();
   return speed;
@@ -66,12 +69,12 @@ int ChargeCoupledDevice::get_speed_token() {
 void ChargeCoupledDevice::set_speed(int speed_token) {
   auto _ignored_response = Device::execute_command(communication::Command(
       "ccd_setSpeed",
-      {{"index", Device::device_id()}, {"token", speed_token}}));
+      json::object({{"index", Device::device_id()}, {"token", speed_token}})));
 }
 
 std::vector<int> ChargeCoupledDevice::get_fit_parameters() {
   auto response = Device::execute_command(communication::Command(
-      "ccd_getFitParams", {{"index", Device::device_id()}}));
+      "ccd_getFitParams", {"index", Device::device_id()}));
   auto json_results = response.json_results();
   auto fit_params = json_results.at("fitParameters").get<std::vector<int>>();
   return fit_params;
@@ -86,7 +89,7 @@ void ChargeCoupledDevice::set_fit_parameters(std::vector<int> fit_params) {
 ChargeCoupledDevice::TimerResolution
 ChargeCoupledDevice::get_timer_resolution() {
   auto response = Device::execute_command(communication::Command(
-      "ccd_getTimerResolution", {{"index", Device::device_id()}}));
+      "ccd_getTimerResolution", {"index", Device::device_id()}));
   auto json_results = response.json_results();
   auto timer_resolution = json_results.at("resolutionToken").get<int>();
   return static_cast<ChargeCoupledDevice::TimerResolution>(timer_resolution);
@@ -94,23 +97,27 @@ ChargeCoupledDevice::get_timer_resolution() {
 
 void ChargeCoupledDevice::set_timer_resolution(
     ChargeCoupledDevice::TimerResolution timer_resolution) {
-  auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setTimerResolution",
-      {{"index", Device::device_id()}, {"resolutionToken", timer_resolution}}));
+  auto _ignored_response = Device::execute_command(
+      communication::Command("ccd_setTimerResolution",
+                             json::object({{"index", Device::device_id()},
+                                           {"resolutionToken", timer_resolution}
+
+                             })));
 }
 
 void ChargeCoupledDevice::set_acquisition_format(
     int number_of_rois, AcquisitionFormat acquisition_format) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setAcqFormat", {{"index", Device::device_id()},
-                           {"format", static_cast<int>(acquisition_format)},
-                           {"numberOfRois", number_of_rois}}));
+      "ccd_setAcqFormat",
+      json::object({{"index", Device::device_id()},
+                    {"format", static_cast<int>(acquisition_format)},
+                    {"numberOfRois", number_of_rois}})));
 }
 
 ChargeCoupledDevice::XAxisConversionType
 ChargeCoupledDevice::get_x_axis_conversion_type() {
   auto response = Device::execute_command(communication::Command(
-      "ccd_getXAxisConversionType", {{"index", Device::device_id()}}));
+      "ccd_getXAxisConversionType", {"index", Device::device_id()}));
   auto json_results = response.json_results();
   auto x_axis_conversion_type = json_results.at("type").get<int>();
 
@@ -120,15 +127,15 @@ ChargeCoupledDevice::get_x_axis_conversion_type() {
 
 void ChargeCoupledDevice::set_x_axis_conversion_type(
     ChargeCoupledDevice::XAxisConversionType conversion_type) {
-  auto _ignored_response = Device::execute_command(
-      communication::Command("ccd_setXAxisConversionType",
-                             {{"index", Device::device_id()},
-                              {"type", static_cast<int>(conversion_type)}}));
+  auto _ignored_response = Device::execute_command(communication::Command(
+      "ccd_setXAxisConversionType",
+      json::object({{"index", Device::device_id()},
+                    {"type", static_cast<int>(conversion_type)}})));
 }
 
 int ChargeCoupledDevice::get_acquisition_count() {
   auto response = Device::execute_command(communication::Command(
-      "ccd_getAcqCount", {{"index", Device::device_id()}}));
+      "ccd_getAcqCount", {"index", Device::device_id()}));
   auto json_results = response.json_results();
   auto acquisition_count = json_results.at("count").get<int>();
 
@@ -137,13 +144,14 @@ int ChargeCoupledDevice::get_acquisition_count() {
 
 void ChargeCoupledDevice::set_acquisition_count(int count) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setAcqCount", {{"index", Device::device_id()}, {"count", count}}));
+      "ccd_setAcqCount",
+      json::object({{"index", Device::device_id()}, {"count", count}})));
 }
 
 std::pair<int, ChargeCoupledDevice::CleanCountMode>
 ChargeCoupledDevice::get_clean_count() {
   auto response = Device::execute_command(communication::Command(
-      "ccd_getCleanCount", {{"index", Device::device_id()}}));
+      "ccd_getCleanCount", {"index", Device::device_id()}));
   auto json_results = response.json_results();
   auto acquisition_count = json_results.at("count").get<int>();
   auto acquisition_mode = static_cast<ChargeCoupledDevice::CleanCountMode>(
@@ -154,14 +162,14 @@ ChargeCoupledDevice::get_clean_count() {
 void ChargeCoupledDevice::set_clean_count(
     int count, ChargeCoupledDevice::CleanCountMode mode) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setCleanCount", {{"index", Device::device_id()},
-                            {"count", count},
-                            {"mode", static_cast<int>(mode)}}));
+      "ccd_setCleanCount", json::object({{"index", Device::device_id()},
+                                         {"count", count},
+                                         {"mode", static_cast<int>(mode)}})));
 }
 
 int ChargeCoupledDevice::get_acquisition_data_size() {
   auto response = Device::execute_command(communication::Command(
-      "ccd_getDataSize", {{"index", Device::device_id()}}));
+      "ccd_getDataSize", {"index", Device::device_id()}));
   auto json_results = response.json_results();
   auto data_size = json_results.at("size").get<int>();
 
@@ -170,7 +178,7 @@ int ChargeCoupledDevice::get_acquisition_data_size() {
 
 double ChargeCoupledDevice::get_temperature() {
   auto response = Device::execute_command(communication::Command(
-      "ccd_getChipTemperature", {{"index", Device::device_id()}}));
+      "ccd_getChipTemperature", {"index", Device::device_id()}));
   auto json_results = response.json_results();
   auto temperature = json_results.at("temperature").get<double>();
 
@@ -179,7 +187,7 @@ double ChargeCoupledDevice::get_temperature() {
 
 std::pair<int, int> ChargeCoupledDevice::get_chip_size() {
   auto response = Device::execute_command(communication::Command(
-      "ccd_getChipSize", {{"index", Device::device_id()}}));
+      "ccd_getChipSize", {"index", Device::device_id()}));
   auto json_results = response.json_results();
   auto x = json_results.at("x").get<int>();
   auto y = json_results.at("y").get<int>();
@@ -189,7 +197,7 @@ std::pair<int, int> ChargeCoupledDevice::get_chip_size() {
 
 int ChargeCoupledDevice::get_exposure_time() {
   auto response = Device::execute_command(communication::Command(
-      "ccd_getExposureTime", {{"index", Device::device_id()}}));
+      "ccd_getExposureTime", {"index", Device::device_id()}));
   auto json_results = response.json_results();
   auto time = json_results.at("time").get<int>();
 
@@ -198,13 +206,13 @@ int ChargeCoupledDevice::get_exposure_time() {
 
 void ChargeCoupledDevice::set_exposure_time(int exposure_time_ms) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setExposureTime",
-      {{"index", Device::device_id()}, {"time", exposure_time_ms}}));
+      "ccd_setExposureTime", json::object({{"index", Device::device_id()},
+                                           {"time", exposure_time_ms}})));
 }
 
 std::tuple<bool, int, int, int> ChargeCoupledDevice::get_trigger_input() {
   auto response = Device::execute_command(communication::Command(
-      "ccd_getTriggerIn", {{"index", Device::device_id()}}));
+      "ccd_getTriggerIn", {"index", Device::device_id()}));
   auto json_results = response.json_results();
   auto address = json_results.at("address").get<int>();
   auto event = json_results.at("event").get<int>();
@@ -221,11 +229,11 @@ void ChargeCoupledDevice::set_trigger_input(bool enabled, int address,
     event = -1;
     signal_type = -1;
     auto _ignored_response = Device::execute_command(communication::Command(
-        "ccd_setTriggerIn", {{"index", Device::device_id()},
-                             {"enable", enabled},
-                             {"address", address},
-                             {"event", event},
-                             {"signalType", signal_type}}));
+        "ccd_setTriggerIn", json::object({{"index", Device::device_id()},
+                                          {"enable", enabled},
+                                          {"address", address},
+                                          {"event", event},
+                                          {"signalType", signal_type}})));
     return;
   }
 
@@ -269,11 +277,11 @@ void ChargeCoupledDevice::set_trigger_input(bool enabled, int address,
   }
 
   auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setTriggerIn", {{"index", Device::device_id()},
-                           {"enable", enabled},
-                           {"address", address},
-                           {"event", event},
-                           {"signalType", signal_type}}));
+      "ccd_setTriggerIn", json::object({{"index", Device::device_id()},
+                                        {"enable", enabled},
+                                        {"address", address},
+                                        {"event", event},
+                                        {"signalType", signal_type}})));
 }
 
 std::tuple<bool, int, int, int> ChargeCoupledDevice::get_signal_output() {
@@ -295,11 +303,11 @@ void ChargeCoupledDevice::set_signal_output(bool enabled, int address,
     event = -1;
     signal_type = -1;
     auto _ignored_response = Device::execute_command(communication::Command(
-        "ccd_setSignalOut", {{"index", Device::device_id()},
-                             {"enable", enabled},
-                             {"address", address},
-                             {"event", event},
-                             {"signalType", signal_type}}));
+        "ccd_setSignalOut", json::object({{"index", Device::device_id()},
+                                          {"enable", enabled},
+                                          {"address", address},
+                                          {"event", event},
+                                          {"signalType", signal_type}})));
     return;
   }
 
@@ -343,16 +351,16 @@ void ChargeCoupledDevice::set_signal_output(bool enabled, int address,
   }
 
   auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setSignalOut", {{"index", Device::device_id()},
-                           {"enable", enabled},
-                           {"address", address},
-                           {"event", event},
-                           {"signalType", signal_type}}));
+      "ccd_setSignalOut", json::object({{"index", Device::device_id()},
+                                        {"enable", enabled},
+                                        {"address", address},
+                                        {"event", event},
+                                        {"signalType", signal_type}})));
 }
 
 bool ChargeCoupledDevice::get_acquisition_ready() {
   auto response = Device::execute_command(communication::Command(
-      "ccd_getAcquisitionReady", {{"index", Device::device_id()}}));
+      "ccd_getAcquisitionReady", {"index", Device::device_id()}));
   auto json_results = response.json_results();
   auto ready = json_results.at("ready").get<bool>();
 
@@ -360,36 +368,37 @@ bool ChargeCoupledDevice::get_acquisition_ready() {
 }
 
 void ChargeCoupledDevice::set_acquisition_start(bool open_shutter) {
-  auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setAcquisitionStart",
-      {{"index", Device::device_id()}, {"openShutter", open_shutter}}));
+  auto _ignored_response = Device::execute_command(
+      communication::Command("ccd_setAcquisitionStart",
+                             json::object({{"index", Device::device_id()},
+                                           {"openShutter", open_shutter}})));
 }
 
 void ChargeCoupledDevice::set_region_of_interest(int roi_index, int x_origin,
                                                  int y_origin, int x_size,
                                                  int y_size, int x_bin,
                                                  int y_bin) {
-  auto _ignored_response = Device::execute_command(
-      communication::Command("ccd_setRoi", {{"index", Device::device_id()},
-                                            {"roiIndex", roi_index},
-                                            {"xOrigin", x_origin},
-                                            {"yOrigin", y_origin},
-                                            {"xSize", x_size},
-                                            {"ySize", y_size},
-                                            {"xBin", x_bin},
-                                            {"yBin", y_bin}}));
+  auto _ignored_response = Device::execute_command(communication::Command(
+      "ccd_setRoi", json::object({{"index", Device::device_id()},
+                                  {"roiIndex", roi_index},
+                                  {"xOrigin", x_origin},
+                                  {"yOrigin", y_origin},
+                                  {"xSize", x_size},
+                                  {"ySize", y_size},
+                                  {"xBin", x_bin},
+                                  {"yBin", y_bin}})));
 }
 
 std::any ChargeCoupledDevice::get_acquisition_data() {
   auto response = Device::execute_command(communication::Command(
-      "ccd_getAcquisitionData", {{"index", Device::device_id()}}));
+      "ccd_getAcquisitionData", {"index", Device::device_id()}));
   auto json_results = response.json_results();
   return json_results.at("acquisition");
 }
 
 bool ChargeCoupledDevice::get_acquisition_busy() {
   auto response = Device::execute_command(communication::Command(
-      "ccd_getAcquisitionBusy", {{"index", Device::device_id()}}));
+      "ccd_getAcquisitionBusy", {"index", Device::device_id()}));
   auto json_results = response.json_results();
   auto ready = json_results.at("isBusy").get<bool>();
 
@@ -398,7 +407,7 @@ bool ChargeCoupledDevice::get_acquisition_busy() {
 
 void ChargeCoupledDevice::abort_acquisition(bool reset_port) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setAcquisitionAbort",
-      {{"index", Device::device_id()}, {"resetPort", reset_port}}));
+      "ccd_setAcquisitionAbort", json::object({{"index", Device::device_id()},
+                                               {"resetPort", reset_port}})));
 }
 } /* namespace horiba::devices::single_devices */
