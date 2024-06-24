@@ -188,7 +188,7 @@ TEST_CASE_METHOD(ICLExe, "Mono test on HW", "[mono_hw]") {
   SECTION("Mono can change mirror position") {
     // arrange
     mono.open();
-    const auto mirror = Monochromator::Mirror::FIRST;
+    const auto mirror = Monochromator::Mirror::ENTRANCE;
     const auto expected_mirror_position_before =
         Monochromator::MirrorPosition::LATERAL;
     const auto expected_mirror_position_after =
