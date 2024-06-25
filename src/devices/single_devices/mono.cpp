@@ -55,14 +55,14 @@ double Monochromator::get_current_wavelength() {
 
 void Monochromator::calibrate_wavelength(double wavelength) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "mono_setPosition", {{"index", Device::device_id()},
-                                        {"wavelength", wavelength}}));
+      "mono_setPosition",
+      {{"index", Device::device_id()}, {"wavelength", wavelength}}));
 }
 
 void Monochromator::move_to_target_wavelength(double wavelength) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "mono_moveToPosition", {{"index", Device::device_id()},
-                                           {"wavelength", wavelength}}));
+      "mono_moveToPosition",
+      {{"index", Device::device_id()}, {"wavelength", wavelength}}));
 }
 
 Monochromator::Grating Monochromator::get_turret_grating() {
@@ -76,17 +76,16 @@ Monochromator::Grating Monochromator::get_turret_grating() {
 
 void Monochromator::set_turret_grating(Grating grating) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "mono_moveGrating",
-      {{"index", Device::device_id()},
-                    {"position", static_cast<int>(grating)}}));
+      "mono_moveGrating", {{"index", Device::device_id()},
+                           {"position", static_cast<int>(grating)}}));
 }
 
 Monochromator::FilterWheelPosition Monochromator::get_filter_wheel_position(
     FilterWheel filter_wheel) {
-  auto response = Device::execute_command(communication::Command(
-      "mono_getFilterWheelPosition",
-      {{"index", Device::device_id()},
-                    {"locationId", static_cast<int>(filter_wheel)}}));
+  auto response = Device::execute_command(
+      communication::Command("mono_getFilterWheelPosition",
+                             {{"index", Device::device_id()},
+                              {"locationId", static_cast<int>(filter_wheel)}}));
   auto json_results = response.json_results();
   auto position = json_results.at("position").get<int>();
 
@@ -96,18 +95,16 @@ Monochromator::FilterWheelPosition Monochromator::get_filter_wheel_position(
 void Monochromator::set_filter_wheel_position(FilterWheel filter_wheel,
                                               FilterWheelPosition position) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "mono_moveFilterWheel",
-     {{"index", Device::device_id()},
-                    {"locationId", static_cast<int>(filter_wheel)},
-                    {"position", static_cast<int>(position)}}));
+      "mono_moveFilterWheel", {{"index", Device::device_id()},
+                               {"locationId", static_cast<int>(filter_wheel)},
+                               {"position", static_cast<int>(position)}}));
 }
 
 Monochromator::MirrorPosition Monochromator::get_mirror_position(
     Mirror mirror) {
   auto response = Device::execute_command(communication::Command(
-      "mono_getMirrorPosition",
-      {{"index", Device::device_id()},
-                    {"locationId", static_cast<int>(mirror)}}));
+      "mono_getMirrorPosition", {{"index", Device::device_id()},
+                                 {"locationId", static_cast<int>(mirror)}}));
   auto json_results = response.json_results();
   auto position = json_results.at("position").get<int>();
 
@@ -117,17 +114,15 @@ Monochromator::MirrorPosition Monochromator::get_mirror_position(
 void Monochromator::set_mirror_position(Mirror mirror,
                                         MirrorPosition position) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "mono_moveMirror",
-      {{"index", Device::device_id()},
-                    {"locationId", static_cast<int>(mirror)},
-                    {"position", static_cast<int>(position)}}));
+      "mono_moveMirror", {{"index", Device::device_id()},
+                          {"locationId", static_cast<int>(mirror)},
+                          {"position", static_cast<int>(position)}}));
 }
 
 double Monochromator::get_slit_position_in_mm(Slit slit) {
   auto response = Device::execute_command(communication::Command(
-      "mono_getSlitPositionInMM",
-      {{"index", Device::device_id()},
-                    {"locationId", static_cast<int>(slit)}}));
+      "mono_getSlitPositionInMM", {{"index", Device::device_id()},
+                                   {"locationId", static_cast<int>(slit)}}));
   auto json_results = response.json_results();
   auto position = json_results.at("position").get<double>();
 
@@ -137,15 +132,14 @@ double Monochromator::get_slit_position_in_mm(Slit slit) {
 void Monochromator::set_slit_position(Slit slit, double position_in_mm) {
   auto _ignored_response = Device::execute_command(communication::Command(
       "mono_moveSlitMM", {{"index", Device::device_id()},
-                                       {"locationId", static_cast<int>(slit)},
-                                       {"position", position_in_mm}}));
+                          {"locationId", static_cast<int>(slit)},
+                          {"position", position_in_mm}}));
 }
 
 int Monochromator::get_slit_step_position(Slit slit) {
   auto response = Device::execute_command(communication::Command(
-      "mono_getSlitStepPosition",
-      {{"index", Device::device_id()},
-                    {"locationId", static_cast<int>(slit)}}));
+      "mono_getSlitStepPosition", {{"index", Device::device_id()},
+                                   {"locationId", static_cast<int>(slit)}}));
   auto json_results = response.json_results();
   auto position = json_results.at("position").get<int>();
 
@@ -155,8 +149,8 @@ int Monochromator::get_slit_step_position(Slit slit) {
 void Monochromator::set_slit_step_position(Slit slit, int step_position) {
   auto _ignored_response = Device::execute_command(communication::Command(
       "mono_moveSlit", {{"index", Device::device_id()},
-                                     {"locationId", static_cast<int>(slit)},
-                                     {"position", step_position}}));
+                        {"locationId", static_cast<int>(slit)},
+                        {"position", step_position}}));
 }
 
 void Monochromator::open_shutter() {

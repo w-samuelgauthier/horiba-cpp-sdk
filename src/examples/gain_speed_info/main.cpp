@@ -1,11 +1,11 @@
+#include <horiba_cpp_sdk/communication/command.h>
 #include <horiba_cpp_sdk/devices/icl_device_manager.h>
 #include <horiba_cpp_sdk/devices/single_devices/ccd.h>
 #include <horiba_cpp_sdk/os/process.h>
-#include <horiba_cpp_sdk/communication/command.h>
+#include <spdlog/spdlog.h>
 
 #include <iostream>
 #include <nlohmann/json.hpp>
-#include <spdlog/spdlog.h>
 
 #ifdef _WIN32
 #include <horiba_cpp_sdk/os/windows_process.h>

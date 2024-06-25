@@ -93,7 +93,8 @@ bool WindowsProcess::running() {
 
   CloseHandle(help_snapshot);
 
-  spdlog::debug("[WindowsProcess] '{}' is running: {}", this->process_name, process_found);
+  spdlog::debug("[WindowsProcess] '{}' is running: {}", this->process_name,
+                process_found);
 
   return process_found;
 }

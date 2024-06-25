@@ -23,7 +23,8 @@ TEST_CASE("A Command id is always incremented", "[command]") {
 TEST_CASE("Command parameters are correctly parsed", "[command]") {
   SECTION("From raw string") {
     // arrange
-    std::string expect_raw_json = R"({"command":"test","id":100,"parameters":{"key1":1}})";
+    std::string expect_raw_json =
+        R"({"command":"test","id":100,"parameters":{"key1":1}})";
 
     // act
     Command command("test", {{"key1", 1}});

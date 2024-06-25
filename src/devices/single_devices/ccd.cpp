@@ -54,11 +54,7 @@ int ChargeCoupledDevice::get_gain_token() {
 
 void ChargeCoupledDevice::set_gain(int gain_token) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setGain",
-      {
-        {"index", Device::device_id()},
-        {"token", gain_token}
-      }));
+      "ccd_setGain", {{"index", Device::device_id()}, {"token", gain_token}}));
 }
 
 int ChargeCoupledDevice::get_speed_token() {
@@ -100,21 +96,19 @@ ChargeCoupledDevice::get_timer_resolution() {
 
 void ChargeCoupledDevice::set_timer_resolution(
     ChargeCoupledDevice::TimerResolution timer_resolution) {
-  auto _ignored_response = Device::execute_command(
-      communication::Command("ccd_setTimerResolution",
-                             {{"index", Device::device_id()},
-                                           {"resolutionToken", timer_resolution}
+  auto _ignored_response = Device::execute_command(communication::Command(
+      "ccd_setTimerResolution",
+      {{"index", Device::device_id()}, {"resolutionToken", timer_resolution}
 
-                             }));
+      }));
 }
 
 void ChargeCoupledDevice::set_acquisition_format(
     int number_of_rois, AcquisitionFormat acquisition_format) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setAcqFormat",
-      {{"index", Device::device_id()},
-                    {"format", static_cast<int>(acquisition_format)},
-                    {"numberOfRois", number_of_rois}}));
+      "ccd_setAcqFormat", {{"index", Device::device_id()},
+                           {"format", static_cast<int>(acquisition_format)},
+                           {"numberOfRois", number_of_rois}}));
 }
 
 ChargeCoupledDevice::XAxisConversionType
@@ -130,10 +124,10 @@ ChargeCoupledDevice::get_x_axis_conversion_type() {
 
 void ChargeCoupledDevice::set_x_axis_conversion_type(
     ChargeCoupledDevice::XAxisConversionType conversion_type) {
-  auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setXAxisConversionType",
-      {{"index", Device::device_id()},
-                    {"type", static_cast<int>(conversion_type)}}));
+  auto _ignored_response = Device::execute_command(
+      communication::Command("ccd_setXAxisConversionType",
+                             {{"index", Device::device_id()},
+                              {"type", static_cast<int>(conversion_type)}}));
 }
 
 int ChargeCoupledDevice::get_acquisition_count() {
@@ -147,8 +141,7 @@ int ChargeCoupledDevice::get_acquisition_count() {
 
 void ChargeCoupledDevice::set_acquisition_count(int count) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setAcqCount",
-      {{"index", Device::device_id()}, {"count", count}}));
+      "ccd_setAcqCount", {{"index", Device::device_id()}, {"count", count}}));
 }
 
 std::pair<int, ChargeCoupledDevice::CleanCountMode>
@@ -166,8 +159,8 @@ void ChargeCoupledDevice::set_clean_count(
     int count, ChargeCoupledDevice::CleanCountMode mode) {
   auto _ignored_response = Device::execute_command(communication::Command(
       "ccd_setCleanCount", {{"index", Device::device_id()},
-                                         {"count", count},
-                                         {"mode", static_cast<int>(mode)}}));
+                            {"count", count},
+                            {"mode", static_cast<int>(mode)}}));
 }
 
 int ChargeCoupledDevice::get_acquisition_data_size() {
@@ -209,8 +202,8 @@ int ChargeCoupledDevice::get_exposure_time() {
 
 void ChargeCoupledDevice::set_exposure_time(int exposure_time_ms) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setExposureTime", {{"index", Device::device_id()},
-                                           {"time", exposure_time_ms}}));
+      "ccd_setExposureTime",
+      {{"index", Device::device_id()}, {"time", exposure_time_ms}}));
 }
 
 std::tuple<bool, int, int, int> ChargeCoupledDevice::get_trigger_input() {
@@ -233,10 +226,10 @@ void ChargeCoupledDevice::set_trigger_input(bool enabled, int address,
     signal_type = -1;
     auto _ignored_response = Device::execute_command(communication::Command(
         "ccd_setTriggerIn", {{"index", Device::device_id()},
-                                          {"enable", enabled},
-                                          {"address", address},
-                                          {"event", event},
-                                          {"signalType", signal_type}}));
+                             {"enable", enabled},
+                             {"address", address},
+                             {"event", event},
+                             {"signalType", signal_type}}));
     return;
   }
 
@@ -281,10 +274,10 @@ void ChargeCoupledDevice::set_trigger_input(bool enabled, int address,
 
   auto _ignored_response = Device::execute_command(communication::Command(
       "ccd_setTriggerIn", {{"index", Device::device_id()},
-                                        {"enable", enabled},
-                                        {"address", address},
-                                        {"event", event},
-                                        {"signalType", signal_type}}));
+                           {"enable", enabled},
+                           {"address", address},
+                           {"event", event},
+                           {"signalType", signal_type}}));
 }
 
 std::tuple<bool, int, int, int> ChargeCoupledDevice::get_signal_output() {
@@ -307,10 +300,10 @@ void ChargeCoupledDevice::set_signal_output(bool enabled, int address,
     signal_type = -1;
     auto _ignored_response = Device::execute_command(communication::Command(
         "ccd_setSignalOut", {{"index", Device::device_id()},
-                                          {"enable", enabled},
-                                          {"address", address},
-                                          {"event", event},
-                                          {"signalType", signal_type}}));
+                             {"enable", enabled},
+                             {"address", address},
+                             {"event", event},
+                             {"signalType", signal_type}}));
     return;
   }
 
@@ -355,10 +348,10 @@ void ChargeCoupledDevice::set_signal_output(bool enabled, int address,
 
   auto _ignored_response = Device::execute_command(communication::Command(
       "ccd_setSignalOut", {{"index", Device::device_id()},
-                                        {"enable", enabled},
-                                        {"address", address},
-                                        {"event", event},
-                                        {"signalType", signal_type}}));
+                           {"enable", enabled},
+                           {"address", address},
+                           {"event", event},
+                           {"signalType", signal_type}}));
 }
 
 bool ChargeCoupledDevice::get_acquisition_ready() {
@@ -371,25 +364,24 @@ bool ChargeCoupledDevice::get_acquisition_ready() {
 }
 
 void ChargeCoupledDevice::set_acquisition_start(bool open_shutter) {
-  auto _ignored_response = Device::execute_command(
-      communication::Command("ccd_setAcquisitionStart",
-                             {{"index", Device::device_id()},
-                                           {"openShutter", open_shutter}}));
+  auto _ignored_response = Device::execute_command(communication::Command(
+      "ccd_setAcquisitionStart",
+      {{"index", Device::device_id()}, {"openShutter", open_shutter}}));
 }
 
 void ChargeCoupledDevice::set_region_of_interest(int roi_index, int x_origin,
                                                  int y_origin, int x_size,
                                                  int y_size, int x_bin,
                                                  int y_bin) {
-  auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setRoi", {{"index", Device::device_id()},
-                                  {"roiIndex", roi_index},
-                                  {"xOrigin", x_origin},
-                                  {"yOrigin", y_origin},
-                                  {"xSize", x_size},
-                                  {"ySize", y_size},
-                                  {"xBin", x_bin},
-                                  {"yBin", y_bin}}));
+  auto _ignored_response = Device::execute_command(
+      communication::Command("ccd_setRoi", {{"index", Device::device_id()},
+                                            {"roiIndex", roi_index},
+                                            {"xOrigin", x_origin},
+                                            {"yOrigin", y_origin},
+                                            {"xSize", x_size},
+                                            {"ySize", y_size},
+                                            {"xBin", x_bin},
+                                            {"yBin", y_bin}}));
 }
 
 std::any ChargeCoupledDevice::get_acquisition_data() {
@@ -410,7 +402,7 @@ bool ChargeCoupledDevice::get_acquisition_busy() {
 
 void ChargeCoupledDevice::abort_acquisition(bool reset_port) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "ccd_setAcquisitionAbort", {{"index", Device::device_id()},
-                                               {"resetPort", reset_port}}));
+      "ccd_setAcquisitionAbort",
+      {{"index", Device::device_id()}, {"resetPort", reset_port}}));
 }
 } /* namespace horiba::devices::single_devices */

@@ -7,7 +7,6 @@
 #include <stdexcept>
 #include <string>
 
-
 #include "spdlog/common.h"
 
 namespace horiba::devices {

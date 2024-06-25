@@ -1,5 +1,5 @@
-// Note: on Windows if you use scaling, add the environment variable GNUTERM="qt"
-// to avoid strange rendering artifacts
+// Note: on Windows if you use scaling, add the environment variable
+// GNUTERM="qt" to avoid strange rendering artifacts
 #include <horiba_cpp_sdk/communication/websocket_communicator.h>
 #include <horiba_cpp_sdk/devices/icl_device_manager.h>
 #include <horiba_cpp_sdk/devices/single_devices/ccd.h>
@@ -8,10 +8,10 @@
 #include <matplot/matplot.h>
 
 #include <chrono>
+#include <cmath>
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <thread>
-#include <cmath>
 
 #ifdef _WIN32
 #include <horiba_cpp_sdk/os/windows_process.h>
