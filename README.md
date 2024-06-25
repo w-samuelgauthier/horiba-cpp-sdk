@@ -6,6 +6,7 @@
 [![Actions Status](https://github.com/w-samuelgauthier/horiba-cpp-sdk/workflows/Style/badge.svg)](https://github.com/w-samuelgauthier/horiba-cpp-sdk/actions)
 [![Actions Status](https://github.com/w-samuelgauthier/horiba-cpp-sdk/workflows/Install/badge.svg)](https://github.com/w-samuelgauthier/horiba-cpp-sdk/actions)
 [![CodeQL](https://github.com/w-samuelgauthier/horiba_cpp_sdk/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/w-samuelgauthier/horiba_cpp_sdk/actions/workflows/codeql-analysis.yml)
+[![doc](https://img.shields.io/badge/docs-blue)](https://w-samuelgauthier.github.io/horiba-cpp-sdk/)
 
 *horiba-cpp-sdk* is a C++ library that provides source code for the development with Horiba devices.
 
@@ -29,6 +30,11 @@ ___
 
 > [!WARNING]
 > This example only works under Windows.
+
+### Prerequisites
+
+* CMake 3.22
+* C++20 compiler, see [Dependency Setup](README_dependencies.md) for mor information.
 
 1. Create a new folder with the following structure:
 
@@ -150,14 +156,20 @@ ___
        }
 
      } catch (const exception &e) {
-       cerr << e.what() << endl;
+       cout << e.what() << endl;
        ccd->close();
        mono->close();
+       icl_device_manager.stop();
+       return 1;
      }
 
-     ccd->close();
-     mono->close();
-     icl_device_manager.stop();
+     try {
+       ccd->close();
+       mono->close();
+       icl_device_manager.stop();
+     } catch (const exception &e) {
+       cout << e.what() << endl;
+     }
 
      return 0;
    }
@@ -180,7 +192,6 @@ For more details on the usage of the library:
 For contributors to the library:
  * [Dependency Setup](README_dependencies.md)
  * [Building Details](README_building.md)
- * [Troubleshooting](README_troubleshooting.md)
  * [Docker](README_docker.md)
 
 ## Credits
