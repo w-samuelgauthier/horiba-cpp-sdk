@@ -71,6 +71,7 @@ TEST_CASE("ICL Device Manager test on hardware", "[icl_device_manager_hw]") {
     REQUIRE(ccds.size() == 1);
     REQUIRE(monos.size() == 1);
   }
+
   device_manager.stop();
 #else
   SUCCEED("ICL Device Manager tests on HW are not run on Unix systems");

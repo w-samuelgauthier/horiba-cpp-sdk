@@ -1,3 +1,5 @@
+// Note: on Windows if you use scaling, add the environment variable GNUTERM="qt"
+// to avoid strange rendering artifacts
 #include <horiba_cpp_sdk/communication/websocket_communicator.h>
 #include <horiba_cpp_sdk/devices/icl_device_manager.h>
 #include <horiba_cpp_sdk/devices/single_devices/ccd.h>
@@ -9,6 +11,7 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <thread>
+#include <cmath>
 
 #ifdef _WIN32
 #include <horiba_cpp_sdk/os/windows_process.h>
@@ -32,6 +35,8 @@ auto main(int argc, char *argv[]) -> int {
   using namespace horiba::os;
   using namespace horiba::devices::single_devices;
   using namespace horiba::communication;
+  using namespace matplot;
+  using namespace std;
 
 #ifdef _WIN32
   auto icl_process = std::make_shared<WindowsProcess>(
@@ -77,30 +82,50 @@ auto main(int argc, char *argv[]) -> int {
       auto open_shutter = true;
       ccd->set_acquisition_start(open_shutter);
       // wait a short time for the acquisition to start
-      std::this_thread::sleep_for(std::chrono::milliseconds(200));
+      this_thread::sleep_for(chrono::milliseconds(200));
 
       while (ccd->get_acquisition_busy()) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        this_thread::sleep_for(chrono::milliseconds(500));
       }
 
-      auto raw_data = std::any_cast<json>(ccd->get_acquisition_data());
+      auto raw_data = any_cast<json>(ccd->get_acquisition_data());
       auto xy_data = raw_data[0]["roi"][0]["xyData"];
+      cout << xy_data << endl;
 
-      std::vector<double> x_data = {123.1, 123.2, 123.3, 123.4, 123.5};
-      std::vector<double> y_data = {540.01, 540.02, 540.03, 540.04, 540.05};
-      matplot::plot(x_data, y_data, "g");
-      matplot::show();
+      auto x_data =
+          xy_data | views::transform([](const auto &pair) { return pair[0]; });
+      auto y_data =
+          xy_data | views::transform([](const auto &pair) { return pair[1]; });
+
+      vector<double> x_values;
+      vector<int> y_values;
+
+      ranges::copy(x_data, back_inserter(x_values));
+      ranges::copy(y_data, back_inserter(y_values));
+
+      plot(x_values, y_values);
+      title("Center Scan At Wavelength " + to_string(target_wavelength) + "nm");
+      xlabel("Wavelength [nm]");
+      ylabel("Intensity");
+      show();
     }
 
-  } catch (const std::exception &e) {
-    std::cerr << e.what() << std::endl;
+  } catch (const exception &e) {
+    cout << e.what() << endl;
     ccd->close();
     mono->close();
+    icl_device_manager.stop();
+    return 1;
   }
 
-  ccd->close();
-  mono->close();
-  icl_device_manager.stop();
+  try {
+    ccd->close();
+    mono->close();
+    icl_device_manager.stop();
+  } catch (const exception &e) {
+    cout << e.what() << endl;
+    // we expect an exception when the socket gets closed by the remote
+  }
 
   return 0;
 }

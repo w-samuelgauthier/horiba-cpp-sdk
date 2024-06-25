@@ -34,7 +34,7 @@ class ICLDeviceManager final : public DeviceManager {
                             std::string websocket_ip = "127.0.0.1",
                             std::string websocket_port = "25010",
                             bool manage_icl_lifetime = true,
-                            bool enable_binary_messages = true);
+                            bool enable_binary_messages = false);
 
   /**
    * @brief Starts the ICL device manager. Also starts the icl.exe if managing

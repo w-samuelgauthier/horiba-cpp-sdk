@@ -36,6 +36,7 @@ void WindowsProcess::start() {
   startup_info.cb = sizeof(startup_info);
   ZeroMemory(&process_info, sizeof(process_info));
 
+  spdlog::debug("[WindowsProcess] Starting process: {}", full_path);
   if (!CreateProcess(nullptr,         // No module name (use command line)
                      converted_path,  // Command line
                      nullptr,         // Process handle not inheritable
@@ -51,6 +52,7 @@ void WindowsProcess::start() {
                   GetLastError());
     throw std::runtime_error("failed to start '" + full_path + "' process");
   }
+  spdlog::debug("[WindowsProcess] Process started: {}", full_path);
 
   CloseHandle(process_info.hProcess);
   CloseHandle(process_info.hThread);
@@ -80,6 +82,7 @@ bool WindowsProcess::running() {
       std::wstring(this->process_name.begin(), this->process_name.end());
   const wchar_t* converted_path = wide_process_name.c_str();
 
+  spdlog::debug("[WindowsProcess] searching for: {}", this->process_name);
   bool process_found = false;
   do {
     if (std::wcscmp(converted_path, process_entry.szExeFile) == 0) {
@@ -89,6 +92,8 @@ bool WindowsProcess::running() {
   } while (Process32NextW(help_snapshot, &process_entry) == 1);
 
   CloseHandle(help_snapshot);
+
+  spdlog::debug("[WindowsProcess] '{}' is running: {}", this->process_name, process_found);
 
   return process_found;
 }

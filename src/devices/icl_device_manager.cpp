@@ -28,7 +28,9 @@ ICLDeviceManager::ICLDeviceManager(
               this->websocket_ip, this->websocket_port)} {}
 
 void ICLDeviceManager::start() {
-  if (this->manage_icl_lifetime) {
+  spdlog::debug("[ICLDeviceManager] managing ICL lifetime: {}",
+                this->manage_icl_lifetime);
+  if (this->manage_icl_lifetime && !this->icl_process->running()) {
     this->icl_process->start();
   }
   spdlog::debug("[ICLDeviceManager] ICL started");
@@ -95,7 +97,7 @@ void ICLDeviceManager::enable_binary_messages_on_icl() {
 
   const communication::Response response =
       this->communicator->request_with_response(
-          communication::Command("icl_binMode", {"mode", "all"}));
+          communication::Command("icl_binMode", {{"mode", "all"}}));
 
   if (!response.errors().empty()) {
     for (auto& error : response.errors()) {

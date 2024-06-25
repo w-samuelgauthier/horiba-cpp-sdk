@@ -1,9 +1,11 @@
 #include <horiba_cpp_sdk/devices/icl_device_manager.h>
 #include <horiba_cpp_sdk/devices/single_devices/ccd.h>
 #include <horiba_cpp_sdk/os/process.h>
+#include <horiba_cpp_sdk/communication/command.h>
 
 #include <iostream>
 #include <nlohmann/json.hpp>
+#include <spdlog/spdlog.h>
 
 #ifdef _WIN32
 #include <horiba_cpp_sdk/os/windows_process.h>
@@ -29,23 +31,31 @@ auto main(int argc, char *argv[]) -> int {
   using namespace horiba::communication;
   using namespace std;
 
+  spdlog::set_level(spdlog::level::debug);
+
 #ifdef _WIN32
-  auto icl_process = std::make_shared<WindowsProcess>(
+  spdlog::info("running on windows");
+  auto icl_process = make_shared<WindowsProcess>(
       R"(C:\Program Files\HORIBA Scientific\SDK\)", R"(icl.exe)");
 #else
-  auto icl_process = std::make_shared<FakeProcess>();
+  spdlog::info("running on linux or macOS");
+  auto icl_process = make_shared<FakeProcess>();
 #endif
+  spdlog::info("creating icl device manager...");
   auto icl_device_manager = ICLDeviceManager(icl_process);
 
+  spdlog::info("starting icl device manager...");
   icl_device_manager.start();
+  spdlog::info("discovering devices...");
   icl_device_manager.discover_devices();
 
   const auto ccds = icl_device_manager.charge_coupled_devices();
   if (ccds.empty()) {
-    std::cerr << "No CCDs found" << std::endl;
+    spdlog::error("No CCDs found");
     return 1;
   }
 
+  spdlog::info("found {} CCDs", ccds.size());
   const auto ccd = ccds[0];
 
   try {
@@ -53,16 +63,25 @@ auto main(int argc, char *argv[]) -> int {
 
     auto config = ccd->get_configuration();
 
-    cout << "------ Configuration ------" << endl;
-    cout << "Gains: " << config["gains"].dump() << endl;
-    cout << "Speeds: " << config["speeds"].dump() << endl;
-  } catch (const std::exception &e) {
-    std::cerr << e.what() << std::endl;
+    spdlog::info("------ Configuration ------");
+    spdlog::info("Gains: {}", config["gains"].dump(2));
+    spdlog::info("Speeds: {}", config["speeds"].dump(2));
+    ccd->set_acquisition_format(1,
+                                ChargeCoupledDevice::AcquisitionFormat::IMAGE);
+
+  } catch (const exception &e) {
+    spdlog::error("Exception: {}", e.what());
     ccd->close();
+    icl_device_manager.stop();
+    return 1;
   }
 
-  ccd->close();
-  icl_device_manager.stop();
-
+  try {
+    ccd->close();
+    icl_device_manager.stop();
+  } catch (const exception &e) {
+    spdlog::error("Exception: {}", e.what());
+    // we expect an exception when the socket gets closed by the remote
+  }
   return 0;
 }

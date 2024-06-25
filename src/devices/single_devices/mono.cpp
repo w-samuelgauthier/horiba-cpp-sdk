@@ -12,31 +12,31 @@ Monochromator::Monochromator(
 void Monochromator::open() {
   Device::open();
   auto _ignored_response = Device::execute_command(
-      communication::Command("mono_open", {"index", Device::device_id()}));
+      communication::Command("mono_open", {{"index", Device::device_id()}}));
 }
 
 void Monochromator::close() {
   auto _ignored_response = Device::execute_command(
-      communication::Command("mono_close", {"index", Device::device_id()}));
+      communication::Command("mono_close", {{"index", Device::device_id()}}));
 }
 
 bool Monochromator::is_open() {
   auto response = Device::execute_command(
-      communication::Command("mono_isOpen", {"index", Device::device_id()}));
+      communication::Command("mono_isOpen", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
   return json_results.at("open").get<bool>();
 }
 
 bool Monochromator::is_busy() {
   auto response = Device::execute_command(
-      communication::Command("mono_isBusy", {"index", Device::device_id()}));
+      communication::Command("mono_isBusy", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
   return json_results.at("busy").get<bool>();
 }
 
 void Monochromator::home() {
   auto _ignored_response = Device::execute_command(
-      communication::Command("mono_init", {"index", Device::device_id()}));
+      communication::Command("mono_init", {{"index", Device::device_id()}}));
 }
 
 std::string Monochromator::configuration() {
@@ -48,26 +48,26 @@ std::string Monochromator::configuration() {
 
 double Monochromator::get_current_wavelength() {
   auto response = Device::execute_command(communication::Command(
-      "mono_getPosition", json::object({{"index", Device::device_id()}})));
+      "mono_getPosition", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
   return json_results.at("wavelength").get<double>();
 }
 
 void Monochromator::calibrate_wavelength(double wavelength) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "mono_setPosition", json::object({{"index", Device::device_id()},
-                                        {"wavelength", wavelength}})));
+      "mono_setPosition", {{"index", Device::device_id()},
+                                        {"wavelength", wavelength}}));
 }
 
 void Monochromator::move_to_target_wavelength(double wavelength) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "mono_moveToPosition", json::object({{"index", Device::device_id()},
-                                           {"wavelength", wavelength}})));
+      "mono_moveToPosition", {{"index", Device::device_id()},
+                                           {"wavelength", wavelength}}));
 }
 
 Monochromator::Grating Monochromator::get_turret_grating() {
   auto response = Device::execute_command(communication::Command(
-      "mono_getGratingPosition", {"index", Device::device_id()}));
+      "mono_getGratingPosition", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
   auto grating = json_results.at("position").get<int>();
 
@@ -77,16 +77,16 @@ Monochromator::Grating Monochromator::get_turret_grating() {
 void Monochromator::set_turret_grating(Grating grating) {
   auto _ignored_response = Device::execute_command(communication::Command(
       "mono_moveGrating",
-      json::object({{"index", Device::device_id()},
-                    {"position", static_cast<int>(grating)}})));
+      {{"index", Device::device_id()},
+                    {"position", static_cast<int>(grating)}}));
 }
 
 Monochromator::FilterWheelPosition Monochromator::get_filter_wheel_position(
     FilterWheel filter_wheel) {
   auto response = Device::execute_command(communication::Command(
       "mono_getFilterWheelPosition",
-      json::object({{"index", Device::device_id()},
-                    {"locationId", static_cast<int>(filter_wheel)}})));
+      {{"index", Device::device_id()},
+                    {"locationId", static_cast<int>(filter_wheel)}}));
   auto json_results = response.json_results();
   auto position = json_results.at("position").get<int>();
 
@@ -97,17 +97,17 @@ void Monochromator::set_filter_wheel_position(FilterWheel filter_wheel,
                                               FilterWheelPosition position) {
   auto _ignored_response = Device::execute_command(communication::Command(
       "mono_moveFilterWheel",
-      json::object({{"index", Device::device_id()},
+     {{"index", Device::device_id()},
                     {"locationId", static_cast<int>(filter_wheel)},
-                    {"position", static_cast<int>(position)}})));
+                    {"position", static_cast<int>(position)}}));
 }
 
 Monochromator::MirrorPosition Monochromator::get_mirror_position(
     Mirror mirror) {
   auto response = Device::execute_command(communication::Command(
       "mono_getMirrorPosition",
-      json::object({{"index", Device::device_id()},
-                    {"locationId", static_cast<int>(mirror)}})));
+      {{"index", Device::device_id()},
+                    {"locationId", static_cast<int>(mirror)}}));
   auto json_results = response.json_results();
   auto position = json_results.at("position").get<int>();
 
@@ -118,16 +118,16 @@ void Monochromator::set_mirror_position(Mirror mirror,
                                         MirrorPosition position) {
   auto _ignored_response = Device::execute_command(communication::Command(
       "mono_moveMirror",
-      json::object({{"index", Device::device_id()},
+      {{"index", Device::device_id()},
                     {"locationId", static_cast<int>(mirror)},
-                    {"position", static_cast<int>(position)}})));
+                    {"position", static_cast<int>(position)}}));
 }
 
 double Monochromator::get_slit_position_in_mm(Slit slit) {
   auto response = Device::execute_command(communication::Command(
       "mono_getSlitPositionInMM",
-      json::object({{"index", Device::device_id()},
-                    {"locationId", static_cast<int>(slit)}})));
+      {{"index", Device::device_id()},
+                    {"locationId", static_cast<int>(slit)}}));
   auto json_results = response.json_results();
   auto position = json_results.at("position").get<double>();
 
@@ -136,16 +136,16 @@ double Monochromator::get_slit_position_in_mm(Slit slit) {
 
 void Monochromator::set_slit_position(Slit slit, double position_in_mm) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "mono_moveSlitMM", json::object({{"index", Device::device_id()},
+      "mono_moveSlitMM", {{"index", Device::device_id()},
                                        {"locationId", static_cast<int>(slit)},
-                                       {"position", position_in_mm}})));
+                                       {"position", position_in_mm}}));
 }
 
 int Monochromator::get_slit_step_position(Slit slit) {
   auto response = Device::execute_command(communication::Command(
       "mono_getSlitStepPosition",
-      json::object({{"index", Device::device_id()},
-                    {"locationId", static_cast<int>(slit)}})));
+      {{"index", Device::device_id()},
+                    {"locationId", static_cast<int>(slit)}}));
   auto json_results = response.json_results();
   auto position = json_results.at("position").get<int>();
 
@@ -154,25 +154,25 @@ int Monochromator::get_slit_step_position(Slit slit) {
 
 void Monochromator::set_slit_step_position(Slit slit, int step_position) {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "mono_moveSlit", json::object({{"index", Device::device_id()},
+      "mono_moveSlit", {{"index", Device::device_id()},
                                      {"locationId", static_cast<int>(slit)},
-                                     {"position", step_position}})));
+                                     {"position", step_position}}));
 }
 
 void Monochromator::open_shutter() {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "mono_shutterOpen", {"index", Device::device_id()}));
+      "mono_shutterOpen", {{"index", Device::device_id()}}));
 }
 
 void Monochromator::close_shutter() {
   auto _ignored_response = Device::execute_command(communication::Command(
-      "mono_shutterClose", {"index", Device::device_id()}));
+      "mono_shutterClose", {{"index", Device::device_id()}}));
 }
 
 Monochromator::ShutterPosition Monochromator::get_shutter_position(
     Shutter shutter) {
   auto response = Device::execute_command(communication::Command(
-      "mono_getShutterStatus", {"index", Device::device_id()}));
+      "mono_getShutterStatus", {{"index", Device::device_id()}}));
   auto json_results = response.json_results();
   ShutterPosition position = ShutterPosition::CLOSED;
   if (shutter == Shutter::FIRST) {
