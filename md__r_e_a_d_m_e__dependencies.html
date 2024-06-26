@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>about.dox file | horiba_cpp_sdk</title>
+  <title>Dependencies | horiba_cpp_sdk</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,600,600i%7CSource+Code+Pro:400,400i,600" />
   <link rel="stylesheet" href="m-dark+documentation.compiled.css" />
   <link rel="icon" href="favicon-dark.png" type="image/png" />
@@ -27,7 +27,7 @@
             <li>
               <a href="pages.html">Pages</a>
               <ol>
-                <li><a href="about.html">About</a></li>
+                <li><a href="gains_and_speeds.html">Gains and Speeds</a></li>
               </ol>
             </li>
             <li><a href="namespaces.html">Namespaces</a></li>
@@ -49,9 +49,14 @@
     <div class="m-row">
       <div class="m-col-l-10 m-push-l-1">
         <h1>
-          about.dox <span class="m-thin">file</span>
+          Dependencies
         </h1>
-        <p><span></span></p>
+<p><a name="autotoc_md13"></a> Note about install commands:</p><ul><li>for Windows, we use <a href="https://chocolatey.org/install">choco</a>.</li><li>for MacOS, we use <a href="https://brew.sh/">brew</a>.</li><li>In case of an error in cmake, make sure that the dependencies are on the PATH.</li></ul><section id="autotoc_md14"><h3><a href="#autotoc_md14">Too Long, Didn&#x27;t Install</a></h3><p>This is a really long list of dependencies, and it&#x27;s easy to mess up. That&#x27;s why:</p><section id="autotoc_md15"><h4><a href="#autotoc_md15">Docker</a></h4><p>We have a Docker image that&#x27;s already set up for you. See the <a href="md__r_e_a_d_m_e__docker.html" class="m-doc">Docker instructions</a>.</p></section><section id="autotoc_md16"><h4><a href="#autotoc_md16">Setup-cpp</a></h4><p>We have <a href="https://github.com/aminya/setup-cpp">setup-cpp</a> that is a cross-platform tool to install all the compilers and dependencies on the system.</p><p>Please check <a href="https://github.com/aminya/setup-cpp">the setup-cpp documentation</a> for more information.</p><p>For example, on Windows, you can run the following to install llvm, cmake, ninja, ccache, and cppcheck.</p><pre class="m-code"><span class="w"> </span><span class="mf">1</span>
+<span class="nf">#</span><span class="w"> </span><span class="nf">windows</span><span class="w"> </span><span class="nf">example</span><span class="w"> </span><span class="s">(open shell as admin)</span>
+<span class="nf">Invoke-WebRequest</span><span class="w"> </span><span class="nf">-Uri</span><span class="w"> </span><span class="nf">&quot;https:</span><span class="err">/</span><span class="nv">/github.com/aminya/setup-cpp/releases/download/v0.37.0/setup-cpp-x64-windows.exe&quot;</span><span class="w"> </span><span class="nf">-OutFile</span><span class="w"> </span><span class="nf">&quot;setup-cpp-x64-windows.exe&quot;</span>
+<span class="nf">.</span><span class="nv">/setup-cpp-x64-windows</span><span class="w"> </span><span class="nf">--compiler</span><span class="w"> </span><span class="nf">llvm</span><span class="w"> </span><span class="nf">--cmake</span><span class="w"> </span><span class="nf">true</span><span class="w"> </span><span class="nf">--ninja</span><span class="w"> </span><span class="nf">true</span><span class="w"> </span><span class="nf">--ccache</span><span class="w"> </span><span class="nf">true</span><span class="w"> </span><span class="nf">--cppcheck</span><span class="w"> </span><span class="nf">true</span>
+
+<span class="nf">RefreshEnv.cmd</span><span class="w"> </span><span class="nf">#</span><span class="w"> </span><span class="nf">reload</span><span class="w"> </span><span class="nf">the</span><span class="w"> </span><span class="nf">environment</span></pre></section></section><section id="autotoc_md17"><h3><a href="#autotoc_md17">Necessary Dependencies</a></h3><ol><li>A C++ compiler that supports C++17. See <a href="https://en.cppreference.com/w/cpp/compiler_support">cppreference.com</a> to see which features are supported by each compiler. The following compilers should work:<ul><li><a href="https://gcc.gnu.org/">gcc 7+</a></li><li><a href="https://clang.llvm.org/">clang 6+</a></li><li><a href="https://visualstudio.microsoft.com/">Visual Studio 2019 or higher</a></li></ul></li><li><a href="https://cmake.org/">CMake 3.21+</a></li></ol></section><section id="autotoc_md18"><h3><a href="#autotoc_md18">Optional Dependencies</a></h3><section id="autotoc_md19"><h4><a href="#autotoc_md19">C++ Tools</a></h4><ul><li><a href="http://doxygen.nl/">Doxygen</a></li><li><a href="https://ccache.dev/">ccache</a></li><li><a href="http://cppcheck.sourceforge.net/">Cppcheck</a></li><li><a href="https://include-what-you-use.org/">include-what-you-use</a></li></ul></section></section>
       </div>
     </div>
   </div>

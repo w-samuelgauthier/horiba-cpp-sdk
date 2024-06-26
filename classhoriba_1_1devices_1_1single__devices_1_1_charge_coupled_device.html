@@ -27,7 +27,7 @@
             <li>
               <a href="pages.html">Pages</a>
               <ol>
-                <li><a href="about.html">About</a></li>
+                <li><a href="gains_and_speeds.html">Gains and Speeds</a></li>
               </ol>
             </li>
             <li><a href="namespaces.html">Namespaces</a></li>
@@ -422,11 +422,20 @@
             <p>Sets the gain of the CCD.</p>
             <table class="m-table m-fullwidth m-flat">
               <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">gain_token</td>
+                  <td>Token of the gain to set</td>
+                </tr>
+              </tbody>
+              <thead>
                 <tr><th colspan="2">Exceptions</th></tr>
               </thead>
               <tbody>
                 <tr>
-                  <td style="width: 1%">std::runtime_error</td>
+                  <td>std::runtime_error</td>
                   <td>when an error occurred on the device side</td>
                 </tr>
               </tbody>
@@ -464,11 +473,20 @@
             <p>Sets the speed of the CCD.</p>
             <table class="m-table m-fullwidth m-flat">
               <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">speed_token</td>
+                  <td>Token of the speed to set</td>
+                </tr>
+              </tbody>
+              <thead>
                 <tr><th colspan="2">Exceptions</th></tr>
               </thead>
               <tbody>
                 <tr>
-                  <td style="width: 1%">std::runtime_error</td>
+                  <td>std::runtime_error</td>
                   <td>when an error occurred on the device side</td>
                 </tr>
               </tbody>
@@ -533,7 +551,7 @@
               <thead>
                 <tr>
                   <th style="width: 1%">Returns</th>
-                  <td>Timer resolution TODO: units and &gt;details</td>
+                  <td>Timer resolution</td>
                 </tr>
               </thead>
               <thead>
@@ -559,7 +577,7 @@
               <tbody>
                 <tr>
                   <td style="width: 1%">timer_resolution</td>
-                  <td>Timer resolution TODO: units and &gt;details</td>
+                  <td>Timer resolution</td>
                 </tr>
               </tbody>
               <thead>
@@ -633,7 +651,26 @@
               <span class="m-doc-wrap-bumper">void horiba::<wbr />devices::<wbr />single_devices::<wbr />ChargeCoupledDevice::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a82420f41139e5c094a8df6098991dd79" class="m-doc-self">set_x_axis_conversion_type</a>(</span><span class="m-doc-wrap"><a href="classhoriba_1_1devices_1_1single__devices_1_1_charge_coupled_device.html#ac5ed95993cf7bb5843ba0c81ce71978b" class="m-doc">XAxisConversionType</a> conversion_type)</span></span>
             </h3>
             <p>Sets the x-axis pixel conversion type to be used when retrieving the acquisition data with thee.</p>
-<p>throw std::runtime_error when an error occurred on the device side</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">conversion_type</td>
+                  <td>Selected axis conversion type</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Exceptions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>std::runtime_error</td>
+                  <td>when an error occurred on the device side</td>
+                </tr>
+              </tbody>
+            </table>
           </div></section>
           <section class="m-doc-details" id="ac3b7e5ec7a10303c6b78f0c58c64365b"><div>
             <h3>
