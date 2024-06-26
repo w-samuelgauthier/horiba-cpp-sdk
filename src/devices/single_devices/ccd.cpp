@@ -8,6 +8,8 @@
 
 namespace horiba::devices::single_devices {
 
+using namespace nlohmann;
+
 ChargeCoupledDevice::ChargeCoupledDevice(
     int id, std::shared_ptr<communication::Communicator> communicator)
     : Device(id, communicator) {}
@@ -96,7 +98,9 @@ void ChargeCoupledDevice::set_timer_resolution(
     ChargeCoupledDevice::TimerResolution timer_resolution) {
   auto _ignored_response = Device::execute_command(communication::Command(
       "ccd_setTimerResolution",
-      {{"index", Device::device_id()}, {"resolutionToken", timer_resolution}}));
+      {{"index", Device::device_id()}, {"resolutionToken", timer_resolution}
+
+      }));
 }
 
 void ChargeCoupledDevice::set_acquisition_format(
@@ -304,7 +308,7 @@ void ChargeCoupledDevice::set_signal_output(bool enabled, int address,
   }
 
   auto config = get_configuration();
-  auto it_signals = config.find("Signals");
+  auto it_signals = config.find("signals");
   if (it_signals == config.end()) {
     throw std::runtime_error("Signals not found in the configuration");
   }

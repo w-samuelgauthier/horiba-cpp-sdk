@@ -54,7 +54,7 @@ class Monochromator final : public Device {
    * @brief Mirrors installed in the monochromator. Depending on the model, not
    * all mirrors may be available.
    */
-  enum class Mirror : int { FIRST, SECOND };
+  enum class Mirror : int { ENTRANCE, EXIT };
 
   /**
    * @brief Possible positions of the mirrors

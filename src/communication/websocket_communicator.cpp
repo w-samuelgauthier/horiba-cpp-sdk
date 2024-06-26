@@ -72,8 +72,10 @@ Response WebSocketCommunicator::request_with_response(const Command& command) {
   boost::beast::flat_buffer buffer;
   this->websocket.read(buffer);
 
-  nlohmann::json json_response =
-      nlohmann::json::parse(boost::beast::buffers_to_string(buffer.data()));
+  std::string raw_response = boost::beast::buffers_to_string(buffer.data());
+  spdlog::debug("[WebSocketCommunicator] raw response: {}", raw_response);
+
+  nlohmann::json json_response = nlohmann::json::parse(raw_response);
   spdlog::debug("[WebSocketCommunicator] Received response: {}",
                 json_response.dump());
 

@@ -164,7 +164,7 @@ TEST_CASE("Mono test with fake ICL", "[mono_no_hw]") {
   SECTION("Mono get mirror position") {
     // arrange
     mono.open();
-    const auto mirror = Monochromator::Mirror::FIRST;
+    const auto mirror = Monochromator::Mirror::ENTRANCE;
     const auto expected_mirror_position = Monochromator::MirrorPosition::AXIAL;
 
     // act
@@ -177,7 +177,7 @@ TEST_CASE("Mono test with fake ICL", "[mono_no_hw]") {
   SECTION("Mono mirror position can be set") {
     // arrange
     mono.open();
-    const auto mirror = Monochromator::Mirror::FIRST;
+    const auto mirror = Monochromator::Mirror::ENTRANCE;
     const auto mirror_position = Monochromator::MirrorPosition::LATERAL;
 
     // act

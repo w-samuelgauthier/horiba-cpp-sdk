@@ -20,11 +20,17 @@ void ChargeCoupledDevicesDiscovery::execute(bool error_on_no_devices) {
     this->communicator->open();
   }
 
+  spdlog::debug("[ChargeCoupledDevicesDiscovery] discover CCDs");
   const auto _ignored_response = this->communicator->request_with_response(
       communication::Command("ccd_discover", {}));
 
+  spdlog::debug("[ChargeCoupledDevicesDiscovery] list CCDs");
   const auto response = this->communicator->request_with_response(
       communication::Command("ccd_list", {}));
+
+  spdlog::debug("[ChargeCoupledDevicesDiscovery] response: {}",
+                response.json_results().dump());
+
   if (response.json_results().empty() && error_on_no_devices) {
     throw std::runtime_error("No CCDs connected");
   }

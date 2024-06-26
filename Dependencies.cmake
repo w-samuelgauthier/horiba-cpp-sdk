@@ -26,8 +26,10 @@ function(horiba_cpp_sdk_setup_dependencies)
     CPMAddPackage("gh:catchorg/Catch2@3.6.0")
   endif()
 
-  if(NOT TARGET CLI11::CLI11)
-    CPMAddPackage("gh:CLIUtils/CLI11@2.3.2")
+  # Used only in the examples
+  if(NOT TARGET Matplot++::matplot)
+    message(STATUS "Matplot++ not added already, adding it as a CPM package")
+    CPMAddPackage("gh:alandefreitas/matplotplusplus@1.2.1")
   endif()
 
   if(NOT TARGET Boost::beast)
@@ -49,5 +51,4 @@ function(horiba_cpp_sdk_setup_dependencies)
   if(NOT TARGET nlohmann_json::nlohmann_json)
     CPMAddPackage("gh:nlohmann/json@3.11.3")
   endif()
-
 endfunction()

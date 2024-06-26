@@ -90,6 +90,10 @@ To configure the project, you could use `cmake`, or `ccmake` or `cmake-gui`. Eac
 With Cmake directly:
 
     cmake -S . -B ./build
+    # on Windows cpecify the build type
+    cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Debug
+    # or
+    cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Release
 
 Cmake will automatically create the `./build` folder if it does not exist, and it wil configure the project.
 

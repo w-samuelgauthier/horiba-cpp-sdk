@@ -126,7 +126,7 @@ class ChargeCoupledDevice final : public Device {
    * different gain values. Therefore you need to first check what gain values
    * are available for the CCD using the get_configuration function.
    *
-   * @param gain Gain
+   * @param gain_token Token of the gain to set
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
@@ -152,7 +152,7 @@ class ChargeCoupledDevice final : public Device {
    * different speed values. Therefore you need to first check what speed values
    * are available for the CCD using the get_configuration function.
    *
-   * @param speed int Speed token
+   * @param speed_token Token of the speed to set
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
@@ -179,7 +179,7 @@ class ChargeCoupledDevice final : public Device {
   /**
    * @brief Returns the timer resolution of the CCD.
    *
-   * @return Timer resolution TODO: units and >details
+   * @return Timer resolution
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
@@ -188,7 +188,7 @@ class ChargeCoupledDevice final : public Device {
   /**
    * @brief Sets the timer resolution of the CCD
    *
-   * @param timer_resolution Timer resolution TODO: units and >details
+   * @param timer_resolution Timer resolution
    *
    * @throw std::runtime_error when an error occurred on the device side
    */
@@ -227,7 +227,7 @@ class ChargeCoupledDevice final : public Device {
    * @brief Sets the x-axis pixel conversion type to be used when retrieving
    * the acquisition data with thee.
    *
-   * @param
+   * @param conversion_type Selected axis conversion type
    *
    * @throw std::runtime_error when an error occurred on the device side
    */

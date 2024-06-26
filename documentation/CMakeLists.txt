@@ -6,7 +6,7 @@ project(horiba_cpp_sdk_docs)
 
 include(../cmake/CPM.cmake)
 
-CPMAddPackage("gh:mosra/m.css#a0d292ec311b97fefd21e93cdefb60f88d19ede6")
+CPMAddPackage("gh:mosra/m.css#523506668a61646603ed299e1b60b7f77a8ebd77")
 
 # ---- Doxygen variables ----
 
