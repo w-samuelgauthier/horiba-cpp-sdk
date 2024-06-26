@@ -21,17 +21,41 @@ TEST_CASE("A Command id is always incremented", "[command]") {
 }
 
 TEST_CASE("Command parameters are correctly parsed", "[command]") {
-  SECTION("From raw string") {
+  SECTION("From raw string with zero parameters") {
     // arrange
-    std::string expect_raw_json =
-        R"({"command":"test","id":100,"parameters":{"key1":1}})";
+    // act
+    Command command("test", {});
+    auto command_json = command.json();
+    auto parameters = command_json.at("parameters");
+
+    // assert
+    REQUIRE(parameters.is_null());
+  }
+
+  SECTION("From raw string with one parameter") {
+    // arrange
+    std::string expect_raw_json = R"({"key1":1})";
 
     // act
     Command command("test", {{"key1", 1}});
     auto command_json = command.json();
+    auto parameters = command_json.at("parameters");
 
     // assert
-    REQUIRE(command_json.dump() == expect_raw_json);
+    REQUIRE(parameters.dump() == expect_raw_json);
+  }
+
+  SECTION("From raw string with multiple parameters") {
+    // arrange
+    std::string expect_raw_json = R"({"key1":1,"key2":2})";
+
+    // act
+    Command command("test", {{"key1", 1}, {"key2", 2}});
+    auto command_json = command.json();
+    auto parameters = command_json.at("parameters");
+
+    // assert
+    REQUIRE(parameters.dump() == expect_raw_json);
   }
 }
 }  // namespace horiba::test
