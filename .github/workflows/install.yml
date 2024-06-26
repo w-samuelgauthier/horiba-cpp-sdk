@@ -26,6 +26,20 @@ jobs:
           path: "**/cpm_modules"
           key: ${{ github.workflow }}-cpm-modules-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
 
+      - name: setup-cpp
+        uses: aminya/setup-cpp@v1
+        with:
+          compiler: gcc
+          vcvarsall: false
+          cmake: true
+          ninja: true
+          vcpkg: false
+          ccache: true
+          clangtidy: true
+          cppcheck: true
+          gcovr: true
+          opencppcoverage: true
+
       - name: build and install library
         run: |
           cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release
@@ -36,9 +50,9 @@ jobs:
         run: cmake -S. -Bbuild -DTEST_INSTALLED_VERSION=1
 
       - name: build
-        run: cmake --build build --config Debug -j4
+        run: cmake --build build --config Release -j4
 
       - name: test
         run: |
           cd build
-          ctest --build-config Debug
+          ctest --build-config Release
